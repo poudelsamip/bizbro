@@ -15,7 +15,10 @@ const LoginForm = () => {
   return (
     <div className="flex justify-center items-center h-full">
       <div className="w-full max-w-md bg-gray-800 p-6 rounded-lg shadow-lg text-white">
-        <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
+        <h2 className="text-md text-center">Welcome to 👊BizBro</h2>
+
+        <h2 className="text-4xl font-bold text-center mb-6">Login</h2>
+
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label
@@ -59,7 +62,7 @@ const LoginForm = () => {
             Sign In
           </button>
         </form>
-        <p className="mt-4 text-center text-sm text-gray-600">
+        <p className="mt-4 text-center text-sm text-gray-400">
           Don't have an account?{" "}
           <a href="/signup" className="text-blue-500 hover:underline">
             Sign Up

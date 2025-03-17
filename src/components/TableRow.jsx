@@ -24,7 +24,6 @@ const TableRow = ({ item, setShowAddStockPopup, setSelectedItem }) => {
               setShowAddStockPopup(true);
             }}
           />
-          <MdDeleteForever size={20} className="text-red-500" />
         </div>
       </td>
     </tr>

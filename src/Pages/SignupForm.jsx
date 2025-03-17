@@ -27,7 +27,8 @@ const SignupForm = () => {
   return (
     <div className="flex justify-center items-center h-full">
       <div className="w-full max-w-md bg-gray-800 p-6 rounded-lg shadow-lg text-white">
-        <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
+        <h2 className="text-md text-center">Welcome to 👊BizBro</h2>
+        <h2 className="text-4xl font-bold text-center mb-6">Sign Up</h2>
         <form onSubmit={handleSignup}>
           {/* Name Field */}
           <div className="mb-4">

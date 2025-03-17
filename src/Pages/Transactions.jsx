@@ -12,8 +12,12 @@ const Transactions = () => {
   const handleSearch = (e) => {
     const searchText = e.target.value.toLowerCase();
     setFilteredData(() => {
-      return transactionsData.filter((item) =>
-        item.customer.toLowerCase().includes(searchText)
+      return transactionsData.filter(
+        (item) =>
+          item.customer.toLowerCase().includes(searchText) ||
+          Object.values(item.products).some((product) =>
+            product.itemName.toLowerCase().includes(searchText)
+          )
       );
     });
   };
@@ -90,9 +94,9 @@ const Transactions = () => {
       <div className="mb-1 flex justify-between">
         <input
           type="text"
-          className="block  px-4 py-2 text-white text-sm border border-gray-400 bg-gray-800 rounded outline-0"
-          placeholder="Search By Buyer"
-          onChange={(e) => handleSearch(e)} // Handle search input
+          className="block px-4 py-2 text-white text-sm border border-gray-400 bg-gray-800 rounded outline-0 w-[250px]"
+          placeholder="Search By Buyer or Product"
+          onChange={(e) => handleSearch(e)}
         />
         <div>
           <input

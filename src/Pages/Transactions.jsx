@@ -112,85 +112,95 @@ const Transactions = () => {
           </button>
         </div>
       </div>
-      <div className="flex-grow overflow-auto max-h-[80vh]">
-        <table className="w-full text-sm text-left text-gray-300">
-          <thead className="text-xs uppercase bg-gray-900 text-gray-200 border-b border-white sticky top-0 z-10">
-            <tr>
-              <th scope="col" className="px-3 py-3 ">
-                S.N
-              </th>
-              <th scope="col" className="px-3 py-3">
-                Buyer
-              </th>
-              <th scope="col" className="px-3 py-3">
-                Products
-              </th>
-              <th scope="col" className="px-3 py-3">
-                Price
-              </th>
-              <th scope="col" className="px-3 py-3">
-                Quantity
-              </th>
-              <th scope="col" className="px-3 py-3">
-                Total
-              </th>
-              <th scope="col" className="px-3 py-3">
-                <span
-                  className="flex items-center gap-1 cursor-pointer"
-                  title="Sort By Total"
-                  onClick={sortByGrandTotal}
-                >
-                  Grand Total <RiExpandUpDownFill />
-                </span>
-              </th>
-              <th scope="col" className="px-3 py-3">
-                <span
-                  className="flex items-center gap-1 cursor-pointer"
-                  title="Sort By Date"
-                  onClick={sortByDate}
-                >
-                  Date <RiExpandUpDownFill />
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredData.map((item, index) => (
-              <tr
-                key={index}
-                className="cursor-pointer border-b bg-gray-800 border-gray-500 hover:bg-gray-700"
-              >
-                <td className="px-3 py-3">{index + 1}</td>
-                <td className="px-3 py-3">{item.customer}</td>
-                <td className="px-3 py-3">
-                  {Object.entries(item.products).map(([key, itm]) => (
-                    <p key={`itemName${key}${itm.itemName}`}>{itm.itemName}</p>
-                  ))}
-                </td>
-                <td className="px-3 py-3">
-                  {Object.entries(item.products).map(([key, itm]) => (
-                    <p key={`itemName${key}${itm.price}`}>Rs. {itm.price}</p>
-                  ))}
-                </td>
-                <td className="px-3 py-3">
-                  {Object.entries(item.products).map(([key, itm]) => (
-                    <p key={`itemName${key}${itm.quantity}`}>{itm.quantity}</p>
-                  ))}
-                </td>
-                <td className="px-3 py-3">
-                  {Object.entries(item.products).map(([key, itm]) => (
-                    <p key={`itemName${key}${itm.totalPrice}`}>
-                      Rs. {itm.totalPrice}
-                    </p>
-                  ))}
-                </td>
-                <td className="px-3 py-3">Rs. {item.grandTotal}</td>
-                <td className="px-3 py-3">{item.date}</td>
+      {transactionsData.length > 0 ? (
+        <div className="flex-grow overflow-auto max-h-[80vh]">
+          <table className="w-full text-sm text-left text-gray-300">
+            <thead className="text-xs uppercase bg-gray-900 text-gray-200 border-b border-white sticky top-0 z-10">
+              <tr>
+                <th scope="col" className="px-3 py-3 ">
+                  S.N
+                </th>
+                <th scope="col" className="px-3 py-3">
+                  Buyer
+                </th>
+                <th scope="col" className="px-3 py-3">
+                  Products
+                </th>
+                <th scope="col" className="px-3 py-3">
+                  Price
+                </th>
+                <th scope="col" className="px-3 py-3">
+                  Quantity
+                </th>
+                <th scope="col" className="px-3 py-3">
+                  Total
+                </th>
+                <th scope="col" className="px-3 py-3">
+                  <span
+                    className="flex items-center gap-1 cursor-pointer"
+                    title="Sort By Total"
+                    onClick={sortByGrandTotal}
+                  >
+                    Grand Total <RiExpandUpDownFill />
+                  </span>
+                </th>
+                <th scope="col" className="px-3 py-3">
+                  <span
+                    className="flex items-center gap-1 cursor-pointer"
+                    title="Sort By Date"
+                    onClick={sortByDate}
+                  >
+                    Date <RiExpandUpDownFill />
+                  </span>
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {filteredData.map((item, index) => (
+                <tr
+                  key={index}
+                  className="cursor-pointer border-b bg-gray-800 border-gray-500 hover:bg-gray-700"
+                >
+                  <td className="px-3 py-3">{index + 1}</td>
+                  <td className="px-3 py-3">{item.customer}</td>
+                  <td className="px-3 py-3">
+                    {Object.entries(item.products).map(([key, itm]) => (
+                      <p key={`itemName${key}${itm.itemName}`}>
+                        {itm.itemName}
+                      </p>
+                    ))}
+                  </td>
+                  <td className="px-3 py-3">
+                    {Object.entries(item.products).map(([key, itm]) => (
+                      <p key={`itemName${key}${itm.price}`}>Rs. {itm.price}</p>
+                    ))}
+                  </td>
+                  <td className="px-3 py-3">
+                    {Object.entries(item.products).map(([key, itm]) => (
+                      <p key={`itemName${key}${itm.quantity}`}>
+                        {itm.quantity}
+                      </p>
+                    ))}
+                  </td>
+                  <td className="px-3 py-3">
+                    {Object.entries(item.products).map(([key, itm]) => (
+                      <p key={`itemName${key}${itm.totalPrice}`}>
+                        Rs. {itm.totalPrice}
+                      </p>
+                    ))}
+                  </td>
+                  <td className="px-3 py-3">Rs. {item.grandTotal}</td>
+                  <td className="px-3 py-3">{item.date}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="text-gray-400 text-center mt-10">
+          Your Sales Records Will Be Displayed Here
+        </div>
+      )}
     </div>
   );
 };

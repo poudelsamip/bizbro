@@ -231,7 +231,6 @@ const MainProvider = ({ children }) => {
         );
       } else {
         setUser(null);
-        navigate("/login");
       }
     });
 

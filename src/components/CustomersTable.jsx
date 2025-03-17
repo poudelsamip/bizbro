@@ -93,7 +93,7 @@ const CustomersTable = () => {
         </div>
       </div>
 
-      {/* Scrollable Table Container */}
+      {/*  Table */}
       <div className="flex-grow overflow-auto max-h-[80vh]">
         <table className="w-full text-sm text-left text-gray-300">
           <thead className="text-xs uppercase bg-gray-900 text-gray-200 border-b border-white sticky top-0 z-10">

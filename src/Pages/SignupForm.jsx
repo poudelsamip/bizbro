@@ -30,7 +30,6 @@ const SignupForm = () => {
         <h2 className="text-md text-center">Welcome to 👊BizBro</h2>
         <h2 className="text-4xl font-bold text-center mb-6">Sign Up</h2>
         <form onSubmit={handleSignup}>
-          {/* Name Field */}
           <div className="mb-4">
             <label
               htmlFor="name"
@@ -49,7 +48,6 @@ const SignupForm = () => {
             />
           </div>
 
-          {/* Company Name Field */}
           <div className="mb-4">
             <label
               htmlFor="companyName"
@@ -68,7 +66,6 @@ const SignupForm = () => {
             />
           </div>
 
-          {/* Email Field */}
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -87,7 +84,6 @@ const SignupForm = () => {
             />
           </div>
 
-          {/* Password Field */}
           <div className="mb-4">
             <label
               htmlFor="password"
@@ -106,7 +102,6 @@ const SignupForm = () => {
             />
           </div>
 
-          {/* Confirm Password Field */}
           <div className="mb-6">
             <label
               htmlFor="confirmPassword"
@@ -125,7 +120,6 @@ const SignupForm = () => {
             />
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className={` ${
@@ -138,7 +132,6 @@ const SignupForm = () => {
           </button>
         </form>
 
-        {/* Link to Login */}
         <p className="mt-4 text-center text-sm text-gray-400">
           Already have an account?{" "}
           <a href="/login" className="text-blue-500 hover:underline">

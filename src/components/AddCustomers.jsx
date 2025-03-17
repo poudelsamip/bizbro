@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { IoArrowBack, IoClose } from "react-icons/io5"; // Import back arrow icon
+import { IoArrowBack, IoClose } from "react-icons/io5";
 import { MainContext } from "../Context/MainProvider";
 
 const AddCustomers = ({ onClose }) => {
@@ -25,7 +25,6 @@ const AddCustomers = ({ onClose }) => {
   };
 
   const handleSubmit = () => {
-    // Validate the customer form fields
     const isValid =
       customer.businessName &&
       customer.ownerName &&

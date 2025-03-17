@@ -6,35 +6,30 @@ import AddToInventory from "./AddToInventory";
 import { MainContext } from "../Context/MainProvider";
 
 const InventoryTable = () => {
-  // Access inventory data from context
   const { inventoryData, addStock, fetchData, user } = useContext(MainContext);
 
-  // Local state to handle filtered products based on search
   const [filteredProducts, setFilteredProducts] = useState(inventoryData);
-  const [showAddProduct, setShowAddProduct] = useState(false); // State to toggle Add Product form
-  const [showAddStockPopup, setShowAddStockPopup] = useState(false); // State to toggle Add Stock popup
-  const [selectedItem, setSelectedItem] = useState(null); // Store selected item for adding stock
+  const [showAddProduct, setShowAddProduct] = useState(false);
+  const [showAddStockPopup, setShowAddStockPopup] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [loading, setLoading] = useState(false);
   const [inputData, setInputData] = useState();
 
   const [sortedByQuantity, setSortedByQuantity] = useState("default");
   const [sortedByPrice, setSortedByPrice] = useState("default");
 
-  // Update filtered products whenever inventory data changes
   useEffect(() => {
-    setFilteredProducts(inventoryData); // Set filtered products to the current inventory data
+    setFilteredProducts(inventoryData);
   }, [inventoryData]);
 
-  // Handle the search input to filter products
   const handleSearch = (e) => {
     const searchText = e.target.value.toLowerCase();
     const tempData = inventoryData.filter((item) =>
       item.itemName.toLowerCase().includes(searchText)
     );
-    setFilteredProducts(tempData); // Update filtered products based on search
+    setFilteredProducts(tempData);
   };
 
-  // Handle adding stock to the selected product
   const handleAddStock = async () => {
     setLoading(true);
     const quantityToAdd = document.getElementById("quantityToAdd");
@@ -43,7 +38,7 @@ const InventoryTable = () => {
       Number(selectedItem.quantity - quantityToAdd)
     );
     await fetchData(user.email);
-    setShowAddStockPopup(false); // Close the popup after adding stock
+    setShowAddStockPopup(false);
     setLoading(false);
   };
 
@@ -80,7 +75,6 @@ const InventoryTable = () => {
     }
   };
 
-  // If the Add Product form is being shown, return that form instead of the table
   if (showAddProduct) {
     return <AddToInventory onClose={() => setShowAddProduct(false)} />;
   }
@@ -98,13 +92,13 @@ const InventoryTable = () => {
               type="text"
               className="block w-full px-4 py-2 text-white text-sm border border-gray-400 bg-gray-800 rounded outline-0"
               placeholder="Search Products"
-              onChange={(e) => handleSearch(e)} // Handle search input
+              onChange={(e) => handleSearch(e)}
             />
           </div>
           <div>
             <button
               className="border bg-green-500 py-1 px-2 rounded inline-flex items-center gap-2 cursor-pointer active:bg-green-600"
-              onClick={() => setShowAddProduct(!showAddProduct)} // Toggle Add Product form visibility
+              onClick={() => setShowAddProduct(!showAddProduct)}
             >
               Add New Product <MdAddHomeWork size={20} />
             </button>
@@ -112,7 +106,7 @@ const InventoryTable = () => {
         </div>
       </div>
 
-      {/* Scrollable Table Container */}
+      {/*  Table*/}
       <div className="flex-grow overflow-auto max-h-[80vh]">
         <table className="w-full text-sm text-left text-gray-300">
           <thead className="text-xs uppercase bg-gray-900 text-gray-200 border-b border-white sticky top-0 z-10">
@@ -167,7 +161,7 @@ const InventoryTable = () => {
                 <TableRow
                   key={index}
                   item={item}
-                  setShowAddStockPopup={setShowAddStockPopup} // Pass function to open Add Stock popup
+                  setShowAddStockPopup={setShowAddStockPopup}
                   setSelectedItem={setSelectedItem}
                 />
               ))
@@ -182,7 +176,7 @@ const InventoryTable = () => {
         </table>
       </div>
 
-      {/* Simple Popup for Adding Stock */}
+      {/* Popup for Adding Stock */}
       {showAddStockPopup && (
         <div className="fixed inset-0 bg-gray-700 flex items-center justify-center z-10">
           <div className="bg-gray-800 p-6 max-w-sm w-full">
@@ -210,7 +204,7 @@ const InventoryTable = () => {
                 onClick={() => {
                   setInputData(null);
                   setShowAddStockPopup(false);
-                }} // Close the popup
+                }}
               >
                 Cancel
               </button>

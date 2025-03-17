@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { IoArrowBack } from "react-icons/io5"; // Import back arrow icon
+import { IoArrowBack } from "react-icons/io5";
 import { MainContext } from "../Context/MainProvider";
 
 const AddToInventory = ({ onClose }) => {
@@ -7,7 +7,7 @@ const AddToInventory = ({ onClose }) => {
   const [loading, setLoading] = useState(false);
 
   const [item, setItem] = useState({
-    id: "", // Added id field
+    id: "",
     itemName: "",
     costPrice: 0,
     sellingPrice: 0,
@@ -136,7 +136,6 @@ const AddToInventory = ({ onClose }) => {
 
       <div className="w-full max-w-6xl">
         <form>
-          {/* ID Field */}
           <div>
             <label className="text-xs text-gray-300">Product ID</label>
             <input
@@ -149,7 +148,6 @@ const AddToInventory = ({ onClose }) => {
             />
           </div>
 
-          {/* Product Information */}
           <div>
             <label className="text-xs text-gray-300">Item Name</label>
             <input
@@ -173,7 +171,6 @@ const AddToInventory = ({ onClose }) => {
             />
           </div>
 
-          {/* Pricing Information */}
           <div>
             <label className="text-xs text-gray-300">Cost Price</label>
             <input
@@ -210,7 +207,6 @@ const AddToInventory = ({ onClose }) => {
             />
           </div>
 
-          {/* Supplier Information */}
           <div>
             <label className="text-xs text-gray-300">Supplier</label>
             <input

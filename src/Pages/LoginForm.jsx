@@ -9,7 +9,6 @@ const LoginForm = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     await logIn(email, password);
-    // Handle login logic here
   };
 
   return (

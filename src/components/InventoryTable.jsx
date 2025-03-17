@@ -1,8 +1,8 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
-
+import React, { useContext, useState, useEffect } from "react";
+import { RiExpandUpDownFill } from "react-icons/ri";
 import { MdAddHomeWork } from "react-icons/md";
-import TableRow from "./TableRow"; // Table row component to display individual product
-import AddToInventory from "./AddToInventory"; // Form to add new products
+import TableRow from "./TableRow";
+import AddToInventory from "./AddToInventory";
 import { MainContext } from "../Context/MainProvider";
 
 const InventoryTable = () => {
@@ -16,6 +16,9 @@ const InventoryTable = () => {
   const [selectedItem, setSelectedItem] = useState(null); // Store selected item for adding stock
   const [loading, setLoading] = useState(false);
   const [inputData, setInputData] = useState();
+
+  const [sortedByQuantity, setSortedByQuantity] = useState("default");
+  const [sortedByPrice, setSortedByPrice] = useState("default");
 
   // Update filtered products whenever inventory data changes
   useEffect(() => {
@@ -42,6 +45,39 @@ const InventoryTable = () => {
     await fetchData(user.email);
     setShowAddStockPopup(false); // Close the popup after adding stock
     setLoading(false);
+  };
+
+  const sortByQuantity = () => {
+    if (sortedByQuantity === "default") {
+      setFilteredProducts(
+        [...inventoryData].sort((a, b) => a.quantity - b.quantity)
+      );
+      setSortedByQuantity("low-high");
+    } else if (sortedByQuantity === "low-high") {
+      setFilteredProducts(
+        [...inventoryData].sort((a, b) => b.quantity - a.quantity)
+      );
+      setSortedByQuantity("high-low");
+    } else {
+      setFilteredProducts(inventoryData);
+    }
+  };
+
+  const sortByPrice = () => {
+    if (sortedByPrice === "default") {
+      setFilteredProducts(
+        [...inventoryData].sort((a, b) => a.costPrice - b.costPrice)
+      );
+      setSortedByPrice("low-high");
+    } else if (sortedByQuantity === "low-high") {
+      setFilteredProducts(
+        [...inventoryData].sort((a, b) => b.costPrice - a.costPrice)
+      );
+      setSortedByQuantity("high-low");
+    } else {
+      setFilteredProducts(inventoryData);
+      setSortedByPrice("default");
+    }
   };
 
   // If the Add Product form is being shown, return that form instead of the table
@@ -91,13 +127,31 @@ const InventoryTable = () => {
                 Category
               </th>
               <th scope="col" className="px-3 py-3">
-                Stock
+                <span
+                  className="flex items-center gap-1 cursor-pointer"
+                  title="Sort By Quantity"
+                  onClick={sortByQuantity}
+                >
+                  Stock <RiExpandUpDownFill />
+                </span>
               </th>
               <th scope="col" className="px-3 py-3">
-                Cost Price
+                <span
+                  className="flex items-center gap-1 cursor-pointer"
+                  title="Sort By Cost Price"
+                  onClick={sortByPrice}
+                >
+                  Cost Price <RiExpandUpDownFill />
+                </span>
               </th>
               <th scope="col" className="px-3 py-3">
-                Selling Price
+                <span
+                  className="flex items-center gap-1 cursor-pointer"
+                  title="Sort By Selling Price"
+                  onClick={sortByPrice}
+                >
+                  Selling Price <RiExpandUpDownFill />
+                </span>
               </th>
               <th scope="col" className="px-3 py-3">
                 Supplier

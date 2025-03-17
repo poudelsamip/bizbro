@@ -1,10 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { MainContext } from "../Context/MainProvider";
+import { RiExpandUpDownFill } from "react-icons/ri";
 
 const Transactions = () => {
   const { transactionsData } = useContext(MainContext);
   const [filteredData, setFilteredData] = useState(transactionsData);
   const dateRef = useRef();
+  const [sortedByGrandTotal, setSortedByGrandTotal] = useState("default");
+  const [sortedByDate, setSortedByDate] = useState("default");
 
   const handleSearch = (e) => {
     const searchText = e.target.value.toLowerCase();
@@ -18,7 +21,6 @@ const Transactions = () => {
   const filterByDate = () => {
     const inputDate = dateRef.current.value;
 
-    console.log(inputDate);
     if (inputDate) {
       console.log("inside filter by date - IF");
       const date = new Date(inputDate);
@@ -34,8 +36,44 @@ const Transactions = () => {
         transactionsData.filter((item) => item.date === formattedDate)
       );
     } else {
-      console.log("inside filter by date - ELSE");
       setFilteredData(transactionsData);
+    }
+  };
+
+  const sortByDate = () => {
+    if (sortedByDate === "default") {
+      setFilteredData(() => {
+        return [...transactionsData].sort(
+          (a, b) => new Date(a.date) - new Date(b.date)
+        );
+      });
+      setSortedByDate("before-today");
+    } else {
+      setFilteredData(transactionsData);
+      setSortedByDate("default");
+    }
+  };
+
+  const sortByGrandTotal = () => {
+    if (sortedByGrandTotal === "default") {
+      setFilteredData(() => {
+        const newData = [...transactionsData].sort(
+          (a, b) => a.grandTotal - b.grandTotal
+        );
+        return newData;
+      });
+      setSortedByGrandTotal("grand-total-low-high");
+    } else if (sortedByGrandTotal === "grand-total-low-high") {
+      setFilteredData(() => {
+        const newData = [...transactionsData].sort(
+          (a, b) => b.grandTotal - a.grandTotal
+        );
+        return newData;
+      });
+      setSortedByGrandTotal("grand-total-high-low");
+    } else {
+      setFilteredData(transactionsData);
+      setSortedByGrandTotal("default");
     }
   };
 
@@ -74,7 +112,7 @@ const Transactions = () => {
         <table className="w-full text-sm text-left text-gray-300">
           <thead className="text-xs uppercase bg-gray-900 text-gray-200 border-b border-white sticky top-0 z-10">
             <tr>
-              <th scope="col" className="px-3 py-3">
+              <th scope="col" className="px-3 py-3 ">
                 S.N
               </th>
               <th scope="col" className="px-3 py-3">
@@ -93,10 +131,22 @@ const Transactions = () => {
                 Total
               </th>
               <th scope="col" className="px-3 py-3">
-                Grand Total
+                <span
+                  className="flex items-center gap-1 cursor-pointer"
+                  title="Sort By Total"
+                  onClick={sortByGrandTotal}
+                >
+                  Grand Total <RiExpandUpDownFill />
+                </span>
               </th>
               <th scope="col" className="px-3 py-3">
-                Date
+                <span
+                  className="flex items-center gap-1 cursor-pointer"
+                  title="Sort By Date"
+                  onClick={sortByDate}
+                >
+                  Date <RiExpandUpDownFill />
+                </span>
               </th>
             </tr>
           </thead>

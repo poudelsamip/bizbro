@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { IoMdAdd } from "react-icons/io";
+import { RiExpandUpDownFill } from "react-icons/ri";
 import CustomerRow from "./CustomerRow";
 import AddCustomers from "./AddCustomers";
 import { MainContext } from "../Context/MainProvider";
@@ -15,6 +15,8 @@ const CustomersTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [loading, setLoading] = useState(false);
   const [inputData, setInputData] = useState();
+
+  const [sortedBy, setSortedBy] = useState("default");
 
   useEffect(() => {
     setFilteredCustomers(customersData);
@@ -37,6 +39,27 @@ const CustomersTable = () => {
     await fetchData(user.email);
     setShowReceivePayment(false);
     setLoading(false);
+  };
+
+  const sortByBalance = () => {
+    if (sortedBy === "default") {
+      setFilteredCustomers(
+        [...customersData].sort(
+          (a, b) => a.outstandingBalance - b.outstandingBalance
+        )
+      );
+      setSortedBy("low-high");
+    } else if (sortedBy === "low-high") {
+      setFilteredCustomers(
+        [...customersData].sort(
+          (a, b) => b.outstandingBalance - a.outstandingBalance
+        )
+      );
+      setSortedBy("high-low");
+    } else {
+      setFilteredCustomers(customersData);
+      setSortedBy("default");
+    }
   };
 
   if (showAddCustomer) {
@@ -91,7 +114,13 @@ const CustomersTable = () => {
                 Email
               </th>
               <th scope="col" className="px-3 py-3">
-                Outstanding
+                <span
+                  className="flex items-center gap-1 cursor-pointer"
+                  title="Sort By Outstanding Balance"
+                  onClick={sortByBalance}
+                >
+                  Outstanding <RiExpandUpDownFill />
+                </span>
               </th>
               <th scope="col" className="px-3 py-3">
                 Action

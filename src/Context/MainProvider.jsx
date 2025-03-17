@@ -244,7 +244,10 @@ const MainProvider = ({ children }) => {
     logOut,
     inventoryData: allData.inventory,
     customersData: allData.customers,
-    transactionsData: allData.transactions,
+    transactionsData: [...allData.transactions].sort(
+      // sorting by date before sending data
+      (a, b) => new Date(b.date) - new Date(a.date)
+    ),
     setAllData,
     user,
     addProductsToInventory,

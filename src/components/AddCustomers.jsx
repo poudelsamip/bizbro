@@ -12,7 +12,6 @@ const AddCustomers = ({ onClose }) => {
     contactNumber: "",
     email: "",
     address: "",
-    registrationDate: "",
     outstandingBalance: 0,
   });
   const [showSummary, setShowSummary] = useState(false);
@@ -33,9 +32,7 @@ const AddCustomers = ({ onClose }) => {
       customer.contactNumber &&
       customer.email &&
       customer.address &&
-      customer.id &&
-      customer.registrationDate &&
-      customer.outstandingBalance >= 0;
+      customer.id;
 
     if (isValid) {
       setShowSummary(true);
@@ -79,17 +76,6 @@ const AddCustomers = ({ onClose }) => {
                 <p className="text-gray-300">
                   <span className="text-gray-400">Address:</span>{" "}
                   {customer.address}
-                </p>
-                <p className="text-gray-300">
-                  <span className="text-gray-400">City:</span> {customer.city}
-                </p>
-                <p className="text-gray-300">
-                  <span className="text-gray-400">Registration Date:</span>{" "}
-                  {customer.registrationDate}
-                </p>
-                <p className="text-gray-300">
-                  <span className="text-gray-400">Outstanding Balance:</span>{" "}
-                  Rs. {customer.outstandingBalance}
                 </p>
               </div>
             </div>
@@ -138,72 +124,73 @@ const AddCustomers = ({ onClose }) => {
       <div className="w-full max-w-6xl">
         <form>
           {/* Single Customer Form */}
-          <div className="mb-4 bg-gray-700 p-4 rounded-lg">
-            <input
-              type="text"
-              placeholder="id"
-              className="w-full p-2 mb-2 text-gray-300 bg-gray-800 rounded-md"
-              name="id"
-              value={customer.id}
-              onChange={handleChange}
-            />
-            <input
-              type="text"
-              placeholder="Business Name"
-              className="w-full p-2 mb-2 text-gray-300 bg-gray-800 rounded-md"
-              name="businessName"
-              value={customer.businessName}
-              onChange={handleChange}
-            />
-            <input
-              type="text"
-              placeholder="Owner Name"
-              className="w-full p-2 mb-2 text-gray-300 bg-gray-800 rounded-md"
-              name="ownerName"
-              value={customer.ownerName}
-              onChange={handleChange}
-            />
-            <input
-              type="text"
-              placeholder="Contact Number"
-              className="w-full p-2 mb-2 text-gray-300 bg-gray-800 rounded-md"
-              name="contactNumber"
-              value={customer.contactNumber}
-              onChange={handleChange}
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              className="w-full p-2 mb-2 text-gray-300 bg-gray-800 rounded-md"
-              name="email"
-              value={customer.email}
-              onChange={handleChange}
-            />
-            <input
-              type="text"
-              placeholder="Address"
-              className="w-full p-2 mb-2 text-gray-300 bg-gray-800 rounded-md"
-              name="address"
-              value={customer.address}
-              onChange={handleChange}
-            />
-
-            <input
-              type="date"
-              placeholder="Registration Date"
-              className="w-full p-2 mb-2 text-gray-300 bg-gray-800 rounded-md"
-              name="registrationDate"
-              value={customer.registrationDate}
-              onChange={handleChange}
-            />
-            <input
-              type="number"
-              placeholder="Outstanding Balance"
-              className="w-full p-2 mb-2 text-gray-300 bg-gray-800 rounded-md"
-              name="outstandingBalance"
-              value={customer.outstandingBalance}
-              onChange={handleChange}
-            />
+          <div>
+            <div>
+              <label className="text-xs text-gray-300">Customer ID</label>
+              <input
+                type="text"
+                placeholder="id"
+                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+                name="id"
+                value={customer.id}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label className="text-xs text-gray-300">Business Name</label>
+              <input
+                type="text"
+                placeholder="Business Name"
+                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+                name="businessName"
+                value={customer.businessName}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label className="text-xs text-gray-300">Owner Name</label>
+              <input
+                type="text"
+                placeholder="Owner Name"
+                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+                name="ownerName"
+                value={customer.ownerName}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label className="text-xs text-gray-300">Contact</label>
+              <input
+                type="text"
+                placeholder="Contact Number"
+                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+                name="contactNumber"
+                value={customer.contactNumber}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label className="text-xs text-gray-300">Email</label>
+              <input
+                type="email"
+                placeholder="Email"
+                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+                name="email"
+                value={customer.email}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label className="text-xs text-gray-300">Address</label>
+              <input
+                type="text"
+                placeholder="Address"
+                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+                name="address"
+                value={customer.address}
+                onChange={handleChange}
+              />
+            </div>
           </div>
 
           <div className="mt-4">

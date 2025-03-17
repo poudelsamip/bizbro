@@ -46,7 +46,8 @@ const Transactions = () => {
   return (
     <div className="h-full">
       <h1 className="text-4xl mb-5 font-semibold text-white drop-shadow-xl">
-        Transactions 💸
+        {/* ---------- Changed to sales. But Transaction is used everywhere else */}
+        Sales 💸{" "}
       </h1>
       <div className="mb-1 flex justify-between">
         <input
@@ -114,7 +115,7 @@ const Transactions = () => {
                 </td>
                 <td className="px-3 py-3">
                   {Object.entries(item.products).map(([key, itm]) => (
-                    <p key={`itemName${key}${itm.price}`}>{itm.price}</p>
+                    <p key={`itemName${key}${itm.price}`}>Rs. {itm.price}</p>
                   ))}
                 </td>
                 <td className="px-3 py-3">
@@ -125,11 +126,11 @@ const Transactions = () => {
                 <td className="px-3 py-3">
                   {Object.entries(item.products).map(([key, itm]) => (
                     <p key={`itemName${key}${itm.totalPrice}`}>
-                      {itm.totalPrice}
+                      Rs. {itm.totalPrice}
                     </p>
                   ))}
                 </td>
-                <td className="px-3 py-3">{item.grandTotal}</td>
+                <td className="px-3 py-3">Rs. {item.grandTotal}</td>
                 <td className="px-3 py-3">{item.date}</td>
               </tr>
             ))}

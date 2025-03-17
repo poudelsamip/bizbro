@@ -1,5 +1,4 @@
 import React from "react";
-import { MdDeleteForever } from "react-icons/md";
 import { GiReceiveMoney } from "react-icons/gi";
 
 const CustomerRow = ({ item, setShowReceivePayment, setSelectedCustomer }) => {

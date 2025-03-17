@@ -23,6 +23,7 @@ const DispatchProduct = () => {
     customersData,
     addTransactionToTransactions,
     updateOutStandingBalance,
+    updateStock,
     fetchData,
     user,
   } = useContext(MainContext);
@@ -47,11 +48,13 @@ const DispatchProduct = () => {
       (acc, product) => acc + product.totalPrice,
       0
     );
-
+    let dispatchedItems = [];
+    products.map((item) => dispatchedItems.push(item));
     if (payment === "credit") {
       await updateOutStandingBalance(customer, totalAmount);
     }
     await addTransactionToTransactions(products, customer);
+    await updateStock(dispatchedItems);
     await fetchData(user.email);
     setShowSummary(false);
     setLoading(false);
@@ -155,8 +158,13 @@ const DispatchProduct = () => {
               </button>
 
               <button
-                className={`px-4 py-2 bg-green-700 cursor-pointer hover:bg-green-600 text-white rounded-lg`}
+                className={`px-4 py-2 bg-green-700 ${
+                  loading || !payment
+                    ? "cursor-not-allowed"
+                    : "cursor-pointer hover:bg-green-600"
+                }  text-white rounded-lg`}
                 onClick={handleConfirmDispatch}
+                disabled={loading || !payment}
               >
                 {loading ? (
                   "loading..."

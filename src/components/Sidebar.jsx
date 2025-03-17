@@ -20,7 +20,7 @@ const Sidebar = () => {
           <h1 className="cursor-pointer text-4xl p-3 font-semibold text-white">
             👊BizBro
           </h1>
-          <ul className="space-y-2 font-medium text-md">
+          <ul className=" font-medium text-md">
             <li>
               <NavLink
                 to="/dashboard"
@@ -64,9 +64,7 @@ const Sidebar = () => {
                 className="flex items-center p-3 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <IoIosListBox />
-                <span className="flex-1 ms-3 whitespace-nowrap">
-                  Transactions
-                </span>
+                <span className="flex-1 ms-3 whitespace-nowrap">Sales</span>
               </NavLink>
             </li>
           </ul>

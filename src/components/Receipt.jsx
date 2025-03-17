@@ -150,7 +150,6 @@ const Receipt = ({
   products,
   setShowReceipt,
   customer,
-  setProducts,
   customerAddress,
   resetForm,
 }) => {
@@ -205,7 +204,6 @@ const Receipt = ({
           className="text-black absolute top-0 right-[-30px] text-3xl cursor-pointer"
           onClick={() => {
             setShowReceipt(false);
-            // Reset the form only AFTER the receipt has been closed
             resetForm();
           }}
         />

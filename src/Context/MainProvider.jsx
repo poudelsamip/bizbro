@@ -9,14 +9,12 @@ import { auth, db } from "../Config/firebase";
 import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
-// Create context to share state globally across components
 export const MainContext = createContext();
 
 const MainProvider = ({ children }) => {
-  // State to manage the user data
   const [user, setUser] = useState();
   const [currentUserName, setCurrentUserName] = useState("");
-  // State to manage all fetched data (inventory, customers, transactions)
+
   const [allData, setAllData] = useState({
     inventory: [],
     customers: [],
@@ -24,17 +22,14 @@ const MainProvider = ({ children }) => {
   });
   const navigate = useNavigate();
 
-  // Sign up function to create a new user and set up initial data in Firestore
   const signUp = async (email, password, companyName, name) => {
     try {
-      // Create a new user with email and password
       const userData = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
 
-      // Save user information and initialize empty collections in Firestore
       await setDoc(doc(db, "users", userData.user.email), {
         companyName,
         name,
@@ -44,35 +39,31 @@ const MainProvider = ({ children }) => {
       await setDoc(doc(db, "customers", userData.user.email), {});
       await setDoc(doc(db, "transactions", userData.user.email), {});
 
-      setUser(userData.user); // Set the user data in state
-      await logIn(email, password); // Log the user in immediately after signing up
+      setUser(userData.user);
+      await logIn(email, password);
     } catch (err) {
-      console.log(err); // Log any error
+      console.log(err);
     }
   };
 
-  // Log in function for existing users
   const logIn = async (email, password) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password); // Sign the user in
+      await signInWithEmailAndPassword(auth, email, password);
       navigate("/dashboard");
     } catch (error) {
-      console.log(error); // Log any error
+      console.log(error);
     }
-    // Navigate to homepage after successful login
   };
 
-  // Log out function for users to sign out of the app
   const logOut = async () => {
     try {
-      await signOut(auth); // Sign out the user
+      await signOut(auth);
       navigate("/login");
     } catch (error) {
-      console.log(error); // Log any error
+      console.log(error);
     }
   };
 
-  // Function to fetch data from Firestore based on user's email
   const fetchData = async (email) => {
     try {
       const data = {
@@ -82,18 +73,16 @@ const MainProvider = ({ children }) => {
       };
 
       try {
-        // Fetch inventory data
         const inventoryRef = doc(db, "inventory", email);
         const inventorySnapshot = await getDoc(inventoryRef);
         if (inventorySnapshot.exists()) {
-          data.inventory = inventorySnapshot.data().allProducts || []; // Default to empty array if no data
+          data.inventory = inventorySnapshot.data().allProducts || [];
         }
       } catch (err) {
         console.log("error inside try catch : \n" + err);
       }
 
       try {
-        // Fetch customers data
         const customersRef = doc(db, "customers", email);
         const customersSnapshot = await getDoc(customersRef);
         if (customersSnapshot.exists()) {
@@ -104,7 +93,6 @@ const MainProvider = ({ children }) => {
       }
 
       try {
-        // Fetch transactions data
         const transactionsRef = doc(db, "transactions", email);
         const transactionsSnapshot = await getDoc(transactionsRef);
         if (transactionsSnapshot.exists()) {
@@ -114,7 +102,6 @@ const MainProvider = ({ children }) => {
         console.log("error inside try catch : \n" + err);
       }
 
-      // Set fetched data to state
       setAllData(data);
     } catch (error) {
       console.log("Error fetching data: ", error);
@@ -170,74 +157,87 @@ const MainProvider = ({ children }) => {
   };
 
   const receivePayment = async (selectedCustomer, amount) => {
-    try {
-      const docSnap = await getDoc(doc(db, "customers", user.email), {});
-      if (!docSnap.exists()) {
-        console.log("error : document not found");
-        return;
-      }
-      const data = docSnap.data();
-      const customerDataForUpdate = data.allCustomers || [];
+    const updatedCustomers = allData.customers.map((customer) =>
+      customer.businessName === selectedCustomer.businessName
+        ? {
+            ...customer,
+            outstandingBalance: amount,
+          }
+        : customer
+    );
 
-      const updatedCustomers = customerDataForUpdate.map((customer) =>
-        customer.businessName === selectedCustomer.businessName
-          ? { ...customer, outstandingBalance: amount }
-          : customer
-      );
-
-      await updateDoc(doc(db, "customers", user.email), {
-        allCustomers: updatedCustomers,
-      });
-    } catch (error) {
-      console.log("error : " + error);
-    }
+    await updateDoc(doc(db, "customers", user.email), {
+      allCustomers: updatedCustomers,
+    });
   };
 
+  // for product on credit
   const updateOutStandingBalance = async (customerName, amount) => {
-    try {
-      const docSnap = await getDoc(doc(db, "customers", user.email), {});
-      if (!docSnap.exists()) {
-        console.log("error : document not found");
-        return;
-      }
-      const data = docSnap.data();
-      const customerDataForUpdate = data.allCustomers || [];
-      let beforeAmount = 0;
-      const updatedCustomers = customerDataForUpdate.map((customer) => {
-        beforeAmount = customer.outstandingBalance;
-        return customer.businessName === customerName
-          ? { ...customer, outstandingBalance: beforeAmount + amount }
-          : customer;
-      });
+    const updatedCustomers = allData.customers.map((customer) => {
+      return customer.businessName === customerName
+        ? {
+            ...customer,
+            outstandingBalance: customer.outstandingBalance + amount,
+          }
+        : customer;
+    });
 
-      await updateDoc(doc(db, "customers", user.email), {
-        allCustomers: updatedCustomers,
-      });
-    } catch (error) {
-      console.log("error : " + error);
-    }
+    await updateDoc(doc(db, "customers", user.email), {
+      allCustomers: updatedCustomers,
+    });
   };
 
-  // Listen to authentication state changes and fetch data accordingly
+  const addStock = async (productName, stock) => {
+    const updatedAllProducts = allData.inventory.map((product) => {
+      return product.itemName === productName
+        ? { ...product, quantity: stock }
+        : product;
+    });
+
+    await updateDoc(doc(db, "inventory", user.email), {
+      allProducts: updatedAllProducts,
+    });
+  };
+
+  const updateStock = async (dispatchedItems) => {
+    // const updatedProducts = allData.inventory.filter((product) =>
+    //   dispatchedItems.some((item) => item.itemName === product.itemName)
+    // ).map(item => );
+    const updatedProducts = allData.inventory.map((item) => {
+      const currentItem = dispatchedItems.find(
+        (itm) => item.itemName === itm.itemName
+      );
+      if (currentItem) {
+        return { ...item, quantity: item.quantity - currentItem.quantity };
+      } else {
+        return item;
+      }
+    });
+
+    await updateDoc(doc(db, "inventory", user.email), {
+      allProducts: updatedProducts,
+    });
+  };
+
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setUser(user); // Set user when authenticated
-        await fetchData(user.email); // Fetch user data if authenticated
+        setUser(user);
+        await fetchData(user.email);
 
-        const nameSnap = await getDoc(doc(db, "users", user.email), {});
+        const nameSnap = await getDoc(doc(db, "users", user.email));
         setCurrentUserName(
           nameSnap.exists() ? nameSnap.data().companyName : ""
         );
       } else {
-        setUser(null); // Reset user state if no user is authenticated
+        setUser(null);
+        navigate("/login");
       }
     });
 
-    return () => unSub(); // Clean up the subscription when the component unmounts
-  }, []); // Empty dependency array ensures this runs only once on mount
+    return () => unSub();
+  }, []);
 
-  // Provide values to child components via context
   const value = {
     signUp,
     logIn,
@@ -251,6 +251,8 @@ const MainProvider = ({ children }) => {
     addCustomersToCustomers,
     addTransactionToTransactions,
     updateOutStandingBalance,
+    addStock,
+    updateStock,
     receivePayment,
     fetchData,
     currentUserName,

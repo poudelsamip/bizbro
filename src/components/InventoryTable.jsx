@@ -1,5 +1,5 @@
-import React, { useContext, useState, useEffect } from "react";
-import { IoMdAdd } from "react-icons/io";
+import React, { useContext, useState, useEffect, useRef } from "react";
+
 import { MdAddHomeWork } from "react-icons/md";
 import TableRow from "./TableRow"; // Table row component to display individual product
 import AddToInventory from "./AddToInventory"; // Form to add new products
@@ -7,13 +7,15 @@ import { MainContext } from "../Context/MainProvider";
 
 const InventoryTable = () => {
   // Access inventory data from context
-  const { inventoryData } = useContext(MainContext);
+  const { inventoryData, addStock, fetchData, user } = useContext(MainContext);
 
   // Local state to handle filtered products based on search
   const [filteredProducts, setFilteredProducts] = useState(inventoryData);
   const [showAddProduct, setShowAddProduct] = useState(false); // State to toggle Add Product form
   const [showAddStockPopup, setShowAddStockPopup] = useState(false); // State to toggle Add Stock popup
   const [selectedItem, setSelectedItem] = useState(null); // Store selected item for adding stock
+  const [loading, setLoading] = useState(false);
+  const [inputData, setInputData] = useState();
 
   // Update filtered products whenever inventory data changes
   useEffect(() => {
@@ -29,28 +31,17 @@ const InventoryTable = () => {
     setFilteredProducts(tempData); // Update filtered products based on search
   };
 
-  // Toggle Add Product form visibility
-  const toggleAddProduct = () => {
-    setShowAddProduct(!showAddProduct);
-  };
-
-  // Toggle Add Stock popup visibility
-  const toggleAddStockPopup = (item) => {
-    setSelectedItem(item); // Store the selected item
-    setShowAddStockPopup(!showAddStockPopup); // Toggle popup visibility
-  };
-
   // Handle adding stock to the selected product
-  const handleAddStock = (quantity) => {
-    if (quantity > 0 && selectedItem) {
-      selectedItem.quantity += parseInt(quantity); // Increase the quantity of the selected product
-      alert(
-        `Stock added! New stock for ${selectedItem.itemName}: ${selectedItem.quantity}`
-      );
-      setShowAddStockPopup(false); // Close the popup after adding stock
-    } else {
-      alert("Please enter a valid quantity."); // Alert for invalid quantity
-    }
+  const handleAddStock = async () => {
+    setLoading(true);
+    const quantityToAdd = document.getElementById("quantityToAdd");
+    await addStock(
+      selectedItem.itemName,
+      Number(selectedItem.quantity - quantityToAdd)
+    );
+    await fetchData(user.email);
+    setShowAddStockPopup(false); // Close the popup after adding stock
+    setLoading(false);
   };
 
   // If the Add Product form is being shown, return that form instead of the table
@@ -77,7 +68,7 @@ const InventoryTable = () => {
           <div>
             <button
               className="border bg-green-500 py-1 px-2 rounded inline-flex items-center gap-2 cursor-pointer active:bg-green-600"
-              onClick={toggleAddProduct} // Toggle Add Product form visibility
+              onClick={() => setShowAddProduct(!showAddProduct)} // Toggle Add Product form visibility
             >
               Add New Product <MdAddHomeWork size={20} />
             </button>
@@ -122,7 +113,8 @@ const InventoryTable = () => {
                 <TableRow
                   key={index}
                   item={item}
-                  onAddStock={toggleAddStockPopup} // Pass function to open Add Stock popup
+                  setShowAddStockPopup={setShowAddStockPopup} // Pass function to open Add Stock popup
+                  setSelectedItem={setSelectedItem}
                 />
               ))
             ) : (
@@ -147,27 +139,37 @@ const InventoryTable = () => {
               <label className="text-white">Enter Quantity to Add:</label>
               <input
                 type="number"
-                min="1"
+                min={1}
                 className="w-full p-2 text-gray-300 bg-gray-600 rounded-md"
-                id="quantityToAdd"
+                value={inputData}
+                onChange={(e) => setInputData(e.target.value)}
               />
+              {!inputData && (
+                <label className="text-red-500 text-sm">
+                  Enter a valid quantity
+                </label>
+              )}
             </div>
             <div className="flex justify-end gap-3">
               <button
                 className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600"
-                onClick={() => setShowAddStockPopup(false)} // Close the popup
+                onClick={() => {
+                  setInputData(null);
+                  setShowAddStockPopup(false);
+                }} // Close the popup
               >
                 Cancel
               </button>
               <button
-                className="px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-600"
-                onClick={() => {
-                  const quantityToAdd =
-                    document.getElementById("quantityToAdd").value;
-                  handleAddStock(quantityToAdd); // Add stock when clicked
-                }}
+                className={`px-4 py-2 bg-green-700 text-white rounded-lg ${
+                  loading || !inputData
+                    ? "cursor-not-allowed"
+                    : "cursor-pointer hover:bg-green-600"
+                } `}
+                onClick={handleAddStock}
+                disabled={loading || !inputData}
               >
-                Add Stock
+                {loading ? "Loading ..." : "Add Stock"}
               </button>
             </div>
           </div>

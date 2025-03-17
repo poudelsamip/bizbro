@@ -2,7 +2,7 @@ import React from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { MdOutlineAddToPhotos } from "react-icons/md";
 
-const TableRow = ({ item, onAddStock }) => {
+const TableRow = ({ item, setShowAddStockPopup, setSelectedItem }) => {
   return (
     <tr className="cursor-pointer border-b bg-gray-800 border-gray-500 hover:bg-gray-700">
       <td className="px-3 py-3">{item.id}</td>
@@ -19,7 +19,10 @@ const TableRow = ({ item, onAddStock }) => {
           <MdOutlineAddToPhotos
             size={20}
             className="text-green-500 cursor-pointer"
-            onClick={() => onAddStock(item)} // Open add stock popup when clicked
+            onClick={() => {
+              setSelectedItem(item);
+              setShowAddStockPopup(true);
+            }}
           />
           <MdDeleteForever size={20} className="text-red-500" />
         </div>

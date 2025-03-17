@@ -14,6 +14,7 @@ const CustomersTable = () => {
   const [showReceivePayment, setShowReceivePayment] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [inputData, setInputData] = useState();
 
   useEffect(() => {
     setFilteredCustomers(customersData);
@@ -25,6 +26,17 @@ const CustomersTable = () => {
       item.businessName.toLowerCase().includes(searchText)
     );
     setFilteredCustomers(tempData);
+  };
+
+  const handleReceivePayment = async () => {
+    setLoading(true);
+    await receivePayment(
+      selectedCustomer,
+      Number(selectedCustomer.outstandingBalance - inputData)
+    );
+    await fetchData(user.email);
+    setShowReceivePayment(false);
+    setLoading(false);
   };
 
   if (showAddCustomer) {
@@ -109,35 +121,35 @@ const CustomersTable = () => {
               <label className="text-white">Enter Received Amount:</label>
               <input
                 type="number"
-                min="1"
+                min={1}
                 className="w-full p-2 text-gray-300 bg-gray-600 rounded-md"
-                id="quantityToAdd"
+                value={inputData}
+                onChange={(e) => setInputData(e.target.value)}
               />
+              {!inputData && (
+                <label className="text-red-500 text-sm">
+                  Enter a valid amount
+                </label>
+              )}
             </div>
             <div className="flex justify-end gap-3">
               <button
                 className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600"
-                onClick={() => setShowReceivePayment(false)}
+                onClick={() => {
+                  setInputData(null);
+                  setShowReceivePayment(false);
+                }}
               >
                 Cancel
               </button>
               <button
                 className={`px-4 py-2 ${
-                  loading ? "cursor-not-allowed" : "cursor-pointer"
-                } bg-green-700 text-white rounded-lg hover:bg-green-600`}
-                onClick={async () => {
-                  setLoading(true);
-                  const inputData =
-                    document.getElementById("quantityToAdd").value;
-                  await receivePayment(
-                    selectedCustomer,
-                    Number(selectedCustomer.outstandingBalance - inputData)
-                  );
-                  setLoading(false);
-
-                  await fetchData(user.email);
-                  setShowReceivePayment(false);
-                }}
+                  loading || !inputData
+                    ? "cursor-not-allowed"
+                    : "cursor-pointer  hover:bg-green-600"
+                } bg-green-700 text-white rounded-lg`}
+                onClick={handleReceivePayment}
+                disabled={!inputData || loading}
               >
                 {loading ? "loading ..." : "Recive Payment"}
               </button>

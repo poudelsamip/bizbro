@@ -1,6 +1,11 @@
 const Hero = () => {
   return (
     <div className="flex items-center justify-center h-full bg-gray-900 text-white text-center">
+      <div className="absolute top-8 border-3 border-green-900 bg-green-500 rounded px-5 py-3 text-black">
+        Login credentials for demo account
+        <br />
+        is given in sign in page
+      </div>
       <div className="flex flex-col">
         <h1 className="text-4xl font-bold mb-4">
           Manage. Succeed. Grow – With BizBro 👊

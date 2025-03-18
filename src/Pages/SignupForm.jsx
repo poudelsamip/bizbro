@@ -27,6 +27,11 @@ const SignupForm = () => {
 
   return (
     <div className="flex justify-center items-center h-full">
+      <div className="absolute top-5 right-5 border-3 border-green-900 bg-green-500 rounded px-5 py-3">
+        login credential for demo account
+        <br />
+        is given in login page
+      </div>
       <div className="w-full max-w-md bg-gray-800 p-6 rounded-lg shadow-lg text-white">
         <h2 className="text-md text-center">Welcome to 👊BizBro</h2>
         <h2 className="text-4xl font-bold text-center mb-6">Sign Up</h2>

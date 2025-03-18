@@ -21,213 +21,10 @@ import { FaCartShopping } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 import { FaWallet } from "react-icons/fa";
 import { MainContext } from "../Context/MainProvider";
-// import {
-//   ArrowUpRight,
-//   ArrowDownRight,
-//   DollarSign,
-//   Package,
-//   ShoppingCart,
-//   Users,
-//   Wallet,
-// } from "lucide-react";
 
 const Dashboard = () => {
   const { transactionsData, inventoryData, customersData } =
     useContext(MainContext);
-  // Sample data (would normally be passed as props)
-  // const transactionsData = [
-  //   {
-  //     customer: "ABC Company",
-  //     date: "Friday, March 14, 2025",
-  //     grandTotal: 10000,
-  //     products: {
-  //       0: { itemName: "Keyboard", price: 50, quantity: 10, totalPrice: 500 },
-  //       1: { itemName: "Monitor", price: 200, quantity: 5, totalPrice: 1000 },
-  //       2: { itemName: "Mouse", price: 30, quantity: 15, totalPrice: 450 },
-  //     },
-  //   },
-  //   {
-  //     customer: "XYZ Corp",
-  //     date: "Thursday, March 13, 2025",
-  //     grandTotal: 8500,
-  //     products: {
-  //       0: { itemName: "Laptop", price: 800, quantity: 5, totalPrice: 4000 },
-  //       1: { itemName: "Mouse", price: 30, quantity: 10, totalPrice: 300 },
-  //     },
-  //   },
-  //   {
-  //     customer: "Gadget Hub",
-  //     date: "Wednesday, March 12, 2025",
-  //     grandTotal: 7200,
-  //     products: {
-  //       0: { itemName: "Keyboard", price: 50, quantity: 8, totalPrice: 400 },
-  //       1: { itemName: "Laptop", price: 800, quantity: 3, totalPrice: 2400 },
-  //     },
-  //   },
-  //   {
-  //     customer: "Tech Solutions",
-  //     date: "Tuesday, March 11, 2025",
-  //     grandTotal: 12000,
-  //     products: {
-  //       0: { itemName: "Server", price: 3000, quantity: 2, totalPrice: 6000 },
-  //       1: { itemName: "Keyboard", price: 50, quantity: 20, totalPrice: 1000 },
-  //     },
-  //   },
-  //   {
-  //     customer: "Digital Makers",
-  //     date: "Monday, March 10, 2025",
-  //     grandTotal: 9800,
-  //     products: {
-  //       0: { itemName: "Monitor", price: 200, quantity: 12, totalPrice: 2400 },
-  //       1: { itemName: "Mouse", price: 30, quantity: 30, totalPrice: 900 },
-  //     },
-  //   },
-  //   {
-  //     customer: "Gadget Hub",
-  //     date: "Friday, March 7, 2025",
-  //     grandTotal: 6500,
-  //     products: {
-  //       0: { itemName: "Keyboard", price: 50, quantity: 15, totalPrice: 750 },
-  //       1: { itemName: "Laptop", price: 800, quantity: 4, totalPrice: 3200 },
-  //     },
-  //   },
-  //   {
-  //     customer: "Tech Solutions",
-  //     date: "Thursday, March 6, 2025",
-  //     grandTotal: 11000,
-  //     products: {
-  //       0: { itemName: "Server", price: 3000, quantity: 1, totalPrice: 3000 },
-  //       1: { itemName: "Monitor", price: 200, quantity: 10, totalPrice: 2000 },
-  //     },
-  //   },
-  //   {
-  //     customer: "ABC Company",
-  //     date: "Wednesday, March 5, 2025",
-  //     grandTotal: 9200,
-  //     products: {
-  //       0: { itemName: "Mouse", price: 30, quantity: 40, totalPrice: 1200 },
-  //       1: { itemName: "Keyboard", price: 50, quantity: 25, totalPrice: 1250 },
-  //     },
-  //   },
-  // ];
-
-  // const inventoryData = [
-  //   {
-  //     category: "Electronics",
-  //     costPrice: 40,
-  //     sellingPrice: 50,
-  //     itemName: "Mouse",
-  //     quantity: 120,
-  //     supplier: "Asus",
-  //   },
-  //   {
-  //     category: "Electronics",
-  //     costPrice: 40,
-  //     sellingPrice: 50,
-  //     itemName: "Keyboard",
-  //     quantity: 85,
-  //     supplier: "Logitech",
-  //   },
-  //   {
-  //     category: "Electronics",
-  //     costPrice: 150,
-  //     sellingPrice: 200,
-  //     itemName: "Monitor",
-  //     quantity: 45,
-  //     supplier: "Dell",
-  //   },
-  //   {
-  //     category: "Electronics",
-  //     costPrice: 600,
-  //     sellingPrice: 800,
-  //     itemName: "Laptop",
-  //     quantity: 30,
-  //     supplier: "HP",
-  //   },
-  //   {
-  //     category: "Electronics",
-  //     costPrice: 2500,
-  //     sellingPrice: 3000,
-  //     itemName: "Server",
-  //     quantity: 15,
-  //     supplier: "IBM",
-  //   },
-  //   {
-  //     category: "Accessories",
-  //     costPrice: 15,
-  //     sellingPrice: 25,
-  //     itemName: "HDMI Cable",
-  //     quantity: 200,
-  //     supplier: "Generic",
-  //   },
-  //   {
-  //     category: "Accessories",
-  //     costPrice: 20,
-  //     sellingPrice: 35,
-  //     itemName: "USB Hub",
-  //     quantity: 75,
-  //     supplier: "Anker",
-  //   },
-  // ];
-
-  // const customersData = [
-  //   {
-  //     address: "New York, USA",
-  //     businessName: "Gadget Hub",
-  //     contactNumber: 9123456780,
-  //     email: "info@gadgethub.com",
-  //     outStandingBalance: 1500,
-  //     ownerName: "John David",
-  //   },
-  //   {
-  //     address: "San Francisco, USA",
-  //     businessName: "Tech Solutions",
-  //     contactNumber: 9876543210,
-  //     email: "contact@techsolutions.com",
-  //     outStandingBalance: 3200,
-  //     ownerName: "Sarah Peters",
-  //   },
-  //   {
-  //     address: "Chicago, USA",
-  //     businessName: "ABC Company",
-  //     contactNumber: 8765432109,
-  //     email: "service@abccompany.com",
-  //     outStandingBalance: 850,
-  //     ownerName: "Michael Johnson",
-  //   },
-  //   {
-  //     address: "Boston, USA",
-  //     businessName: "XYZ Corp",
-  //     contactNumber: 7654321098,
-  //     email: "info@xyzcorp.com",
-  //     outStandingBalance: 4500,
-  //     ownerName: "Emily Brown",
-  //   },
-  //   {
-  //     address: "Austin, USA",
-  //     businessName: "Digital Makers",
-  //     contactNumber: 6543210987,
-  //     email: "hello@digitalmakers.com",
-  //     outStandingBalance: 2100,
-  //     ownerName: "Robert Wilson",
-  //   },
-  //   {
-  //     address: "Seattle, USA",
-  //     businessName: "Innovate Tech",
-  //     contactNumber: 5432109876,
-  //     email: "support@innovatetech.com",
-  //     outStandingBalance: 3800,
-  //     ownerName: "Jessica Lee",
-  //   },
-  //   {
-  //     address: "Denver, USA",
-  //     businessName: "Future Gadgets",
-  //     contactNumber: 4321098765,
-  //     email: "info@futuregadgets.com",
-  //     outStandingBalance: 1200,
-  //     ownerName: "William Davis",
-  //   },
-  // ];
 
   // Extract current month data
   const currentMonth = "March";
@@ -351,12 +148,11 @@ const Dashboard = () => {
       <h1 className="text-4xl font-bold mb-6 text-gray-800">Dashboard</h1>
 
       {/* Summary Cards */}
+      <h1 className="text-2xl font-bold text-gray-800">This Month</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div className="bg-white rounded-lg shadow p-4">
           <div className="flex items-center justify-between mb-2">
-            <div className="text-sm font-medium text-gray-500">
-              Total Sales (March)
-            </div>
+            <div className="text-sm font-medium text-gray-500">Total Sales</div>
             <div className="p-2 bg-blue-100 rounded-full">
               <TbCurrencyRupeeNepalese className="h-5 w-5 text-blue-600" />
             </div>

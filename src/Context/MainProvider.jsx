@@ -7,13 +7,15 @@ import {
 } from "firebase/auth";
 import { auth, db } from "../Config/firebase";
 import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const MainContext = createContext();
 
 const MainProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [currentUserName, setCurrentUserName] = useState("");
+  const location = useLocation();
+  const unAuthRoute = ["/", "/login", "/signup"]; //available route for not authorized users
 
   const [allData, setAllData] = useState({
     inventory: [],
@@ -223,6 +225,7 @@ const MainProvider = ({ children }) => {
     const unSub = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUser(user);
+
         await fetchData(user.email);
 
         const nameSnap = await getDoc(doc(db, "users", user.email));
@@ -230,6 +233,9 @@ const MainProvider = ({ children }) => {
           nameSnap.exists() ? nameSnap.data().companyName : ""
         );
       } else {
+        if (!unAuthRoute.includes(location.pathname)) {
+          navigate("/login");
+        }
         setUser(null);
       }
     });

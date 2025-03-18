@@ -1,14 +1,551 @@
-import { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+} from "recharts";
+import { FaArrowDown, FaArrowUp } from "react-icons/fa";
+import { TbCurrencyRupeeNepalese } from "react-icons/tb";
+import { BiSolidPackage } from "react-icons/bi";
+import { FaCartShopping } from "react-icons/fa6";
+import { FaUser } from "react-icons/fa";
+import { FaWallet } from "react-icons/fa";
 import { MainContext } from "../Context/MainProvider";
+// import {
+//   ArrowUpRight,
+//   ArrowDownRight,
+//   DollarSign,
+//   Package,
+//   ShoppingCart,
+//   Users,
+//   Wallet,
+// } from "lucide-react";
 
 const Dashboard = () => {
-  const { currentUserName } = useContext(MainContext);
+  const { transactionsData, inventoryData, customersData } =
+    useContext(MainContext);
+  // Sample data (would normally be passed as props)
+  // const transactionsData = [
+  //   {
+  //     customer: "ABC Company",
+  //     date: "Friday, March 14, 2025",
+  //     grandTotal: 10000,
+  //     products: {
+  //       0: { itemName: "Keyboard", price: 50, quantity: 10, totalPrice: 500 },
+  //       1: { itemName: "Monitor", price: 200, quantity: 5, totalPrice: 1000 },
+  //       2: { itemName: "Mouse", price: 30, quantity: 15, totalPrice: 450 },
+  //     },
+  //   },
+  //   {
+  //     customer: "XYZ Corp",
+  //     date: "Thursday, March 13, 2025",
+  //     grandTotal: 8500,
+  //     products: {
+  //       0: { itemName: "Laptop", price: 800, quantity: 5, totalPrice: 4000 },
+  //       1: { itemName: "Mouse", price: 30, quantity: 10, totalPrice: 300 },
+  //     },
+  //   },
+  //   {
+  //     customer: "Gadget Hub",
+  //     date: "Wednesday, March 12, 2025",
+  //     grandTotal: 7200,
+  //     products: {
+  //       0: { itemName: "Keyboard", price: 50, quantity: 8, totalPrice: 400 },
+  //       1: { itemName: "Laptop", price: 800, quantity: 3, totalPrice: 2400 },
+  //     },
+  //   },
+  //   {
+  //     customer: "Tech Solutions",
+  //     date: "Tuesday, March 11, 2025",
+  //     grandTotal: 12000,
+  //     products: {
+  //       0: { itemName: "Server", price: 3000, quantity: 2, totalPrice: 6000 },
+  //       1: { itemName: "Keyboard", price: 50, quantity: 20, totalPrice: 1000 },
+  //     },
+  //   },
+  //   {
+  //     customer: "Digital Makers",
+  //     date: "Monday, March 10, 2025",
+  //     grandTotal: 9800,
+  //     products: {
+  //       0: { itemName: "Monitor", price: 200, quantity: 12, totalPrice: 2400 },
+  //       1: { itemName: "Mouse", price: 30, quantity: 30, totalPrice: 900 },
+  //     },
+  //   },
+  //   {
+  //     customer: "Gadget Hub",
+  //     date: "Friday, March 7, 2025",
+  //     grandTotal: 6500,
+  //     products: {
+  //       0: { itemName: "Keyboard", price: 50, quantity: 15, totalPrice: 750 },
+  //       1: { itemName: "Laptop", price: 800, quantity: 4, totalPrice: 3200 },
+  //     },
+  //   },
+  //   {
+  //     customer: "Tech Solutions",
+  //     date: "Thursday, March 6, 2025",
+  //     grandTotal: 11000,
+  //     products: {
+  //       0: { itemName: "Server", price: 3000, quantity: 1, totalPrice: 3000 },
+  //       1: { itemName: "Monitor", price: 200, quantity: 10, totalPrice: 2000 },
+  //     },
+  //   },
+  //   {
+  //     customer: "ABC Company",
+  //     date: "Wednesday, March 5, 2025",
+  //     grandTotal: 9200,
+  //     products: {
+  //       0: { itemName: "Mouse", price: 30, quantity: 40, totalPrice: 1200 },
+  //       1: { itemName: "Keyboard", price: 50, quantity: 25, totalPrice: 1250 },
+  //     },
+  //   },
+  // ];
+
+  // const inventoryData = [
+  //   {
+  //     category: "Electronics",
+  //     costPrice: 40,
+  //     sellingPrice: 50,
+  //     itemName: "Mouse",
+  //     quantity: 120,
+  //     supplier: "Asus",
+  //   },
+  //   {
+  //     category: "Electronics",
+  //     costPrice: 40,
+  //     sellingPrice: 50,
+  //     itemName: "Keyboard",
+  //     quantity: 85,
+  //     supplier: "Logitech",
+  //   },
+  //   {
+  //     category: "Electronics",
+  //     costPrice: 150,
+  //     sellingPrice: 200,
+  //     itemName: "Monitor",
+  //     quantity: 45,
+  //     supplier: "Dell",
+  //   },
+  //   {
+  //     category: "Electronics",
+  //     costPrice: 600,
+  //     sellingPrice: 800,
+  //     itemName: "Laptop",
+  //     quantity: 30,
+  //     supplier: "HP",
+  //   },
+  //   {
+  //     category: "Electronics",
+  //     costPrice: 2500,
+  //     sellingPrice: 3000,
+  //     itemName: "Server",
+  //     quantity: 15,
+  //     supplier: "IBM",
+  //   },
+  //   {
+  //     category: "Accessories",
+  //     costPrice: 15,
+  //     sellingPrice: 25,
+  //     itemName: "HDMI Cable",
+  //     quantity: 200,
+  //     supplier: "Generic",
+  //   },
+  //   {
+  //     category: "Accessories",
+  //     costPrice: 20,
+  //     sellingPrice: 35,
+  //     itemName: "USB Hub",
+  //     quantity: 75,
+  //     supplier: "Anker",
+  //   },
+  // ];
+
+  // const customersData = [
+  //   {
+  //     address: "New York, USA",
+  //     businessName: "Gadget Hub",
+  //     contactNumber: 9123456780,
+  //     email: "info@gadgethub.com",
+  //     outStandingBalance: 1500,
+  //     ownerName: "John David",
+  //   },
+  //   {
+  //     address: "San Francisco, USA",
+  //     businessName: "Tech Solutions",
+  //     contactNumber: 9876543210,
+  //     email: "contact@techsolutions.com",
+  //     outStandingBalance: 3200,
+  //     ownerName: "Sarah Peters",
+  //   },
+  //   {
+  //     address: "Chicago, USA",
+  //     businessName: "ABC Company",
+  //     contactNumber: 8765432109,
+  //     email: "service@abccompany.com",
+  //     outStandingBalance: 850,
+  //     ownerName: "Michael Johnson",
+  //   },
+  //   {
+  //     address: "Boston, USA",
+  //     businessName: "XYZ Corp",
+  //     contactNumber: 7654321098,
+  //     email: "info@xyzcorp.com",
+  //     outStandingBalance: 4500,
+  //     ownerName: "Emily Brown",
+  //   },
+  //   {
+  //     address: "Austin, USA",
+  //     businessName: "Digital Makers",
+  //     contactNumber: 6543210987,
+  //     email: "hello@digitalmakers.com",
+  //     outStandingBalance: 2100,
+  //     ownerName: "Robert Wilson",
+  //   },
+  //   {
+  //     address: "Seattle, USA",
+  //     businessName: "Innovate Tech",
+  //     contactNumber: 5432109876,
+  //     email: "support@innovatetech.com",
+  //     outStandingBalance: 3800,
+  //     ownerName: "Jessica Lee",
+  //   },
+  //   {
+  //     address: "Denver, USA",
+  //     businessName: "Future Gadgets",
+  //     contactNumber: 4321098765,
+  //     email: "info@futuregadgets.com",
+  //     outStandingBalance: 1200,
+  //     ownerName: "William Davis",
+  //   },
+  // ];
+
+  // Extract current month data
+  const currentMonth = "March";
+  const currentMonthData = transactionsData.filter((transaction) =>
+    transaction.date.includes(currentMonth)
+  );
+
+  // Calculate total sales for current month
+  const totalSales = currentMonthData.reduce(
+    (total, transaction) => total + transaction.grandTotal,
+    0
+  );
+
+  // Calculate total quantity sold for current month
+  const totalQuantitySold = currentMonthData.reduce((total, transaction) => {
+    return (
+      total +
+      Object.values(transaction.products).reduce(
+        (sum, product) => sum + product.quantity,
+        0
+      )
+    );
+  }, 0);
+
+  // Find most sold item for current month
+  const itemSales = {};
+  currentMonthData.forEach((transaction) => {
+    Object.values(transaction.products).forEach((product) => {
+      if (!itemSales[product.itemName]) {
+        itemSales[product.itemName] = 0;
+      }
+      itemSales[product.itemName] += product.quantity;
+    });
+  });
+
+  const mostSoldItem = Object.entries(itemSales).reduce(
+    (max, [item, quantity]) => {
+      return quantity > max.quantity ? { item, quantity } : max;
+    },
+    { item: "", quantity: 0 }
+  );
+
+  // Calculate sales by customer
+  const salesByCustomer = {};
+  currentMonthData.forEach((transaction) => {
+    if (!salesByCustomer[transaction.customer]) {
+      salesByCustomer[transaction.customer] = 0;
+    }
+    salesByCustomer[transaction.customer] += transaction.grandTotal;
+  });
+
+  // Find biggest customer for current month
+  const biggestCustomer = Object.entries(salesByCustomer).reduce(
+    (max, [customer, sales]) => {
+      return sales > max.sales ? { customer, sales } : max;
+    },
+    { customer: "", sales: 0 }
+  );
+
+  // Get top 5 customers by sales
+  const top5CustomersBySales = Object.entries(salesByCustomer)
+    .map(([customer, sales]) => ({ customer, sales }))
+    .sort((a, b) => b.sales - a.sales)
+    .slice(0, 5);
+
+  // Get top 5 most sold products
+  const top5SoldProducts = Object.entries(itemSales)
+    .map(([item, quantity]) => ({ item, quantity }))
+    .sort((a, b) => b.quantity - a.quantity)
+    .slice(0, 5);
+
+  // Get top 5 customers with outstanding balance
+  const top5OutstandingBalance = [...customersData]
+    .sort((a, b) => b.outStandingBalance - a.outStandingBalance)
+    .slice(0, 5)
+    .map((customer) => ({
+      customer: customer.businessName,
+      balance: customer.outStandingBalance,
+    }));
+
+  // Calculate inventory value
+  const totalInventoryValue = inventoryData.reduce((total, item) => {
+    return total + item.sellingPrice * item.quantity;
+  }, 0);
+
+  // Calculate daily sales trend
+  const dailySalesTrend = [];
+  const dates = [
+    ...new Set(
+      transactionsData.map((transaction) => {
+        const dateStr = transaction.date.split(",")[1].trim();
+        return dateStr.split(" ")[1]; // Extract the day
+      })
+    ),
+  ].sort();
+
+  dates.forEach((day) => {
+    const dayTransactions = transactionsData.filter((transaction) =>
+      transaction.date.includes(`March ${day}`)
+    );
+    const daySales = dayTransactions.reduce(
+      (total, transaction) => total + transaction.grandTotal,
+      0
+    );
+    dailySalesTrend.push({
+      day: `Mar ${day}`,
+      sales: daySales,
+    });
+  });
+
+  // Calculate month-over-month growth (dummy data for demonstration)
+  const prevMonthSales = 45000;
+  const monthOverMonthGrowth =
+    ((totalSales - prevMonthSales) / prevMonthSales) * 100;
+
+  // Colors for charts
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"];
+
   return (
-    <>
-      <h1 className="text-4xl text-white font-semibold">
-        Hello, {currentUserName} 👋
-      </h1>
-    </>
+    <div className="p-4 bg-gray-50 min-h-screen">
+      <h1 className="text-4xl font-bold mb-6 text-gray-800">Dashboard</h1>
+
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center justify-between mb-2">
+            <div className="text-sm font-medium text-gray-500">
+              Total Sales (March)
+            </div>
+            <div className="p-2 bg-blue-100 rounded-full">
+              <TbCurrencyRupeeNepalese className="h-5 w-5 text-blue-600" />
+            </div>
+          </div>
+          <div className="text-2xl font-bold">
+            Rs.{totalSales.toLocaleString()}
+          </div>
+          <div className="flex items-center mt-2">
+            <div
+              className={`text-sm ${
+                monthOverMonthGrowth >= 0 ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {monthOverMonthGrowth >= 0 ? (
+                <FaArrowUp className="h-4 w-4 inline" />
+              ) : (
+                <FaArrowDown className="h-4 w-4 inline" />
+              )}
+              {Math.abs(monthOverMonthGrowth).toFixed(1)}% from last month
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center justify-between mb-2">
+            <div className="text-sm font-medium text-gray-500">
+              Total Quantity Sold
+            </div>
+            <div className="p-2 bg-green-100 rounded-full">
+              <BiSolidPackage className="h-5 w-5 text-green-600" />
+            </div>
+          </div>
+          <div className="text-2xl font-bold">
+            {totalQuantitySold.toLocaleString()} units
+          </div>
+          <div className="text-sm text-gray-500 mt-2">This month</div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center justify-between mb-2">
+            <div className="text-sm font-medium text-gray-500">
+              Most Sold Item
+            </div>
+            <div className="p-2 bg-yellow-100 rounded-full">
+              <FaCartShopping className="h-5 w-5 text-yellow-600" />
+            </div>
+          </div>
+          <div className="text-2xl font-bold">{mostSoldItem.item}</div>
+          <div className="text-sm text-gray-500 mt-2">
+            {mostSoldItem.quantity} units sold
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center justify-between mb-2">
+            <div className="text-sm font-medium text-gray-500">
+              Biggest Customer
+            </div>
+            <div className="p-2 bg-purple-100 rounded-full">
+              <FaUser className="h-5 w-5 text-purple-600" />
+            </div>
+          </div>
+          <div className="text-2xl font-bold">{biggestCustomer.customer}</div>
+          <div className="text-sm text-gray-500 mt-2">
+            Rs. {biggestCustomer.sales.toLocaleString()} in sales
+          </div>
+        </div>
+      </div>
+
+      {/* Charts Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        {/* Daily Sales Trend */}
+        <div className="bg-white rounded-lg shadow p-4">
+          <h2 className="text-lg font-semibold mb-4 text-gray-700">
+            Daily Sales Trend
+          </h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={dailySalesTrend}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="day" />
+              <YAxis />
+              <Tooltip formatter={(value) => [`Rs. ${value}`, "Sales"]} />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="sales"
+                stroke="#8884d8"
+                activeDot={{ r: 8 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Top 5 Most Sold Products */}
+        <div className="bg-white rounded-lg shadow p-4">
+          <h2 className="text-lg font-semibold mb-4 text-gray-700">
+            Most Sold Products
+          </h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={top5SoldProducts}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="item" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="quantity" fill="#82ca9d" name="Quantity Sold" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Bottom Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Top 5 Customers by Sales */}
+        <div className="bg-white rounded-lg shadow p-4">
+          <h2 className="text-lg font-semibold mb-4 text-gray-700">
+            Biggest Customers
+          </h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={top5CustomersBySales}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ name, percent }) =>
+                  `${name} (${(percent * 100).toFixed(0)}%)`
+                }
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="sales"
+                nameKey="customer"
+              >
+                {top5CustomersBySales.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Tooltip formatter={(value) => [`Rs. ${value}`, "Sales"]} />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Top 5 Customers with Outstanding Balance */}
+
+        {/* Inventory Status */}
+        <div className="bg-white rounded-lg shadow p-4">
+          <h2 className="text-lg font-semibold mb-4 text-gray-700">
+            Inventory Status
+          </h2>
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <p className="text-sm text-gray-500">Total Inventory Value</p>
+              <p className="text-xl font-bold">
+                Rs. {totalInventoryValue.toLocaleString()}
+              </p>
+            </div>
+            <div className="p-3 bg-indigo-100 rounded-full">
+              <FaWallet className="h-6 w-6 text-indigo-600" />
+            </div>
+          </div>
+          <div className="space-y-3">
+            {inventoryData.slice(0, 5).map((item, index) => (
+              <div key={index} className="flex justify-between">
+                <div>
+                  <p className="font-medium">{item.itemName}</p>
+                  <p className="text-sm text-gray-500">{item.category}</p>
+                </div>
+                <div className="text-right">
+                  <p className="font-medium">{item.quantity} units</p>
+                  <p className="text-sm text-gray-500">
+                    Rs.{item.sellingPrice} each
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <div className="text-sm text-gray-500">
+              {inventoryData.reduce((total, item) => total + item.quantity, 0)}{" "}
+              total units in stock
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

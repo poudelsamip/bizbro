@@ -24,7 +24,10 @@ function App() {
       {sideBar.includes(location.pathname) && <Sidebar />}
       <div
         className={`${
-          sideBar.includes(location.pathname) ? "p-5" : ""
+          sideBar.includes(location.pathname) &&
+          location.pathname !== "/dashboard"
+            ? "p-5"
+            : ""
         } w-full bg-gray-600 h-screen overflow-auto`}
       >
         <Routes>

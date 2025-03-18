@@ -13,7 +13,7 @@ const InventoryTable = () => {
   const [showAddStockPopup, setShowAddStockPopup] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [inputData, setInputData] = useState();
+  const [inputData, setInputData] = useState(""); // Initialize with empty string
 
   const [sortedByQuantity, setSortedByQuantity] = useState("default");
   const [sortedByPrice, setSortedByPrice] = useState("default");
@@ -32,13 +32,14 @@ const InventoryTable = () => {
 
   const handleAddStock = async () => {
     setLoading(true);
-    const quantityToAdd = document.getElementById("quantityToAdd");
+    // Use inputData state instead of DOM access, and fix the calculation
     await addStock(
       selectedItem.itemName,
-      Number(selectedItem.quantity - quantityToAdd)
+      Number(selectedItem.quantity) + Number(inputData)
     );
     await fetchData(user.email);
     setShowAddStockPopup(false);
+    setInputData(""); // Reset input data
     setLoading(false);
   };
 
@@ -204,7 +205,7 @@ const InventoryTable = () => {
                   <button
                     className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600"
                     onClick={() => {
-                      setInputData(null);
+                      setInputData(""); // Reset to empty string instead of null
                       setShowAddStockPopup(false);
                     }}
                   >

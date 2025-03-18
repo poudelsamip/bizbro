@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { MainContext } from "../Context/MainProvider";
 
 const SignupForm = () => {
@@ -8,19 +7,21 @@ const SignupForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  // const [errorText, setErrorText] = useState("");
 
-  const { signUp } = useContext(MainContext);
+  const { signUp, error, setError } = useContext(MainContext);
   const [loading, setLoading] = useState(false);
   const handleSignup = async (e) => {
     e.preventDefault();
+    setError(null);
     setLoading(true);
     if (password !== confirmPassword) {
-      console.log("Passwords do not match!");
+      setError("Passwords do not match");
+      setLoading(false);
       return;
     }
-    console.log("Signup:", { name, companyName, email, password });
+    setError("");
     await signUp(email, password, companyName, name);
-
     setLoading(false);
   };
 
@@ -30,7 +31,7 @@ const SignupForm = () => {
         <h2 className="text-md text-center">Welcome to 👊BizBro</h2>
         <h2 className="text-4xl font-bold text-center mb-6">Sign Up</h2>
         <form onSubmit={handleSignup}>
-          <div className="mb-4">
+          <div className="mb-3">
             <label
               htmlFor="name"
               className="block text-sm font-medium text-gray-400"
@@ -48,7 +49,7 @@ const SignupForm = () => {
             />
           </div>
 
-          <div className="mb-4">
+          <div className="mb-3">
             <label
               htmlFor="companyName"
               className="block text-sm font-medium text-gray-400"
@@ -66,7 +67,7 @@ const SignupForm = () => {
             />
           </div>
 
-          <div className="mb-4">
+          <div className="mb-3">
             <label
               htmlFor="email"
               className="block text-sm font-medium text-gray-400"
@@ -84,7 +85,7 @@ const SignupForm = () => {
             />
           </div>
 
-          <div className="mb-4">
+          <div className="mb-3">
             <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-400"
@@ -118,6 +119,7 @@ const SignupForm = () => {
               // placeholder="••••••••"
               required
             />
+            {error && <p className="mt-2 text-red-400 text-xs">{error}</p>}
           </div>
 
           <button
@@ -128,7 +130,7 @@ const SignupForm = () => {
                 : "cursor-pointer bg-blue-700"
             } w-full  py-2  text-white rounded-lg  `}
           >
-            {loading ? "Loading ..." : " Sign Up"}
+            {loading ? "Signing Up ..." : " Sign Up"}
           </button>
         </form>
 

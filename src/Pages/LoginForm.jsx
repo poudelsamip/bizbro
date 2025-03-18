@@ -4,11 +4,14 @@ import { MainContext } from "../Context/MainProvider";
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { logIn } = useContext(MainContext);
+  const { logIn, error } = useContext(MainContext);
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     await logIn(email, password);
+    setLoading(false);
   };
 
   return (
@@ -52,13 +55,17 @@ const LoginForm = () => {
               placeholder="••••••••"
               required
             />
+            {error && <p className="mt-2 text-red-400 text-xs">{error}</p>}
           </div>
           <button
-            onClick={handleLogin}
             type="submit"
-            className="w-full py-2 bg-blue-500 cursor-pointer text-white rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-500"
+            className={` ${
+              loading
+                ? "cursor-not-allowed bg-blue-500"
+                : "cursor-pointer bg-blue-700"
+            } w-full  py-2  text-white rounded-lg  `}
           >
-            Sign In
+            {loading ? "Logging In ..." : " Log In"}
           </button>
         </form>
         <p className="mt-4 text-center text-sm text-gray-400">

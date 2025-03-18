@@ -13,7 +13,7 @@ const CustomerRow = ({ item, setShowReceivePayment, setSelectedCustomer }) => {
       <td className="px-3 py-3">{item.email}</td>
       <td className="px-3 py-3">Rs. {item.outstandingBalance}</td>
       <td className="px-3 py-3">
-        <div title="Receive Money" className="font-medium">
+        <div title="Receive Payment" className="font-medium">
           <GiReceiveMoney
             size={20}
             className="text-green-500"

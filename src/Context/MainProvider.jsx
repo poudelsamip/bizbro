@@ -16,6 +16,7 @@ const MainProvider = ({ children }) => {
   const [currentUserName, setCurrentUserName] = useState("");
   const location = useLocation();
   const unAuthRoute = ["/", "/login", "/signup"]; //available route for not authorized users
+  const [error, setError] = useState(null);
 
   const [allData, setAllData] = useState({
     inventory: [],
@@ -43,17 +44,18 @@ const MainProvider = ({ children }) => {
 
       setUser(userData.user);
       await logIn(email, password);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      setError(error.code);
     }
   };
 
   const logIn = async (email, password) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      setError(false);
       navigate("/dashboard");
     } catch (error) {
-      console.log(error);
+      setError(error.code);
     }
   };
 
@@ -264,6 +266,8 @@ const MainProvider = ({ children }) => {
     receivePayment,
     fetchData,
     currentUserName,
+    error,
+    setError,
   };
 
   return <MainContext.Provider value={value}>{children}</MainContext.Provider>;

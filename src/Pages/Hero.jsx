@@ -1,4 +1,11 @@
+import { useState } from "react";
+import { MdSupportAgent } from "react-icons/md";
+import { IoMdCall } from "react-icons/io";
+import { MdEmail } from "react-icons/md";
+import { IoCloseSharp } from "react-icons/io5";
+
 const Hero = () => {
+  const [support, setSupport] = useState(true);
   return (
     <div className="flex items-center justify-center h-full bg-gray-900 text-white text-center">
       <div className="absolute top-8 border-3 border-green-900 bg-green-500 rounded px-5 py-3 text-black">
@@ -28,6 +35,27 @@ const Hero = () => {
           >
             Sign Up
           </a>
+        </div>
+      </div>
+      <div className="absolute bottom-5 right-5 flex items-center gap-2">
+        <div
+          className="text-white p-2 rounded-full bg-gray-500 cursor-pointer"
+          title={support ? "Close" : "Customer Support"}
+          onClick={() => setSupport(!support)}
+        >
+          {support ? <IoCloseSharp size={30} /> : <MdSupportAgent size={30} />}
+        </div>
+        <div
+          className={`${
+            support ? "block" : "hidden"
+          } bg-gray-500 p-2 rounded-xl`}
+        >
+          <div className="flex items-center gap-1 text-sm">
+            <IoMdCall className="text-white " /> +977 9801234567
+          </div>
+          <div className="flex items-center gap-1 text-sm">
+            <MdEmail className="text-white" /> info@bizbro.com
+          </div>
         </div>
       </div>
     </div>

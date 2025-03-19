@@ -40,7 +40,7 @@ const CustomersTable = () => {
 
   const handleReceivePayment = async () => {
     setLoading(true);
-    await Promise.all(
+    await Promise.all([
       receivePayment(
         selectedCustomer,
         Number(selectedCustomer.outstandingBalance - inputData)
@@ -54,8 +54,8 @@ const CustomersTable = () => {
           day: "numeric",
         }),
         totalAmount: Number(inputData),
-      })
-    );
+      }),
+    ]);
     // await receivePayment(
     //   selectedCustomer,
     //   Number(selectedCustomer.outstandingBalance - inputData)

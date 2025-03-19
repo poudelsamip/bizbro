@@ -68,10 +68,10 @@ const DispatchProduct = () => {
         totalAmount: totalAmount,
       });
     }
-    await Promise.all(
+    await Promise.all([
       addSalesToSales(products, customer),
-      updateStock(dispatchedItems)
-    );
+      updateStock(dispatchedItems),
+    ]);
     // await addSalesToSales(products, customer);
     // await updateStock(dispatchedItems);
     await fetchData(user.email);

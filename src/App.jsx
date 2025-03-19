@@ -7,6 +7,7 @@ import DispatchProduct from "./Pages/DispatchProduct";
 import LoginForm from "./Pages/LoginForm";
 import SignupForm from "./Pages/SignupForm";
 import Transactions from "./Pages/Transactions";
+import Sales from "./Pages/Sales";
 import Hero from "./Pages/Hero";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
     "/inventory",
     "/customers",
     "/dispatch",
+    "/sales",
     "/transactions",
   ];
   const location = useLocation();
@@ -35,6 +37,7 @@ function App() {
           <Route path="/inventory" element={<Inventory />}></Route>
           <Route path="/customers" element={<Customers />}></Route>
           <Route path="/dispatch" element={<DispatchProduct />}></Route>
+          <Route path="/sales" element={<Sales />}></Route>
           <Route path="/transactions" element={<Transactions />}></Route>
           <Route path="/login" element={<LoginForm />}></Route>
           <Route path="/signup" element={<SignupForm />}></Route>

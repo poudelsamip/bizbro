@@ -4,29 +4,33 @@ import { RiExpandUpDownFill } from "react-icons/ri";
 
 const Transactions = () => {
   const { transactionsData } = useContext(MainContext);
-  const [filteredData, setFilteredData] = useState(transactionsData);
-  const dateRef = useRef();
-  const [sortedByGrandTotal, setSortedByGrandTotal] = useState("default");
+  const [filteredTransactions, setFilteredTransactions] =
+    useState(transactionsData);
+  const [sortedByTotal, setSortedByTotal] = useState("default");
   const [sortedByDate, setSortedByDate] = useState("default");
+  const dateRef = useRef();
 
   const handleSearch = (e) => {
     const searchText = e.target.value.toLowerCase();
-    setFilteredData(() => {
-      return transactionsData.filter(
-        (item) =>
-          item.customer.toLowerCase().includes(searchText) ||
-          Object.values(item.products).some((product) =>
-            product.itemName.toLowerCase().includes(searchText)
-          )
-      );
-    });
+    // const filtered = transactionsData.filter((transaction) => {
+    //   return (
+    //     transaction.buyer.toLowerCase().includes(searchText) ||
+    //     transaction.totalAmount.toString().includes(searchText)
+    //   );
+    // });
+
+    setFilteredTransactions(() =>
+      transactionsData.filter(
+        (transaction) =>
+          transaction.buyer.toLowerCase().includes(searchText) ||
+          transaction.totalAmount.toString().includes(searchText)
+      )
+    );
   };
 
   const filterByDate = () => {
     const inputDate = dateRef.current.value;
-
     if (inputDate) {
-      console.log("inside filter by date - IF");
       const date = new Date(inputDate);
       const dateFormat = {
         weekday: "long",
@@ -36,68 +40,71 @@ const Transactions = () => {
       };
       const formattedDate = date.toLocaleDateString("en-US", dateFormat);
 
-      setFilteredData(() =>
-        transactionsData.filter((item) => item.date === formattedDate)
+      setFilteredTransactions(() =>
+        transactionsData.filter(
+          (transaction) => transaction.date === formattedDate
+        )
       );
     } else {
-      setFilteredData(transactionsData);
+      setFilteredTransactions(transactionsData);
+    }
+  };
+
+  const sortByTotal = () => {
+    if (sortedByTotal === "default") {
+      setFilteredTransactions(
+        [...transactionsData].sort((a, b) => a.totalAmount - b.totalAmount)
+      );
+      setSortedByTotal("low-high");
+    } else if (sortedByTotal === "low-high") {
+      setFilteredTransactions(
+        [...transactionsData].sort((a, b) => b.totalAmount - a.totalAmount)
+      );
+      setSortedByTotal("high-low");
+    } else {
+      setFilteredTransactions(transactionsData);
+      setSortedByTotal("default");
     }
   };
 
   const sortByDate = () => {
     if (sortedByDate === "default") {
-      setFilteredData(() => {
-        return [...transactionsData].sort(
+      setFilteredTransactions(
+        [...transactionsData].sort(
           (a, b) => new Date(a.date) - new Date(b.date)
-        );
-      });
-      setSortedByDate("before-today");
+        )
+      );
+      setSortedByDate("earliest-latest");
+    } else if (sortedByDate === "earliest-latest") {
+      setFilteredTransactions(
+        [...transactionsData].sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        )
+      );
+      setSortedByDate("latest-earliest");
     } else {
-      setFilteredData(transactionsData);
+      setFilteredTransactions(transactionsData);
       setSortedByDate("default");
     }
   };
 
-  const sortByGrandTotal = () => {
-    if (sortedByGrandTotal === "default") {
-      setFilteredData(() => {
-        const newData = [...transactionsData].sort(
-          (a, b) => a.grandTotal - b.grandTotal
-        );
-        return newData;
-      });
-      setSortedByGrandTotal("grand-total-low-high");
-    } else if (sortedByGrandTotal === "grand-total-low-high") {
-      setFilteredData(() => {
-        const newData = [...transactionsData].sort(
-          (a, b) => b.grandTotal - a.grandTotal
-        );
-        return newData;
-      });
-      setSortedByGrandTotal("grand-total-high-low");
-    } else {
-      setFilteredData(transactionsData);
-      setSortedByGrandTotal("default");
-    }
-  };
-
   useEffect(() => {
-    setFilteredData(transactionsData);
+    setFilteredTransactions(transactionsData);
   }, [transactionsData]);
 
   return (
     <div className="h-full">
-      <h1 className="text-4xl mb-5 font-semibold text-white drop-shadow-xl">
-        {/* ---------- Changed to sales. But Transaction is used everywhere else */}
-        Sales 💸{" "}
+      <h1 className="text-4xl font-semibold text-white mb-2 drop-shadow-xl">
+        TRANSACTIONS 💳
       </h1>
-      <div className="mb-1 flex justify-between">
+      <div className="flex justify-between mb-1">
         <input
           type="text"
           className="block px-4 py-2 text-white text-sm border border-gray-400 bg-gray-800 rounded outline-0 w-[250px]"
-          placeholder="Search By Buyer or Product"
-          onChange={(e) => handleSearch(e)}
+          placeholder="Search Transaction"
+          onChange={handleSearch}
         />
+
         <div>
           <input
             type="date"
@@ -112,91 +119,57 @@ const Transactions = () => {
           </button>
         </div>
       </div>
+
+      {/* Table */}
       {transactionsData.length > 0 ? (
         <div className="flex-grow overflow-auto max-h-[80vh]">
           <table className="w-full text-sm text-left text-gray-300">
             <thead className="text-xs uppercase bg-gray-900 text-gray-200 border-b border-white sticky top-0 z-10">
               <tr>
-                <th scope="col" className="px-3 py-3 ">
+                <th scope="col" className="px-3 py-3">
                   S.N
                 </th>
+
                 <th scope="col" className="px-3 py-3">
                   Buyer
                 </th>
-                <th scope="col" className="px-3 py-3">
-                  Products
-                </th>
-                <th scope="col" className="px-3 py-3">
-                  Price
-                </th>
-                <th scope="col" className="px-3 py-3">
-                  Quantity
-                </th>
-                <th scope="col" className="px-3 py-3">
-                  Total
-                </th>
-                <th scope="col" className="px-3 py-3">
-                  <span
-                    className="flex items-center gap-1 cursor-pointer"
-                    title="Sort By Total"
-                    onClick={sortByGrandTotal}
+
+                <th scope="col" className="px-3 py-3 ">
+                  <div
+                    className="flex gap-1 items-center cursor-pointer"
+                    title="Sort By Amount"
+                    onClick={sortByTotal}
                   >
-                    Grand Total <RiExpandUpDownFill />
-                  </span>
+                    <span>Amount</span>
+                    <span className="cursor-pointer">
+                      <RiExpandUpDownFill />
+                    </span>
+                  </div>
                 </th>
-                <th scope="col" className="px-3 py-3">
-                  <span
+                <th scope="col" className="px-3 py-3 ">
+                  <div
                     className="flex items-center gap-1 cursor-pointer"
                     title="Sort By Date"
                     onClick={sortByDate}
                   >
-                    Date <RiExpandUpDownFill />
-                  </span>
+                    <span>Date</span>
+                    <span className="cursor-pointer">
+                      <RiExpandUpDownFill />
+                    </span>
+                  </div>
                 </th>
               </tr>
             </thead>
             <tbody>
-              {filteredData.map((item, index) => (
+              {filteredTransactions.map((item, index) => (
                 <tr
                   key={index}
                   className="cursor-pointer border-b bg-gray-800 border-gray-500 hover:bg-gray-700"
                 >
                   <td className="px-3 py-3">{index + 1}</td>
-                  <td className="px-3 py-3">{item.customer}</td>
+                  <td className="px-3 py-3">{item.buyer}</td>
                   <td className="px-3 py-3">
-                    {Object.entries(item.products).map(([key, itm]) => (
-                      <p key={`itemName${key}${itm.itemName}`}>
-                        {itm.itemName}
-                      </p>
-                    ))}
-                  </td>
-                  <td className="px-3 py-3">
-                    {Object.entries(item.products).map(([key, itm]) => (
-                      <p key={`itemName${key}${itm.price}`}>
-                        Rs. {itm.price.toLocaleString("en-IN")}
-                      </p>
-                    ))}
-                  </td>
-                  <td className="px-3 py-3">
-                    {Object.entries(item.products).map(([key, itm]) => (
-                      <p key={`itemName${key}${itm.quantity}`}>
-                        {itm.quantity}
-                      </p>
-                    ))}
-                  </td>
-                  <td className="px-3 py-3">
-                    {Object.entries(item.products).map(([key, itm]) => (
-                      <p
-                        key={`itemName${key}${itm.totalPrice.toLocaleString(
-                          "en-IN"
-                        )}`}
-                      >
-                        Rs. {itm.totalPrice}
-                      </p>
-                    ))}
-                  </td>
-                  <td className="px-3 py-3">
-                    Rs. {item.grandTotal.toLocaleString("en-IN")}
+                    Rs. {item.totalAmount.toLocaleString("en-IN")}
                   </td>
                   <td className="px-3 py-3">{item.date}</td>
                 </tr>
@@ -205,9 +178,7 @@ const Transactions = () => {
           </table>
         </div>
       ) : (
-        <div className="text-gray-400 text-center mt-10">
-          Your Sales Records Will Be Displayed Here
-        </div>
+        <p>No transactions found</p>
       )}
     </div>
   );

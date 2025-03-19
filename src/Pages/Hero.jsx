@@ -6,6 +6,7 @@ import { IoCloseSharp } from "react-icons/io5";
 
 const Hero = () => {
   const [support, setSupport] = useState(true);
+
   return (
     <div className="flex items-center justify-center h-full bg-gray-900 text-white text-center">
       <div className="absolute top-8 border-3 border-green-900 bg-green-500 rounded px-5 py-3 text-black">
@@ -37,6 +38,7 @@ const Hero = () => {
           </a>
         </div>
       </div>
+
       <div className="absolute bottom-5 right-5 flex items-center gap-2">
         <div
           className="text-white p-2 rounded-full bg-gray-500 cursor-pointer"

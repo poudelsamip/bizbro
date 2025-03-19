@@ -2,15 +2,15 @@
 // import { MainContext } from "../Context/MainProvider";
 
 // const ThisMonth = () => {
-//   const { transactionsData } = useContext(MainContext);
+//   const { salesData } = useContext(MainContext);
 
 //   const date = new Date();
 //   const month = date.toLocaleDateString("default", { month: "long" });
 //   let count = 0;
 //   let customersPurchaseData = {};
 
-//   const salesThisMonth = transactionsData
-//     ? transactionsData.reduce((total, current) => {
+//   const salesThisMonth = salesData
+//     ? salesData.reduce((total, current) => {
 //         const transactionMonth = current.date.split(" ")[1];
 //         if (month === transactionMonth) {
 //           count += 1;

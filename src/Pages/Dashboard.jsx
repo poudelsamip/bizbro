@@ -23,12 +23,12 @@
 // import { MainContext } from "../Context/MainProvider";
 
 // const Dashboard = () => {
-//   const { transactionsData, inventoryData, customersData } =
+//   const { salesData, inventoryData, customersData } =
 //     useContext(MainContext);
 
 //   // Extract current month data
 //   const currentMonth = "March";
-//   const currentMonthData = transactionsData.filter((transaction) =>
+//   const currentMonthData = salesData.filter((transaction) =>
 //     transaction.date.includes(currentMonth)
 //   );
 
@@ -114,7 +114,7 @@
 //   const dailySalesTrend = [];
 //   const dates = [
 //     ...new Set(
-//       transactionsData.map((transaction) => {
+//       salesData.map((transaction) => {
 //         const dateStr = transaction.date.split(",")[1].trim();
 //         return dateStr.split(" ")[1];
 //       })
@@ -122,7 +122,7 @@
 //   ].sort((a, b) => parseInt(a) - parseInt(b));
 
 //   dates.forEach((day) => {
-//     const dayTransactions = transactionsData.filter((transaction) =>
+//     const dayTransactions = salesData.filter((transaction) =>
 //       transaction.date.includes(`March ${day}`)
 //     );
 //     const daySales = dayTransactions.reduce(
@@ -372,8 +372,7 @@ import { FaWallet } from "react-icons/fa";
 import { MainContext } from "../Context/MainProvider";
 
 const Dashboard = () => {
-  const { transactionsData, inventoryData, customersData } =
-    useContext(MainContext);
+  const { salesData, inventoryData, customersData } = useContext(MainContext);
 
   // Get current month name dynamically
   const currentDate = new Date();
@@ -383,7 +382,7 @@ const Dashboard = () => {
   }); // e.g., "Mar"
 
   // Extract current month data
-  const currentMonthData = transactionsData.filter((transaction) =>
+  const currentMonthData = salesData.filter((transaction) =>
     transaction.date.includes(currentMonth)
   );
 
@@ -469,7 +468,7 @@ const Dashboard = () => {
   const dailySalesTrend = [];
 
   // First filter only current month transactions
-  const currentMonthTransactions = transactionsData.filter((transaction) =>
+  const currentMonthTransactions = salesData.filter((transaction) =>
     transaction.date.includes(currentMonth)
   );
 

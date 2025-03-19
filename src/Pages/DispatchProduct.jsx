@@ -16,12 +16,14 @@ const DispatchProduct = () => {
   const [showReceipt, setShowReceipt] = useState(false);
   const [nextId, setNextId] = useState(1);
   const [loading, setLoading] = useState(false);
-
+  const today = new Date().toISOString().split("T")[0];
+  const [date, setDate] = useState(today);
   const [payment, setPayment] = useState();
 
   const {
     customersData,
-    addTransactionToTransactions,
+    addSalesToSales,
+    addTransactionsToTransactions,
     updateOutStandingBalance,
     updateStock,
     fetchData,
@@ -53,7 +55,20 @@ const DispatchProduct = () => {
     if (payment === "credit") {
       await updateOutStandingBalance(customer, totalAmount);
     }
-    await addTransactionToTransactions(products, customer);
+    if (payment === "cash") {
+      await addTransactionsToTransactions({
+        date: date.toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+        buyer: customer,
+        totalAmount: totalAmount,
+      });
+    }
+    await addSalesToSales(products, customer);
+
     await updateStock(dispatchedItems);
     await fetchData(user.email);
     setShowSummary(false);
@@ -73,6 +88,7 @@ const DispatchProduct = () => {
           resetForm={resetForm}
         />
       )}
+
       {showSummary && (
         <div className="fixed inset-0 bg-gray-700 flex items-center justify-center z-10">
           <div className="bg-gray-800 p-6 relative rounded-md max-w-2xl w-full max-h-[80vh] overflow-y-auto">
@@ -85,9 +101,14 @@ const DispatchProduct = () => {
             </h2>
 
             <div className="mb-4">
-              <h3 className="text-md font-semibold text-white">
-                Buyer: {customer}
-              </h3>
+              <div className="flex justify-between">
+                <h3 className="text-md font-semibold text-white">
+                  Buyer: {customer}
+                </h3>
+                <h3 className="text-sm font-semibold text-white">
+                  Date: {date}
+                </h3>
+              </div>
               <h3 className="text-md text-white mb-2">Items Dispatched:</h3>
               <div className="bg-gray-700 rounded p-3">
                 {products.map((product, index) => (
@@ -186,34 +207,43 @@ const DispatchProduct = () => {
       <div className="w-fit bg-gray-800 p-5 rounded-md">
         <form>
           {/* -------- Customer Name Input --------- */}
-          <div className="w-fit mb-5">
-            <label htmlFor="countries" className="text-sm text-gray-300">
-              Buyer
-            </label>
-            <select
-              id="countries"
-              className="bg-gray-700 border border-gray-500 text-gray-300 text-sm rounded-lg w-full py-1 px-2"
-              onChange={(e) => {
-                if (e.target.value === "SELECT CUSTOMER*") {
-                  return;
-                }
-                setCustomer(e.target.value);
-                setCustomerAddress(() => {
-                  const temp = customersData.find(
-                    (item) => item.businessName === e.target.value
-                  );
-                  return temp.address;
-                });
-              }}
-              value={customer}
-            >
-              <option>SELECT CUSTOMER*</option>
-              {customersData.map((item, index) => (
-                <option key={index} value={item.businessName}>
-                  {item.businessName}
-                </option>
-              ))}
-            </select>
+          <div className="w-fit mb-5 flex items-center gap-5">
+            <div>
+              <label className="text-sm text-gray-300">Buyer</label>
+              <select
+                id="countries"
+                className="bg-gray-700 border border-gray-500 text-gray-300 text-sm rounded-lg w-full py-1 px-2"
+                onChange={(e) => {
+                  if (e.target.value === "SELECT CUSTOMER*") {
+                    return;
+                  }
+                  setCustomer(e.target.value);
+                  setCustomerAddress(() => {
+                    const temp = customersData.find(
+                      (item) => item.businessName === e.target.value
+                    );
+                    return temp.address;
+                  });
+                }}
+                value={customer}
+              >
+                <option>SELECT CUSTOMER*</option>
+                {customersData.map((item, index) => (
+                  <option key={index} value={item.businessName}>
+                    {item.businessName}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="text-sm text-gray-300">Date</label>
+              <input
+                type="date"
+                className="bg-gray-700 border border-gray-500 text-gray-300 text-sm rounded-lg w-full py-1 px-2"
+                defaultValue={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </div>
           </div>
 
           {/* --------- Products ---------- */}

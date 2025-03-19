@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 import { FaTruck } from "react-icons/fa";
 import { MainContext } from "../Context/MainProvider";
 import { IoIosListBox } from "react-icons/io";
+import { GiMoneyStack } from "react-icons/gi";
 
 const Sidebar = () => {
   const { logOut } = useContext(MainContext);
@@ -60,11 +61,22 @@ const Sidebar = () => {
             </li>
             <li>
               <NavLink
-                to="/transactions"
+                to="/sales"
                 className="flex items-center p-3 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <IoIosListBox />
                 <span className="flex-1 ms-3 whitespace-nowrap">Sales</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/transactions"
+                className="flex items-center p-3 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <GiMoneyStack />
+                <span className="flex-1 ms-3 whitespace-nowrap">
+                  Transactions
+                </span>
               </NavLink>
             </li>
           </ul>

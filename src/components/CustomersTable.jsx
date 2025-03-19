@@ -6,17 +6,25 @@ import { MainContext } from "../Context/MainProvider";
 import { MdGroupAdd } from "react-icons/md";
 
 const CustomersTable = () => {
-  const { customersData, receivePayment, fetchData, user } =
-    useContext(MainContext);
+  const {
+    customersData,
+    receivePayment,
+    addTransactionsToTransactions,
+    fetchData,
+    user,
+  } = useContext(MainContext);
 
   const [filteredCustomers, setFilteredCustomers] = useState(customersData);
   const [showAddCustomer, setShowAddCustomer] = useState(false);
   const [showReceivePayment, setShowReceivePayment] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [inputData, setInputData] = useState();
+  const [inputData, setInputData] = useState("");
 
   const [sortedBy, setSortedBy] = useState("default");
+
+  const today = new Date().toISOString().split("T")[0];
+  const [date, setDate] = useState(today);
 
   useEffect(() => {
     setFilteredCustomers(customersData);
@@ -36,6 +44,16 @@ const CustomersTable = () => {
       selectedCustomer,
       Number(selectedCustomer.outstandingBalance - inputData)
     );
+    await addTransactionsToTransactions({
+      buyer: selectedCustomer.businessName,
+      date: new Date(date).toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+      totalAmount: Number(inputData),
+    });
     await fetchData(user.email);
     setShowReceivePayment(false);
     setLoading(false);
@@ -145,11 +163,22 @@ const CustomersTable = () => {
           {showReceivePayment && (
             <div className="fixed inset-0 bg-gray-700 flex items-center justify-center z-10">
               <div className="bg-gray-800 p-6 max-w-sm w-full">
-                <h2 className="text-2xl font-semibold text-white mb-4">
-                  Receive Payment from {selectedCustomer?.businessName}
+                <h2 className="text-md text-white">Receive Payment from</h2>
+                <h2 className="text-2xl text-white font-semibold mb-4">
+                  {selectedCustomer?.businessName}
                 </h2>
-                <div className="mb-4">
-                  <label className="text-white">Enter Received Amount:</label>
+                <div>
+                  <label className="text-sm text-gray-300">Date</label>
+                  <input
+                    type="date"
+                    className="bg-gray-700 border border-gray-500 text-gray-300 text-sm rounded-lg w-full py-1 px-2"
+                    // defaultValue={date}
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                  />
+                </div>
+                <div className="my-4">
+                  <label className="text-sm text-gray-300">Amount</label>
                   <input
                     type="number"
                     min={1}

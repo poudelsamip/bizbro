@@ -15,13 +15,14 @@ const MainProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [currentUserName, setCurrentUserName] = useState("");
   const location = useLocation();
-  const unAuthRoute = ["/", "/login", "/signup"]; //available route for not authorized users
+  const unAuthRoute = ["/", "/login", "/signup"];
   const [error, setError] = useState(null);
 
   const [allData, setAllData] = useState({
     inventory: [],
     customers: [],
     transactions: [],
+    sales: [],
   });
   const navigate = useNavigate();
 
@@ -40,6 +41,7 @@ const MainProvider = ({ children }) => {
       });
       await setDoc(doc(db, "inventory", userData.user.email), {});
       await setDoc(doc(db, "customers", userData.user.email), {});
+      await setDoc(doc(db, "sales", userData.user.email), {});
       await setDoc(doc(db, "transactions", userData.user.email), {});
 
       setUser(userData.user);
@@ -74,6 +76,7 @@ const MainProvider = ({ children }) => {
         inventory: [],
         transactions: [],
         customers: [],
+        sales: [],
       };
 
       try {
@@ -100,7 +103,18 @@ const MainProvider = ({ children }) => {
         const transactionsRef = doc(db, "transactions", email);
         const transactionsSnapshot = await getDoc(transactionsRef);
         if (transactionsSnapshot.exists()) {
-          data.transactions = transactionsSnapshot.data().allTransactions || [];
+          data.transactions =
+            transactionsSnapshot.data().allTransactionData || [];
+        }
+      } catch (err) {
+        console.log("error inside try catch : \n" + err);
+      }
+
+      try {
+        const salesRef = doc(db, "sales", email);
+        const salesSnapshot = await getDoc(salesRef);
+        if (salesSnapshot.exists()) {
+          data.sales = salesSnapshot.data().allTransactions || []; // parent array name is allTransactions for sales also
         }
       } catch (err) {
         console.log("error inside try catch : \n" + err);
@@ -130,9 +144,19 @@ const MainProvider = ({ children }) => {
     } catch (error) {}
   };
 
-  const addTransactionToTransactions = async (item, customer) => {
+  const addTransactionsToTransactions = async (item) => {
     try {
       const transactionsRef = doc(db, "transactions", user.email);
+      await updateDoc(transactionsRef, {
+        allTransactionData: arrayUnion(item),
+      });
+    } catch (error) {}
+  };
+
+  // addSalesToSales
+  const addSalesToSales = async (item, customer) => {
+    try {
+      const transactionsRef = doc(db, "sales", user.email);
       const today = new Date();
       const formattedDate = today.toLocaleDateString("en-US", {
         weekday: "long", // "Monday"
@@ -160,6 +184,7 @@ const MainProvider = ({ children }) => {
     }
   };
 
+  //for receiving from customers table
   const receivePayment = async (selectedCustomer, amount) => {
     const updatedCustomers = allData.customers.map((customer) =>
       customer.businessName === selectedCustomer.businessName
@@ -252,6 +277,10 @@ const MainProvider = ({ children }) => {
     inventoryData: allData.inventory,
     customersData: allData.customers,
     transactionsData: [...allData.transactions].sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    ),
+    // transactionsData: allData.transactions,
+    salesData: [...allData.sales].sort(
       // sorting by date before sending data
       (a, b) => new Date(b.date) - new Date(a.date)
     ),
@@ -259,7 +288,8 @@ const MainProvider = ({ children }) => {
     user,
     addProductsToInventory,
     addCustomersToCustomers,
-    addTransactionToTransactions,
+    addSalesToSales,
+    addTransactionsToTransactions,
     updateOutStandingBalance,
     addStock,
     updateStock,

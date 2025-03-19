@@ -40,20 +40,36 @@ const CustomersTable = () => {
 
   const handleReceivePayment = async () => {
     setLoading(true);
-    await receivePayment(
-      selectedCustomer,
-      Number(selectedCustomer.outstandingBalance - inputData)
+    await Promise.all(
+      receivePayment(
+        selectedCustomer,
+        Number(selectedCustomer.outstandingBalance - inputData)
+      ),
+      addTransactionsToTransactions({
+        buyer: selectedCustomer.businessName,
+        date: new Date(date).toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+        totalAmount: Number(inputData),
+      })
     );
-    await addTransactionsToTransactions({
-      buyer: selectedCustomer.businessName,
-      date: new Date(date).toLocaleDateString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
-      totalAmount: Number(inputData),
-    });
+    // await receivePayment(
+    //   selectedCustomer,
+    //   Number(selectedCustomer.outstandingBalance - inputData)
+    // );
+    // await addTransactionsToTransactions({
+    //   buyer: selectedCustomer.businessName,
+    //   date: new Date(date).toLocaleDateString("en-US", {
+    //     weekday: "long",
+    //     year: "numeric",
+    //     month: "long",
+    //     day: "numeric",
+    //   }),
+    //   totalAmount: Number(inputData),
+    // });
     await fetchData(user.email);
     setShowReceivePayment(false);
     setLoading(false);

@@ -56,8 +56,9 @@ const DispatchProduct = () => {
       await updateOutStandingBalance(customer, totalAmount);
     }
     if (payment === "cash") {
+      console.log(date);
       await addTransactionsToTransactions({
-        date: date.toLocaleDateString("en-US", {
+        date: new Date(date).toLocaleDateString("en-US", {
           weekday: "long",
           year: "numeric",
           month: "long",
@@ -67,9 +68,12 @@ const DispatchProduct = () => {
         totalAmount: totalAmount,
       });
     }
-    await addSalesToSales(products, customer);
-
-    await updateStock(dispatchedItems);
+    await Promise.all(
+      addSalesToSales(products, customer),
+      updateStock(dispatchedItems)
+    );
+    // await addSalesToSales(products, customer);
+    // await updateStock(dispatchedItems);
     await fetchData(user.email);
     setShowSummary(false);
     setLoading(false);

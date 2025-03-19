@@ -6,7 +6,14 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth, db } from "../Config/firebase";
-import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const MainContext = createContext();
@@ -39,10 +46,11 @@ const MainProvider = ({ children }) => {
         name,
         email,
       });
-      await setDoc(doc(db, "inventory", userData.user.email), {});
-      await setDoc(doc(db, "customers", userData.user.email), {});
-      await setDoc(doc(db, "sales", userData.user.email), {});
-      await setDoc(doc(db, "transactions", userData.user.email), {});
+
+      const collections = ["inventory", "customers", "sales", "transactions"];
+      await Promise.all(
+        collections.map((item) => setDoc(doc(db, item, user.email), {}))
+      );
 
       setUser(userData.user);
       await logIn(email, password);
@@ -80,45 +88,29 @@ const MainProvider = ({ children }) => {
       };
 
       try {
-        const inventoryRef = doc(db, "inventory", email);
-        const inventorySnapshot = await getDoc(inventoryRef);
-        if (inventorySnapshot.exists()) {
-          data.inventory = inventorySnapshot.data().allProducts || [];
-        }
-      } catch (err) {
-        console.log("error inside try catch : \n" + err);
-      }
+        const collections = ["inventory", "customers", "sales", "transactions"];
 
-      try {
-        const customersRef = doc(db, "customers", email);
-        const customersSnapshot = await getDoc(customersRef);
-        if (customersSnapshot.exists()) {
-          data.customers = customersSnapshot.data().allCustomers || [];
-        }
-      } catch (err) {
-        console.log("error inside try catch : \n" + err);
-      }
-
-      try {
-        const transactionsRef = doc(db, "transactions", email);
-        const transactionsSnapshot = await getDoc(transactionsRef);
-        if (transactionsSnapshot.exists()) {
-          data.transactions =
-            transactionsSnapshot.data().allTransactionData || [];
-        }
-      } catch (err) {
-        console.log("error inside try catch : \n" + err);
-      }
-
-      try {
-        const salesRef = doc(db, "sales", email);
-        const salesSnapshot = await getDoc(salesRef);
-        if (salesSnapshot.exists()) {
-          data.sales = salesSnapshot.data().allTransactions || []; // parent array name is allTransactions for sales also
-        }
-      } catch (err) {
-        console.log("error inside try catch : \n" + err);
-      }
+        const [
+          inventorySnapshot,
+          customersSnapshot,
+          salesSnapshot,
+          transactionsSnapshot,
+        ] = await Promise.all(
+          collections.map((item) => getDoc(doc(db, item, email)))
+        );
+        data.inventory = inventorySnapshot.exists()
+          ? inventorySnapshot.data().allProducts || []
+          : [];
+        data.customers = customersSnapshot.exists()
+          ? customersSnapshot.data().allCustomers || []
+          : [];
+        data.transactions = transactionsSnapshot.exists()
+          ? transactionsSnapshot.data().allTransactionData || []
+          : [];
+        data.sales = salesSnapshot.exists()
+          ? salesSnapshot.data().allTransactions || []
+          : [];
+      } catch {}
 
       setAllData(data);
     } catch (error) {
@@ -126,32 +118,22 @@ const MainProvider = ({ children }) => {
     }
   };
 
-  const addProductsToInventory = async (item) => {
+  const adderFunctionForFirebase = async (collection, fieldName, item) => {
     try {
-      const inventoryRef = doc(db, "inventory", user.email);
-      await updateDoc(inventoryRef, {
-        allProducts: arrayUnion(item),
+      updateDoc(doc(db, collection, user.email), {
+        [fieldName]: arrayUnion(item),
       });
-    } catch (error) {}
+    } catch {
+      console.log(error);
+    }
   };
 
-  const addCustomersToCustomers = async (item) => {
-    try {
-      const inventoryRef = doc(db, "customers", user.email);
-      await updateDoc(inventoryRef, {
-        allCustomers: arrayUnion(item),
-      });
-    } catch (error) {}
-  };
-
-  const addTransactionsToTransactions = async (item) => {
-    try {
-      const transactionsRef = doc(db, "transactions", user.email);
-      await updateDoc(transactionsRef, {
-        allTransactionData: arrayUnion(item),
-      });
-    } catch (error) {}
-  };
+  const addProductsToInventory = (item) =>
+    adderFunctionForFirebase("inventory", "allProducts", item);
+  const addCustomersToCustomers = (item) =>
+    adderFunctionForFirebase("customers", "allCustomers", item);
+  const addTransactionsToTransactions = (item) =>
+    adderFunctionForFirebase("transactions", "allTransactionData", item);
 
   // addSalesToSales
   const addSalesToSales = async (item, customer) => {
@@ -249,16 +231,16 @@ const MainProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const unSub = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setUser(user);
-
-        await fetchData(user.email);
-
-        const nameSnap = await getDoc(doc(db, "users", user.email));
-        setCurrentUserName(
-          nameSnap.exists() ? nameSnap.data().companyName : ""
-        );
+    const unSub = onAuthStateChanged(auth, async (authUser) => {
+      if (authUser) {
+        if (!user || user.email !== authUser.email) {
+          setUser(authUser);
+          await fetchData(authUser.email);
+          const nameSnap = await getDoc(doc(db, "users", authUser.email));
+          setCurrentUserName(
+            nameSnap.exists() ? nameSnap.data().companyName : ""
+          );
+        }
       } else {
         if (!unAuthRoute.includes(location.pathname)) {
           navigate("/login");
@@ -268,7 +250,7 @@ const MainProvider = ({ children }) => {
     });
 
     return () => unSub();
-  }, []);
+  }, [user]);
 
   const value = {
     signUp,

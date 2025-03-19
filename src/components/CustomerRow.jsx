@@ -11,7 +11,9 @@ const CustomerRow = ({ item, setShowReceivePayment, setSelectedCustomer }) => {
       <td className="px-3 py-3">{item.address}</td>
       <td className="px-3 py-3">{item.contactNumber}</td>
       <td className="px-3 py-3">{item.email}</td>
-      <td className="px-3 py-3">Rs. {item.outstandingBalance}</td>
+      <td className="px-3 py-3">
+        Rs. {item.outstandingBalance.toLocaleString("en-IN")}
+      </td>
       <td className="px-3 py-3">
         <div title="Receive Payment" className="font-medium">
           <GiReceiveMoney

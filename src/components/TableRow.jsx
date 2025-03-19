@@ -11,8 +11,12 @@ const TableRow = ({ item, setShowAddStockPopup, setSelectedItem }) => {
       </th>
       <td className="px-3 py-3">{item.category}</td>
       <td className="px-3 py-3">{item.quantity}</td>
-      <td className="px-3 py-3">Rs. {item.costPrice}.00</td>
-      <td className="px-3 py-3">Rs. {item.sellingPrice}.00</td>
+      <td className="px-3 py-3">
+        Rs. {item.costPrice.toLocaleString("en-IN")}.00
+      </td>
+      <td className="px-3 py-3">
+        Rs. {item.sellingPrice.toLocaleString("en-IN")}.00
+      </td>
       <td className="px-3 py-3">{item.supplier}</td>
       <td className="px-3 py-3">
         <div title="Add Stock" className="font-medium flex gap-3">

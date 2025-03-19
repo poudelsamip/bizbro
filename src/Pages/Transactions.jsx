@@ -172,7 +172,9 @@ const Transactions = () => {
                   </td>
                   <td className="px-3 py-3">
                     {Object.entries(item.products).map(([key, itm]) => (
-                      <p key={`itemName${key}${itm.price}`}>Rs. {itm.price}</p>
+                      <p key={`itemName${key}${itm.price}`}>
+                        Rs. {itm.price.toLocaleString("en-IN")}
+                      </p>
                     ))}
                   </td>
                   <td className="px-3 py-3">
@@ -184,12 +186,18 @@ const Transactions = () => {
                   </td>
                   <td className="px-3 py-3">
                     {Object.entries(item.products).map(([key, itm]) => (
-                      <p key={`itemName${key}${itm.totalPrice}`}>
+                      <p
+                        key={`itemName${key}${itm.totalPrice.toLocaleString(
+                          "en-IN"
+                        )}`}
+                      >
                         Rs. {itm.totalPrice}
                       </p>
                     ))}
                   </td>
-                  <td className="px-3 py-3">Rs. {item.grandTotal}</td>
+                  <td className="px-3 py-3">
+                    Rs. {item.grandTotal.toLocaleString("en-IN")}
+                  </td>
                   <td className="px-3 py-3">{item.date}</td>
                 </tr>
               ))}

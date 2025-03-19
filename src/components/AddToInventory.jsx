@@ -48,7 +48,7 @@ const AddToInventory = ({ onClose }) => {
   return (
     <div className="h-full">
       {showSummary && (
-        <div className="fixed inset-0 bg-black flex items-center justify-center z-10">
+        <div className="fixed inset-0 bg-gray-600 flex items-center justify-center z-10">
           <div className="bg-gray-800 p-6 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
             <h2 className="text-2xl font-semibold text-white mb-4">
               Inventory Addition Summary
@@ -90,7 +90,8 @@ const AddToInventory = ({ onClose }) => {
             </div>
             <div className="bg-gray-700 p-3 rounded-lg mb-4">
               <p className="text-white text-xl font-medium">
-                Total Investment: Rs. {calculateTotalCost()}
+                Total Investment: Rs.{" "}
+                {calculateTotalCost().toLocaleString("en-IN")}
               </p>
             </div>
             <div className="flex justify-end gap-3">

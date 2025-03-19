@@ -9,6 +9,7 @@ const Receipt = ({
   customer,
   customerAddress,
   resetForm,
+  currentUserName,
 }) => {
   const pdfRef = useRef();
 
@@ -63,11 +64,8 @@ const Receipt = ({
         <div ref={pdfRef} className="px-10">
           <div>
             <h1 className="text-xl font-semibold text-black text-center">
-              ABC TECH STORE
+              {currentUserName}
             </h1>
-            <p className="text-center text-black text-sm">
-              123 Jane Street, SanFransisco, California
-            </p>
             <h1 className="text-lg font-semibold text-black text-center my-4">
               Invoice
             </h1>

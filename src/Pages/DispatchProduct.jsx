@@ -107,7 +107,7 @@ const DispatchProduct = () => {
                       </p>
                       <p className="text-gray-300">
                         <span className="text-gray-400">Total:</span> Rs.{" "}
-                        {product.totalPrice}
+                        {product.totalPrice.toLocaleString("en-IN")}
                       </p>
                     </div>
                   </div>
@@ -120,10 +120,9 @@ const DispatchProduct = () => {
                 Total Dispatch Value:
                 <span>
                   Rs.{" "}
-                  {products.reduce(
-                    (acc, product) => acc + product.totalPrice,
-                    0
-                  )}
+                  {products
+                    .reduce((acc, product) => acc + product.totalPrice, 0)
+                    .toLocaleString("en-IN")}
                 </span>
               </p>
             </div>

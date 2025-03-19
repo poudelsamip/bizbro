@@ -79,42 +79,40 @@ const MainProvider = ({ children }) => {
   };
 
   const fetchData = async (email) => {
+    const data = {
+      inventory: [],
+      transactions: [],
+      customers: [],
+      sales: [],
+    };
+
     try {
-      const data = {
-        inventory: [],
-        transactions: [],
-        customers: [],
-        sales: [],
-      };
+      const collections = ["inventory", "customers", "sales", "transactions"];
 
-      try {
-        const collections = ["inventory", "customers", "sales", "transactions"];
-
-        const [
-          inventorySnapshot,
-          customersSnapshot,
-          salesSnapshot,
-          transactionsSnapshot,
-        ] = await Promise.all(
-          collections.map((item) => getDoc(doc(db, item, email)))
-        );
-        data.inventory = inventorySnapshot.exists()
-          ? inventorySnapshot.data().allProducts || []
-          : [];
-        data.customers = customersSnapshot.exists()
-          ? customersSnapshot.data().allCustomers || []
-          : [];
-        data.transactions = transactionsSnapshot.exists()
-          ? transactionsSnapshot.data().allTransactionData || []
-          : [];
-        data.sales = salesSnapshot.exists()
-          ? salesSnapshot.data().allTransactions || []
-          : [];
-      } catch {}
+      const [
+        inventorySnapshot,
+        customersSnapshot,
+        salesSnapshot,
+        transactionsSnapshot,
+      ] = await Promise.all(
+        collections.map((item) => getDoc(doc(db, item, email)))
+      );
+      data.inventory = inventorySnapshot.exists()
+        ? inventorySnapshot.data().allProducts || []
+        : [];
+      data.customers = customersSnapshot.exists()
+        ? customersSnapshot.data().allCustomers || []
+        : [];
+      data.transactions = transactionsSnapshot.exists()
+        ? transactionsSnapshot.data().allTransactionData || []
+        : [];
+      data.sales = salesSnapshot.exists()
+        ? salesSnapshot.data().allTransactions || []
+        : [];
 
       setAllData(data);
     } catch (error) {
-      console.log("Error fetching data: ", error);
+      console.log(error.code);
     }
   };
 

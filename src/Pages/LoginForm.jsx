@@ -1,9 +1,12 @@
 import React, { useContext, useState } from "react";
 import { MainContext } from "../Context/MainProvider";
+import { FaRegEyeSlash } from "react-icons/fa";
+import { LuEye } from "react-icons/lu";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [visible, setVisible] = useState(false);
   const { logIn, error } = useContext(MainContext);
   const [loading, setLoading] = useState(false);
 
@@ -41,12 +44,12 @@ const LoginForm = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
               placeholder="name@company.com"
               required
             />
           </div>
-          <div className="mb-6">
+          <div className="mb-6 relative">
             <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-500"
@@ -54,14 +57,21 @@ const LoginForm = () => {
               Password
             </label>
             <input
-              type="password"
+              type={visible ? "text" : "password"}
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
               placeholder="••••••••"
               required
             />
+            <button
+              type="button"
+              className="absolute top-7 right-3 text-white text-2xl cursor-pointer"
+              onClick={() => setVisible(!visible)}
+            >
+              {visible ? <FaRegEyeSlash /> : <LuEye />}
+            </button>
             {error && <p className="mt-2 text-red-400 text-xs">{error}</p>}
           </div>
           <button

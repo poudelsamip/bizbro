@@ -5,7 +5,7 @@ import { MdEmail } from "react-icons/md";
 import { IoCloseSharp } from "react-icons/io5";
 
 const Hero = () => {
-  const [support, setSupport] = useState(true);
+  const [support, setSupport] = useState(false);
 
   return (
     <div className="flex items-center justify-center h-full bg-gray-900 text-white text-center">

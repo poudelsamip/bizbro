@@ -20,6 +20,7 @@ const DispatchProduct = () => {
   const [date, setDate] = useState(today);
   const [payment, setPayment] = useState();
 
+  const [totalBillAmount, setTotalBillAmount] = useState(0);
   const {
     customersData,
     addSalesToSales,
@@ -50,6 +51,7 @@ const DispatchProduct = () => {
       (acc, product) => acc + product.totalPrice,
       0
     );
+    setTotalBillAmount(totalAmount);
     let dispatchedItems = [];
     products.map((item) => dispatchedItems.push(item));
     if (payment === "credit") {
@@ -87,9 +89,9 @@ const DispatchProduct = () => {
           products={products}
           setShowReceipt={setShowReceipt}
           customer={customer}
-          setProducts={setProducts}
           customerAddress={customerAddress}
           resetForm={resetForm}
+          totalAmount={totalBillAmount}
         />
       )}
 

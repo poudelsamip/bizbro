@@ -1,7 +1,8 @@
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-import React, { useRef } from "react";
+import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
+import { saveAs } from "file-saver";
+import React, { useContext } from "react";
 import { IoClose } from "react-icons/io5";
+import { MainContext } from "../Context/MainProvider";
 
 const Receipt = ({
   products,
@@ -9,46 +10,112 @@ const Receipt = ({
   customer,
   customerAddress,
   resetForm,
-  currentUserName,
+  totalAmount,
 }) => {
-  const pdfRef = useRef();
+  const { currentUserName } = useContext(MainContext);
 
-  const handlePdfDownload = async () => {
-    const element = pdfRef.current;
-    if (!element) {
-      return;
-    }
+  const generatePdf = async () => {
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage([600, 800]);
+    const { width, height } = page.getSize();
+    const fontSize = 12;
+    const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    let y = height - 50;
 
-    const canvas = await html2canvas(element, {
-      backgroundColor: "white",
-    });
-    const data = canvas.toDataURL("image/png");
-
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "px",
-      format: "a4",
+    const formattedDate = new Date().toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
 
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-
-    const imgWidth = pdfWidth - 20; //20px margin
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    pdf.addImage(data, "PNG", 10, 10, imgWidth, imgHeight);
-
-    pdf.save("invoice.pdf");
-  };
-
-  const giveDate = () => {
-    const today = new Date();
-    const formattedDate = today.toLocaleDateString("en-US", {
-      year: "numeric", // "2025"
-      month: "short", // "March"
-      day: "numeric", // "14"
+    page.drawText(`Date: ${formattedDate}`, {
+      x: 50,
+      y,
+      size: fontSize,
+      font: boldFont,
+      color: rgb(0, 0, 0),
     });
-    return formattedDate;
+    y -= 40;
+    page.drawText(currentUserName, {
+      x: 50,
+      y,
+      size: 18,
+      font: boldFont,
+      color: rgb(0, 0, 0),
+    });
+    y -= 30;
+    page.drawText("Invoice", {
+      x: 50,
+      y,
+      size: 16,
+      font: boldFont,
+      color: rgb(0, 0, 0),
+    });
+    y -= 20;
+    page.drawText(`Bill to: ${customer}`, { x: 50, y, size: fontSize });
+    y -= 15;
+    page.drawText(`Address: ${customerAddress}`, { x: 50, y, size: fontSize });
+    y -= 40;
+
+    const headers = ["SN", "Product", "Qty", "Rate", "Total"];
+    const columnWidths = [40, 200, 60, 80, 80];
+    let x = 50;
+
+    headers.forEach((header, i) => {
+      page.drawText(header, {
+        x,
+        y,
+        size: fontSize,
+        font: boldFont,
+        color: rgb(0, 0, 0),
+      });
+      x += columnWidths[i];
+    });
+    y -= 20;
+
+    products.forEach((item, index) => {
+      x = 50;
+      const rowData = [
+        index + 1,
+        item.itemName,
+        item.quantity,
+        `Rs.${item.price}`,
+        `Rs.${item.totalPrice}`,
+      ];
+      rowData.forEach((text, i) => {
+        page.drawText(String(text), {
+          x,
+          y,
+          size: fontSize,
+          color: rgb(0, 0, 0),
+        });
+        x += columnWidths[i];
+      });
+      y -= 20;
+    });
+
+    y -= 20;
+    page.drawText("Total Amount: ", {
+      x: 50,
+      y,
+      size: fontSize,
+      font: boldFont,
+      color: rgb(0, 0, 0),
+    });
+    page.drawText(`Rs. ${totalAmount}`, {
+      x: 430,
+      y,
+      size: fontSize,
+      font: boldFont,
+      color: rgb(0, 0, 0),
+    });
+
+    const pdfBytes = await pdfDoc.save();
+    const blob = new Blob([pdfBytes], { type: "application/pdf" });
+    const downloadName = `${
+      new Date().toISOString().split("T")[0] + " - " + customer
+    }`;
+    saveAs(blob, downloadName);
   };
 
   return (
@@ -61,27 +128,22 @@ const Receipt = ({
             resetForm();
           }}
         />
-        <div ref={pdfRef} className="px-10">
-          <div>
-            <h1 className="text-xl font-semibold text-black text-center">
-              {currentUserName}
-            </h1>
-            <h1 className="text-lg font-semibold text-black text-center my-4">
-              Invoice
-            </h1>
-          </div>
-          <div className="flex justify-between gap-25">
-            <div>
-              <p className="text-sm font-medium text-black">
-                Bill to: <span className="font-semibold">{customer}</span>
-              </p>
-              <p className="text-sm font-medium text-black">
-                Address:{" "}
-                <span className="font-semibold">{customerAddress}</span>
-              </p>
-            </div>
-            <p className="text-sm font-medium text-black">Date: {giveDate()}</p>
-          </div>
+        <div className="px-10">
+          <p className="text-sm font-medium text-black text-right">
+            Date: {new Date().toLocaleDateString()}
+          </p>
+          <h1 className="text-2xl font-bold text-black text-center">
+            {currentUserName}
+          </h1>
+          <h1 className="text-lg font-semibold text-black text-center mb-2">
+            Invoice
+          </h1>
+          <p className="text-sm font-medium text-black">
+            Bill to: <span className="font-semibold">{customer}</span>
+          </p>
+          <p className="text-sm font-medium text-black">
+            Address: <span className="font-semibold">{customerAddress}</span>
+          </p>
           <div className="mt-6">
             <table className="w-full border-collapse">
               <thead className="text-black">
@@ -107,21 +169,26 @@ const Receipt = ({
                     <td className="px-3 py-3 border-b text-sm">
                       {item.quantity}
                     </td>
-                    <td className="px-3 py-3 border-b text-sm">{item.price}</td>
                     <td className="px-3 py-3 border-b text-sm">
-                      {item.totalPrice}
+                      Rs. {item.price}
+                    </td>
+                    <td className="px-3 py-3 border-b text-sm">
+                      Rs. {item.totalPrice}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          <p className="text-right text-black font-bold mt-4">
+            Total Amount: Rs. {totalAmount}
+          </p>
         </div>
         <div className="flex justify-end">
           <button
             className="mt-10 text-sm px-3 py-2 bg-black active:bg-black cursor-pointer border border-black rounded text-white"
             type="button"
-            onClick={handlePdfDownload}
+            onClick={generatePdf}
           >
             Download Invoice
           </button>

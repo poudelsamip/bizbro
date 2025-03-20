@@ -235,7 +235,8 @@ const MainProvider = ({ children }) => {
           setUser(authUser);
           await fetchData(authUser.email);
           const nameSnap = await getDoc(doc(db, "users", authUser.email));
-          setCurrentUserName(
+
+          setCurrentUserName(() =>
             nameSnap.exists() ? nameSnap.data().companyName : ""
           );
         }

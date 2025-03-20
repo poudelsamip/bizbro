@@ -11,6 +11,7 @@ const Receipt = ({
   customerAddress,
   resetForm,
   totalAmount,
+  date,
 }) => {
   const { currentUserName } = useContext(MainContext);
 
@@ -22,7 +23,7 @@ const Receipt = ({
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
     let y = height - 50;
 
-    const formattedDate = new Date().toLocaleDateString("en-US", {
+    const formattedDate = new Date(date).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",
@@ -113,13 +114,13 @@ const Receipt = ({
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const downloadName = `${
-      new Date().toISOString().split("T")[0] + " - " + customer
+      new Date(date).toISOString().split("T")[0] + " - " + customer
     }`;
     saveAs(blob, downloadName);
   };
 
   return (
-    <div className="z-10 fixed inset-0 backdrop-blur-xs text-white">
+    <div className="z-11 fixed inset-0 backdrop-blur-xs text-white">
       <div className="max-w-[80vw] w-fit mx-auto h-full bg-white p-6 rounded-lg shadow-lg relative">
         <IoClose
           className="text-black absolute top-0 right-[-30px] text-3xl cursor-pointer"
@@ -130,7 +131,7 @@ const Receipt = ({
         />
         <div className="px-10">
           <p className="text-sm font-medium text-black text-right">
-            Date: {new Date().toLocaleDateString()}
+            Date: {new Date(date).toLocaleDateString()}
           </p>
           <h1 className="text-2xl font-bold text-black text-center">
             {currentUserName}

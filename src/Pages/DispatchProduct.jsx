@@ -92,6 +92,7 @@ const DispatchProduct = () => {
           customerAddress={customerAddress}
           resetForm={resetForm}
           totalAmount={totalBillAmount}
+          date={date}
         />
       )}
 

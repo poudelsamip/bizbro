@@ -1,13 +1,18 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { MainContext } from "../Context/MainProvider";
 import { RiExpandUpDownFill } from "react-icons/ri";
+import { IoReceipt } from "react-icons/io5";
+import Receipt from "../components/Receipt";
 
 const Sales = () => {
-  const { salesData } = useContext(MainContext);
+  const { salesData, customersData } = useContext(MainContext);
   const [filteredData, setFilteredData] = useState(salesData);
   const dateRef = useRef();
+
   const [sortedByGrandTotal, setSortedByGrandTotal] = useState("default");
   const [sortedByDate, setSortedByDate] = useState("default");
+  const [showReceipt, setShowReceipt] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const handleSearch = (e) => {
     const searchText = e.target.value.toLowerCase();
@@ -86,6 +91,21 @@ const Sales = () => {
 
   return (
     <div className="h-full">
+      {showReceipt && (
+        <Receipt
+          products={Object.values(selectedItem.products)}
+          setShowReceipt={setShowReceipt}
+          customer={selectedItem.customer}
+          customerAddress={
+            customersData.find(
+              (item) => item.businessName === selectedItem.customer
+            ).address
+          }
+          resetForm={() => {}}
+          totalAmount={selectedItem.grandTotal}
+          date={selectedItem.date}
+        />
+      )}
       <h1 className="text-4xl font-semibold text-white mb-2 drop-shadow-xl">
         SALES 💸
       </h1>
@@ -128,7 +148,7 @@ const Sales = () => {
                   Price
                 </th>
                 <th scope="col" className="px-3 py-3">
-                  Quantity
+                  Qty
                 </th>
                 <th scope="col" className="px-3 py-3">
                   Total
@@ -150,6 +170,9 @@ const Sales = () => {
                   >
                     Date <RiExpandUpDownFill />
                   </span>
+                </th>
+                <th scope="col" className="px-3 py-3">
+                  Action
                 </th>
               </tr>
             </thead>
@@ -196,7 +219,22 @@ const Sales = () => {
                   <td className="px-3 py-3">
                     Rs. {item.grandTotal.toLocaleString("en-IN")}
                   </td>
-                  <td className="px-3 py-3">{item.date}</td>
+                  <td className="px-3 py-3">
+                    {new Date(item.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </td>
+                  <td className="px-3 py-3">
+                    <IoReceipt
+                      title="See Invoice"
+                      onClick={() => {
+                        setSelectedItem(item);
+                        setShowReceipt(true);
+                      }}
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>

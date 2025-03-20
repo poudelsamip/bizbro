@@ -125,12 +125,12 @@ const Dashboard = () => {
   //extract days only from current month transactions
   const dates = [
     ...new Set(
-      currentMonthTransactions.map((transaction) => {
-        const dateStr = transaction.date.split(",")[1].trim();
-        return dateStr.split(" ")[1];
-      })
+      currentMonthTransactions.map(
+        (transaction) => transaction.date.split(",")[1].trim().split(" ")[1]
+      )
     ),
   ].sort((a, b) => parseInt(a) - parseInt(b));
+
   dates.forEach((day) => {
     const dayTransactions = currentMonthTransactions.filter((transaction) =>
       transaction.date.includes(`${currentMonth} ${day}`)
@@ -146,7 +146,7 @@ const Dashboard = () => {
   });
 
   //monthly growth
-  const prevMonthSales = 45000;
+  const prevMonthSales = 10078000;
   const monthOverMonthGrowth =
     ((totalSales - prevMonthSales) / prevMonthSales) * 100;
 

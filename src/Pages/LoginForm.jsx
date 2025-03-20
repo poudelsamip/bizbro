@@ -19,14 +19,14 @@ const LoginForm = () => {
 
   return (
     <div className="flex justify-center items-center h-full">
-      <div className="absolute top-5 mx-auto border-3 border-green-900 bg-green-500 rounded px-5 py-3">
+      <div className="absolute top-5 mx-auto border-3 border-green-900 bg-green-500 px-5 py-3">
         For Demo use this login credential
         <br />
         email : demo@gmail.com
         <br />
         password : demopassword
       </div>
-      <div className="w-full max-w-md bg-gray-800 p-6 rounded-lg shadow-lg text-white">
+      <div className="w-full max-w-md bg-gray-800 p-6 shadow-lg text-white">
         <h2 className="text-md text-center">Welcome to 👊BizBro</h2>
 
         <h2 className="text-4xl font-bold text-center mb-6">Login</h2>
@@ -44,7 +44,7 @@ const LoginForm = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              className="w-full px-4 py-2 border border-gray-300 outline-0"
               placeholder="name@company.com"
               required
             />
@@ -61,7 +61,7 @@ const LoginForm = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              className="w-full px-4 py-2 border border-gray-300 outline-0"
               placeholder="••••••••"
               required
             />
@@ -80,7 +80,7 @@ const LoginForm = () => {
               loading
                 ? "cursor-not-allowed bg-blue-500"
                 : "cursor-pointer bg-blue-700"
-            } w-full  py-2  text-white rounded-lg  `}
+            } w-full  py-2  text-white`}
           >
             {loading ? "Logging In ..." : " Log In"}
           </button>

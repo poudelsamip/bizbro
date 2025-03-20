@@ -27,12 +27,12 @@ const SignupForm = () => {
 
   return (
     <div className="flex justify-center items-center h-full">
-      <div className="absolute top-5 right-5 border-3 border-green-900 bg-green-500 rounded px-5 py-3">
+      <div className="absolute top-5 right-5 border-3 border-green-900 bg-green-500 px-5 py-3">
         login credential for demo account
         <br />
         is given in login page
       </div>
-      <div className="w-full max-w-md bg-gray-800 p-6 rounded-lg shadow-lg text-white">
+      <div className="w-full max-w-md bg-gray-800 p-6 shadow-lg text-white">
         <h2 className="text-md text-center">Welcome to 👊BizBro</h2>
         <h2 className="text-4xl font-bold text-center mb-6">Sign Up</h2>
         <form onSubmit={handleSignup}>
@@ -48,7 +48,7 @@ const SignupForm = () => {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 outline-none "
               // placeholder="eg. John Wick"
               required
             />
@@ -66,7 +66,7 @@ const SignupForm = () => {
               id="companyName"
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 outline-0"
               // placeholder="eg. ABC INC."
               required
             />
@@ -84,7 +84,7 @@ const SignupForm = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 outline-0"
               // placeholder="name@company.com"
               required
             />
@@ -102,7 +102,7 @@ const SignupForm = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 outline-0"
               // placeholder="••••••••"
               required
             />
@@ -120,7 +120,7 @@ const SignupForm = () => {
               id="confirmPassword"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 outline-0"
               // placeholder="••••••••"
               required
             />
@@ -133,7 +133,7 @@ const SignupForm = () => {
               loading
                 ? "cursor-not-allowed bg-blue-500"
                 : "cursor-pointer bg-blue-700"
-            } w-full  py-2  text-white rounded-lg  `}
+            } w-full  py-2  text-white`}
           >
             {loading ? "Signing Up ..." : " Sign Up"}
           </button>

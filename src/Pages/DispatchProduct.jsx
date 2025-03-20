@@ -58,7 +58,6 @@ const DispatchProduct = () => {
       await updateOutStandingBalance(customer, totalAmount);
     }
     if (payment === "cash") {
-      console.log(date);
       await addTransactionsToTransactions({
         date: new Date(date).toLocaleDateString("en-US", {
           weekday: "long",
@@ -71,7 +70,7 @@ const DispatchProduct = () => {
       });
     }
     await Promise.all([
-      addSalesToSales(products, customer),
+      addSalesToSales(products, customer, date),
       updateStock(dispatchedItems),
     ]);
     // await addSalesToSales(products, customer);

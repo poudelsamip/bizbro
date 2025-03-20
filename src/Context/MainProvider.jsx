@@ -134,11 +134,11 @@ const MainProvider = ({ children }) => {
     adderFunctionForFirebase("transactions", "allTransactionData", item);
 
   // addSalesToSales
-  const addSalesToSales = async (item, customer) => {
+  const addSalesToSales = async (item, customer, date) => {
     try {
       const transactionsRef = doc(db, "sales", user.email);
-      const today = new Date();
-      const formattedDate = today.toLocaleDateString("en-US", {
+
+      const formattedDate = new Date(date).toLocaleDateString("en-US", {
         weekday: "long", // "Monday"
         year: "numeric", // "2025"
         month: "long", // "March"

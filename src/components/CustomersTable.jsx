@@ -111,7 +111,7 @@ const CustomersTable = () => {
           <div className="max-w-md">
             <input
               type="text"
-              className="block w-full px-4 py-2 text-white text-sm border border-gray-400 bg-gray-800 rounded outline-0"
+              className="block w-full px-4 py-2 text-white text-sm border border-gray-400 bg-gray-800 outline-0"
               placeholder="Search Customer"
               onChange={(e) => handleSearch(e)}
             />
@@ -119,7 +119,7 @@ const CustomersTable = () => {
           <div>
             <button
               onClick={() => setShowAddCustomer(true)}
-              className="border bg-green-500 py-1 px-2 rounded inline-flex items-center gap-2 cursor-pointer active:bg-green-600"
+              className="border bg-green-500 py-1 px-2 inline-flex items-center gap-2 cursor-pointer active:bg-green-600"
             >
               Add New Customer <MdGroupAdd size={20} />
             </button>
@@ -187,7 +187,7 @@ const CustomersTable = () => {
                   <label className="text-sm text-gray-300">Date</label>
                   <input
                     type="date"
-                    className="bg-gray-700 border border-gray-500 text-gray-300 text-sm rounded-lg w-full py-1 px-2"
+                    className="bg-gray-700 border border-gray-500 text-gray-300 text-sm w-full py-1 px-2"
                     // defaultValue={date}
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
@@ -198,7 +198,7 @@ const CustomersTable = () => {
                   <input
                     type="number"
                     min={1}
-                    className="w-full p-2 text-gray-300 bg-gray-600 rounded-md"
+                    className="w-full p-2 text-gray-300 bg-gray-600"
                     value={inputData}
                     onChange={(e) => setInputData(e.target.value)}
                   />
@@ -210,7 +210,7 @@ const CustomersTable = () => {
                 </div>
                 <div className="flex justify-end gap-3">
                   <button
-                    className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600"
+                    className="px-4 py-2 bg-gray-700 text-white hover:bg-gray-600"
                     onClick={() => {
                       setInputData(null);
                       setShowReceivePayment(false);
@@ -223,7 +223,7 @@ const CustomersTable = () => {
                       loading || !inputData
                         ? "cursor-not-allowed"
                         : "cursor-pointer  hover:bg-green-600"
-                    } bg-green-700 text-white rounded-lg`}
+                    } bg-green-700 text-white`}
                     onClick={handleReceivePayment}
                     disabled={!inputData || loading}
                   >

@@ -153,6 +153,50 @@ const Dashboard = () => {
   // chart color for charts
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"];
 
+  // Custom tooltip styles for consistent white text across all charts
+  const customTooltipStyle = {
+    backgroundColor: "#333",
+    borderColor: "#555",
+    color: "#fff", // This ensures the text in the tooltip is white
+  };
+
+  // Custom label for pie chart to prevent text overflow
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    index,
+    name,
+  }) => {
+    const RADIAN = Math.PI / 180;
+    // Calculate positioning for label
+    const radius = outerRadius * 0.8;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    // Keep label text short to avoid overflow
+    let customerName = name;
+    if (customerName.length > 10) {
+      customerName = customerName.substring(0, 10) + "...";
+    }
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? "start" : "end"}
+        dominantBaseline="central"
+        fontSize={12}
+      >
+        {`${customerName} ${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
+
   return (
     <div className="p-4 bg-gray-600 min-h-screen">
       <h1 className="text-4xl font-semibold text-white mb-3 drop-shadow-xl">
@@ -160,22 +204,22 @@ const Dashboard = () => {
       </h1>
 
       {/* Summary Cards */}
-      <h1 className="text-md text-gray-50">This Month</h1>
+      <h1 className="text-md text-gray-300">This Month</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-lg shadow p-4">
+        <div className="bg-gray-800 shadow p-4">
           <div className="flex items-center justify-between mb-2">
-            <div className="text-sm font-medium text-gray-500">Total Sales</div>
-            <div className="p-2 bg-blue-100 rounded-full">
-              <TbCurrencyRupeeNepalese className="h-5 w-5 text-blue-600" />
+            <div className="text-sm font-medium text-gray-400">Total Sales</div>
+            <div className="p-2 bg-blue-900">
+              <TbCurrencyRupeeNepalese className="h-5 w-5 text-blue-400" />
             </div>
           </div>
-          <div className="text-2xl font-bold">
+          <div className="text-2xl font-bold text-white">
             Rs.{totalSales.toLocaleString("en-IN")}
           </div>
           <div className="flex items-center mt-2">
             <div
               className={`text-sm ${
-                monthOverMonthGrowth >= 0 ? "text-green-500" : "text-red-500"
+                monthOverMonthGrowth >= 0 ? "text-green-400" : "text-red-400"
               }`}
             >
               {monthOverMonthGrowth >= 0 ? (
@@ -188,47 +232,51 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-4">
+        <div className="bg-gray-800 shadow p-4">
           <div className="flex items-center justify-between mb-2">
-            <div className="text-sm font-medium text-gray-500">
+            <div className="text-sm font-medium text-gray-400">
               Total Quantity Sold
             </div>
-            <div className="p-2 bg-green-100 rounded-full">
-              <BiSolidPackage className="h-5 w-5 text-green-600" />
+            <div className="p-2 bg-green-900">
+              <BiSolidPackage className="h-5 w-5 text-green-400" />
             </div>
           </div>
-          <div className="text-2xl font-bold">
+          <div className="text-2xl font-bold text-white">
             {totalQuantitySold.toLocaleString("en-IN")} units
           </div>
-          <div className="text-sm text-gray-500 mt-2">This month</div>
+          <div className="text-sm text-gray-400 mt-2">This month</div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-4">
+        <div className="bg-gray-800 shadow p-4">
           <div className="flex items-center justify-between mb-2">
-            <div className="text-sm font-medium text-gray-500">
+            <div className="text-sm font-medium text-gray-400">
               Most Sold Item
             </div>
-            <div className="p-2 bg-yellow-100 rounded-full">
-              <FaCartShopping className="h-5 w-5 text-yellow-600" />
+            <div className="p-2 bg-yellow-900">
+              <FaCartShopping className="h-5 w-5 text-yellow-400" />
             </div>
           </div>
-          <div className="text-2xl font-bold">{mostSoldItem.item}</div>
-          <div className="text-sm text-gray-500 mt-2">
+          <div className="text-2xl font-bold text-white">
+            {mostSoldItem.item}
+          </div>
+          <div className="text-sm text-gray-400 mt-2">
             {mostSoldItem.quantity} units sold
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-4">
+        <div className="bg-gray-800 shadow p-4">
           <div className="flex items-center justify-between mb-2">
-            <div className="text-sm font-medium text-gray-500">
+            <div className="text-sm font-medium text-gray-400">
               Biggest Customer
             </div>
-            <div className="p-2 bg-purple-100 rounded-full">
-              <FaUser className="h-5 w-5 text-purple-600" />
+            <div className="p-2 bg-purple-900">
+              <FaUser className="h-5 w-5 text-purple-400" />
             </div>
           </div>
-          <div className="text-2xl font-bold">{biggestCustomer.customer}</div>
-          <div className="text-sm text-gray-500 mt-2">
+          <div className="text-2xl font-bold text-white">
+            {biggestCustomer.customer}
+          </div>
+          <div className="text-sm text-gray-400 mt-2">
             Rs. {biggestCustomer.sales.toLocaleString("en-IN")} in sales
           </div>
         </div>
@@ -237,8 +285,8 @@ const Dashboard = () => {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* Daily Sales Trend */}
-        <div className="bg-white rounded-lg shadow p-4">
-          <h2 className="text-lg font-semibold mb-4 text-gray-700">
+        <div className="bg-gray-800 shadow p-4">
+          <h2 className="text-lg font-semibold mb-4 text-gray-300">
             Daily Sales Trend
           </h2>
           <ResponsiveContainer
@@ -247,10 +295,15 @@ const Dashboard = () => {
             style={{ fontSize: "12px" }}
           >
             <LineChart data={dailySalesTrend}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
-              <YAxis />
-              <Tooltip formatter={(value) => [`Rs. ${value}`, "Sales"]} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#444" />
+              <XAxis dataKey="day" stroke="#aaa" />
+              <YAxis stroke="#aaa" />
+              <Tooltip
+                formatter={(value) => [`Rs. ${value}`, "Sales"]}
+                contentStyle={customTooltipStyle}
+                itemStyle={{ color: "#fff" }}
+                labelStyle={{ color: "#fff" }}
+              />
               <Legend />
               <Line
                 type="monotone"
@@ -263,8 +316,8 @@ const Dashboard = () => {
         </div>
 
         {/* Top 5 Most Sold Products */}
-        <div className="bg-white rounded-lg shadow p-4">
-          <h2 className="text-lg font-semibold mb-4 text-gray-700">
+        <div className="bg-gray-800 shadow p-4">
+          <h2 className="text-lg font-semibold mb-4 text-gray-300">
             Most Sold Products
           </h2>
           <ResponsiveContainer
@@ -273,10 +326,14 @@ const Dashboard = () => {
             style={{ fontSize: "12px" }}
           >
             <BarChart data={top5SoldProducts}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="item" />
-              <YAxis />
-              <Tooltip />
+              <CartesianGrid strokeDasharray="3 3" stroke="#444" />
+              <XAxis dataKey="item" stroke="#aaa" />
+              <YAxis stroke="#aaa" />
+              <Tooltip
+                contentStyle={customTooltipStyle}
+                itemStyle={{ color: "#fff" }}
+                labelStyle={{ color: "#fff" }}
+              />
               <Legend />
               <Bar dataKey="quantity" fill="#82ca9d" name="Quantity Sold" />
             </BarChart>
@@ -287,8 +344,8 @@ const Dashboard = () => {
       {/* Bottom Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top 5 Customers by Sales */}
-        <div className="bg-white rounded-lg shadow p-4">
-          <h2 className="text-lg font-semibold mb-4 text-gray-700">
+        <div className="bg-gray-800 shadow p-4">
+          <h2 className="text-lg font-semibold mb-4 text-gray-300">
             Biggest Customers
           </h2>
           <ResponsiveContainer
@@ -302,9 +359,7 @@ const Dashboard = () => {
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, percent }) =>
-                  `${name} (${(percent * 100).toFixed(0)}%)`
-                }
+                label={renderCustomizedLabel}
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="sales"
@@ -317,46 +372,53 @@ const Dashboard = () => {
                   />
                 ))}
               </Pie>
-              <Tooltip formatter={(value) => [`Rs. ${value}`, "Sales"]} />
+              <Tooltip
+                formatter={(value) => [`Rs. ${value}`, "Sales"]}
+                contentStyle={customTooltipStyle}
+                itemStyle={{ color: "#fff" }}
+                labelStyle={{ color: "#fff" }}
+              />
               <Legend />
             </PieChart>
           </ResponsiveContainer>
         </div>
 
         {/* Inventory Status */}
-        <div className="bg-white rounded-lg shadow p-4">
-          <h2 className="text-lg font-semibold mb-4 text-gray-700">
+        <div className="bg-gray-800 shadow p-4">
+          <h2 className="text-lg font-semibold mb-4 text-gray-300">
             Inventory Status
           </h2>
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="text-sm text-gray-500">Total Inventory Value</p>
-              <p className="text-xl font-bold">
+              <p className="text-sm text-gray-400">Total Inventory Value</p>
+              <p className="text-xl font-bold text-white">
                 Rs. {totalInventoryValue.toLocaleString("en-IN")}
               </p>
             </div>
-            <div className="p-3 bg-indigo-100 rounded-full">
-              <FaWallet className="h-6 w-6 text-indigo-600" />
+            <div className="p-3 bg-indigo-900">
+              <FaWallet className="h-6 w-6 text-indigo-400" />
             </div>
           </div>
           <div className="space-y-3">
             {inventoryData.slice(0, 5).map((item, index) => (
               <div key={index} className="flex justify-between">
                 <div>
-                  <p className="font-medium">{item.itemName}</p>
-                  <p className="text-sm text-gray-500">{item.category}</p>
+                  <p className="font-medium text-white">{item.itemName}</p>
+                  <p className="text-sm text-gray-400">{item.category}</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium">{item.quantity} units</p>
-                  <p className="text-sm text-gray-500">
+                  <p className="font-medium text-white">
+                    {item.quantity} units
+                  </p>
+                  <p className="text-sm text-gray-400">
                     Rs.{item.sellingPrice} each
                   </p>
                 </div>
               </div>
             ))}
           </div>
-          <div className="mt-4 pt-4 border-t border-gray-200">
-            <div className="text-sm text-gray-500">
+          <div className="mt-4 pt-4 border-t border-gray-700">
+            <div className="text-sm text-gray-400">
               {inventoryData.reduce((total, item) => total + item.quantity, 0)}{" "}
               total units in stock
             </div>

@@ -112,18 +112,18 @@ const Sales = () => {
       <div className="mb-1 flex justify-between">
         <input
           type="text"
-          className="block px-4 py-2 text-white text-sm border border-gray-400 bg-gray-800 rounded outline-0 w-[250px]"
+          className="block px-4 py-2 text-white text-sm border border-gray-400 bg-gray-800 outline-0 w-[250px]"
           placeholder="Search By Buyer or Product"
           onChange={(e) => handleSearch(e)}
         />
         <div>
           <input
             type="date"
-            className="text-gray-400  px-4 py-2  text-sm border border-gray-400 bg-gray-800 rounded outline-0"
+            className="text-gray-400  px-4 py-2  text-sm border border-gray-400 bg-gray-800 outline-0"
             ref={dateRef}
           />
           <button
-            className="px-4 h-full text-gray-400 hover:bg-gray-700 hover:text-white border border-gray-400 bg-gray-800 rounded cursor-pointer"
+            className="px-4 h-full text-gray-400 hover:bg-gray-700 hover:text-white border border-gray-400 bg-gray-800 cursor-pointer"
             onClick={filterByDate}
           >
             filter

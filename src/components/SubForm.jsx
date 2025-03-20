@@ -76,7 +76,7 @@ const SubForm = ({ formIndex, removeFormRow, setProducts }) => {
         </label>
         <select
           id={productId}
-          className="bg-gray-700 border border-gray-500 text-white text-sm rounded-lg w-full py-1 px-2"
+          className="bg-gray-700 border border-gray-500 text-gray-200 text-sm w-full py-1 px-2"
           value={currentProduct}
           onChange={handleProductChange}
         >
@@ -95,18 +95,20 @@ const SubForm = ({ formIndex, removeFormRow, setProducts }) => {
           className="text-xs text-gray-300 flex items-center gap-2"
         >
           Quantity:
-          <p
-            className={`text-xs ${
-              isStockInsufficient ? "text-red-500" : "text-gray-400"
-            }`}
-          >
-            (In Stock: {availableStock})
-          </p>
+          {selectedItem && (
+            <p
+              className={`text-xs ${
+                isStockInsufficient ? "text-red-500" : "text-gray-400"
+              }`}
+            >
+              (In Stock: {availableStock})
+            </p>
+          )}
         </label>
         <input
           type="number"
           id={quantityId}
-          className="block w-full px-2 py-1 text-white text-sm rounded-lg bg-gray-700 border border-gray-500"
+          className="block w-full px-2 py-1 text-gray-200 text-sm bg-gray-700 border border-gray-500"
           value={quantity}
           required
           min={1}
@@ -125,7 +127,7 @@ const SubForm = ({ formIndex, removeFormRow, setProducts }) => {
           <input
             type="number"
             id={priceId}
-            className="block w-full py-1 px-2 ps-10 text-white text-sm rounded-lg bg-gray-700 border border-gray-500"
+            className="block w-full py-1 px-2 ps-10 text-gray-200 text-sm bg-gray-700 border border-gray-500"
             value={price || ""}
             required
             min={1}
@@ -145,7 +147,7 @@ const SubForm = ({ formIndex, removeFormRow, setProducts }) => {
           <input
             type="number"
             id={totalId}
-            className="block w-full py-1 px-2 ps-10 text-white text-sm rounded-lg bg-gray-700 border border-gray-500"
+            className="block w-full py-1 px-2 ps-10 text-gray-200 text-sm bg-gray-700 border border-gray-500"
             value={totalPrice || ""}
             required
             min={1}
@@ -156,7 +158,7 @@ const SubForm = ({ formIndex, removeFormRow, setProducts }) => {
 
       <div>
         <div
-          className="bg-gray-700 rounded-full p-1 cursor-pointer mb-1"
+          className="bg-gray-700 border border-gray-500 p-1 cursor-pointer mb-1"
           onClick={() => removeFormRow(formIndex)}
         >
           <IoClose size={15} className="text-gray-400" />

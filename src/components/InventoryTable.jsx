@@ -13,7 +13,7 @@ const InventoryTable = () => {
   const [showAddStockPopup, setShowAddStockPopup] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [inputData, setInputData] = useState(""); // Initialize with empty string
+  const [inputData, setInputData] = useState("");
 
   const [sortedByQuantity, setSortedByQuantity] = useState("default");
   const [sortedByPrice, setSortedByPrice] = useState("default");
@@ -32,14 +32,13 @@ const InventoryTable = () => {
 
   const handleAddStock = async () => {
     setLoading(true);
-    // Use inputData state instead of DOM access, and fix the calculation
     await addStock(
       selectedItem.itemName,
       Number(selectedItem.quantity) + Number(inputData)
     );
     await fetchData(user.email);
     setShowAddStockPopup(false);
-    setInputData(""); // Reset input data
+    setInputData("");
     setLoading(false);
   };
 
@@ -56,6 +55,7 @@ const InventoryTable = () => {
       setSortedByQuantity("high-low");
     } else {
       setFilteredProducts(inventoryData);
+      setSortedByQuantity("default");
     }
   };
 
@@ -65,11 +65,11 @@ const InventoryTable = () => {
         [...inventoryData].sort((a, b) => a.costPrice - b.costPrice)
       );
       setSortedByPrice("low-high");
-    } else if (sortedByQuantity === "low-high") {
+    } else if (sortedByPrice === "low-high") {
       setFilteredProducts(
         [...inventoryData].sort((a, b) => b.costPrice - a.costPrice)
       );
-      setSortedByQuantity("high-low");
+      setSortedByPrice("high-low");
     } else {
       setFilteredProducts(inventoryData);
       setSortedByPrice("default");
@@ -91,14 +91,14 @@ const InventoryTable = () => {
           <div className="max-w-md">
             <input
               type="text"
-              className="block w-full px-4 py-2 text-white text-sm border border-gray-400 bg-gray-800 rounded outline-0"
+              className="block w-full px-4 py-2 text-white text-sm border border-gray-400 bg-gray-800 outline-0"
               placeholder="Search Products"
               onChange={(e) => handleSearch(e)}
             />
           </div>
           <div>
             <button
-              className="border bg-green-500 py-1 px-2 rounded inline-flex items-center gap-2 cursor-pointer active:bg-green-600"
+              className="border bg-green-500 py-1 px-2 inline-flex items-center gap-2 cursor-pointer active:bg-green-600"
               onClick={() => setShowAddProduct(!showAddProduct)}
             >
               Add New Product <MdAddHomeWork size={20} />
@@ -191,7 +191,7 @@ const InventoryTable = () => {
                   <input
                     type="number"
                     min={1}
-                    className="w-full p-2 text-gray-300 bg-gray-600 rounded-md"
+                    className="w-full p-2 text-gray-300 bg-gray-600 "
                     value={inputData}
                     onChange={(e) => setInputData(e.target.value)}
                   />
@@ -203,7 +203,7 @@ const InventoryTable = () => {
                 </div>
                 <div className="flex justify-end gap-3">
                   <button
-                    className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600"
+                    className="px-4 py-2 bg-gray-700 text-white hover:bg-gray-600"
                     onClick={() => {
                       setInputData(""); // Reset to empty string instead of null
                       setShowAddStockPopup(false);
@@ -212,7 +212,7 @@ const InventoryTable = () => {
                     Cancel
                   </button>
                   <button
-                    className={`px-4 py-2 bg-green-700 text-white rounded-lg ${
+                    className={`px-4 py-2 bg-green-700 text-white ${
                       loading || !inputData
                         ? "cursor-not-allowed"
                         : "cursor-pointer hover:bg-green-600"

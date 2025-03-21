@@ -3,6 +3,7 @@ import { saveAs } from "file-saver";
 import React, { useContext } from "react";
 import { IoClose } from "react-icons/io5";
 import { MainContext } from "../Context/MainProvider";
+import { toWords } from "number-to-words";
 
 const Receipt = ({
   products,
@@ -110,6 +111,14 @@ const Receipt = ({
       font: boldFont,
       color: rgb(0, 0, 0),
     });
+    y -= 20;
+    page.drawText(`In Words: ${toWords(totalAmount)} rupees only`, {
+      x: 50,
+      y,
+      size: fontSize,
+      font: boldFont,
+      color: rgb(0, 0, 0),
+    });
 
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
@@ -121,24 +130,25 @@ const Receipt = ({
 
   return (
     <div className="z-11 fixed inset-0 backdrop-blur-xs text-white">
-      <div className="max-w-[80vw] w-fit mx-auto h-full bg-white p-6 rounded-lg shadow-lg relative">
+      <div className="max-w-[50vw]  mx-auto h-full bg-white p-6 rounded-lg shadow-lg relative">
         <IoClose
-          className="text-black absolute top-0 right-[-30px] text-3xl cursor-pointer"
+          className="text-white absolute top-0 right-[-30px] text-3xl cursor-pointer"
           onClick={() => {
             setShowReceipt(false);
             resetForm();
           }}
         />
-        <div className="px-10">
-          <p className="text-sm font-medium text-black text-right">
-            Date: {new Date(date).toLocaleDateString()}
+        <div className="px-5">
+          <p className="text-sm font-medium text-black mb-5">
+            Date:{" "}
+            {new Date(date).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
           </p>
-          <h1 className="text-2xl font-bold text-black text-center">
-            {currentUserName}
-          </h1>
-          <h1 className="text-lg font-semibold text-black text-center mb-2">
-            Invoice
-          </h1>
+          <h1 className="text-2xl font-bold text-black">{currentUserName}</h1>
+          <h1 className="text-xl font-semibold text-black mt-4">Invoice</h1>
           <p className="text-sm font-medium text-black">
             Bill to: <span className="font-semibold">{customer}</span>
           </p>
@@ -146,48 +156,56 @@ const Receipt = ({
             Address: <span className="font-semibold">{customerAddress}</span>
           </p>
           <div className="mt-6">
-            <table className="w-full border-collapse">
+            <table className="w-full border-collapse table-auto">
               <thead className="text-black">
                 <tr>
-                  <th className="px-3 py-3 text-left border-b text-sm">SN</th>
-                  <th className="px-3 py-3 text-left border-b text-sm">
+                  <th className="py-2 text-left text-sm">SN</th>
+                  <th className="px-3 py-2 text-left text-sm w-full">
                     Product
                   </th>
-                  <th className="px-3 py-3 text-left border-b text-sm">Qty</th>
-                  <th className="px-3 py-3 text-left border-b text-sm">Rate</th>
-                  <th className="px-3 py-3 text-left border-b text-sm">
-                    Total
-                  </th>
+                  <th className="px-3 py-2 text-left text-sm">Qty</th>
+                  <th className="px-3 py-2 text-left text-sm">Rate</th>
+                  <th className="px-3 py-2 text-left text-sm">Total</th>
                 </tr>
               </thead>
               <tbody className="text-black">
                 {products.map((item, index) => (
                   <tr key={index}>
-                    <td className="px-3 py-3 border-b text-sm">{index + 1}</td>
-                    <td className="px-3 py-3 border-b text-sm">
+                    <td className="py-2  text-sm">{index + 1}</td>
+                    <td className="px-3 py-2 text-nowrap text-sm">
                       {item.itemName}
                     </td>
-                    <td className="px-3 py-3 border-b text-sm">
+                    <td className="px-3 py-2 text-nowrap text-sm">
                       {item.quantity}
                     </td>
-                    <td className="px-3 py-3 border-b text-sm">
+                    <td className="px-3 py-2 text-nowrap text-sm">
                       Rs. {item.price}
                     </td>
-                    <td className="px-3 py-3 border-b text-sm">
+                    <td className="px-3 py-2 text-nowrap text-sm">
                       Rs. {item.totalPrice}
                     </td>
                   </tr>
                 ))}
+                <tr>
+                  <td colSpan={2} className="py-2 text-sm font-bold">
+                    Total Amount
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td className="px-3 py-2 text-md text-nowrap font-bold">
+                    Rs. {totalAmount.toLocaleString("en-IN")}
+                  </td>
+                </tr>
               </tbody>
             </table>
+            <p className="text-black text-sm font-semibold mt-5">
+              In Words : {toWords(totalAmount)} only
+            </p>
           </div>
-          <p className="text-right text-black font-bold mt-4">
-            Total Amount: Rs. {totalAmount}
-          </p>
         </div>
         <div className="flex justify-end">
           <button
-            className="mt-10 text-sm px-3 py-2 bg-black active:bg-black cursor-pointer border border-black rounded text-white"
+            className="mt-10 text-sm px-3 py-2 bg-black active:bg-gray-700 cursor-pointer border border-black rounded text-white"
             type="button"
             onClick={generatePdf}
           >

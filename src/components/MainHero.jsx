@@ -12,7 +12,7 @@ const MainHero = () => {
           <p className="ranchers-regular md:text-3xl">Manage.Succeed.Grow</p>
           {/* <span className="mt-4">👊</span> */}
         </h1>
-        <p className="text-md text-gray-300 font-semibold mb-6 max-w-4xl ">
+        <p className="text-sm text-gray-300 font-semibold mb-6 max-w-4xl ">
           Maximize Efficiency and Streamline Your Business Operations with
           All-in-One Solutions for Managing Inventory, Tracking Sales,
           Organizing Customer Information, Handling Transactions, and Generating

@@ -7,13 +7,16 @@ const WhyChooseUs = () => {
       <div className="mb-10">
         <div className="max-w-4xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-1 teko-regular">
-            Why Choose Us ?
+            Why Choose BizBro ?
           </h1>
           <p className="text-2xl text-gray-300 teko-regular">
-            There are many business management systems out there but we are
-            different.
-            <br /> We deliver exceptional value through our expertise,
-            innovation, and unwavering commitment to client success.
+            With BizBro - Maximize Efficiency and Streamline Your Business
+            Operations with All-in-One Solutions for
+            <br />
+            Managing Inventory, Tracking Sales, Organizing Customer Information,
+            Handling Transactions, and Generating Invoices,
+            <br />
+            All from a Single Powerful Platform.
           </p>
         </div>
       </div>
@@ -31,7 +34,7 @@ const WhyChooseUs = () => {
         ))}
       </div>
 
-      <p className="text-white text-lg boldonse-regular pl-1 mt-4 shadow-2xl">
+      <p className="text-white text-sm boldonse-regular pl-1 mt-4">
         and many more features to make your business journey easier ...
       </p>
     </div>

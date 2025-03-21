@@ -9,7 +9,7 @@ const TestimonialSlider = () => {
   return (
     <div className="bg-gray-800 text-white px-6 md:px-16 lg:px-24 py-16 md:py-24">
       <h1 className="text-4xl md:text-5xl font-bold mb-1 teko-regular">
-        Hear from the business owners
+        Hear from business owners
       </h1>
 
       <div className="mx-auto relative mt-4">
@@ -60,13 +60,6 @@ const TestimonialSlider = () => {
             </button>
           </div>
         </div>
-
-        {/* <button className="prev-button absolute border border-gray-400 left-0 md:left-[-35px] top-1/2 transform -translate-y-1/2 bg-gray-700 p-3 rounded-full hover:bg-gray-600 z-10 cursor-pointer">
-          <FaArrowLeft size={20} />
-        </button>
-        <button className="next-button absolute border border-gray-400 right-0 md:right-[-35px] top-1/2 transform -translate-y-1/2 bg-gray-700 p-3 rounded-full hover:bg-gray-600 z-10 cursor-pointer">
-          <FaArrowRight size={20} />
-        </button> */}
       </div>
 
       {/* for grid layout without using swiper */}

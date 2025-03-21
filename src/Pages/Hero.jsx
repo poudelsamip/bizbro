@@ -4,6 +4,7 @@ import WhyChooseUs from "../components/WhyChooseUs";
 import TestimonialSlider from "../components/Testimonials";
 import Footer from "../components/Footer";
 import GetStarted from "../components/GetStarted";
+import Video from "../components/Video";
 
 const Hero = () => {
   const [support, setSupport] = useState(false);
@@ -12,6 +13,7 @@ const Hero = () => {
     <div>
       <MainHero />
       <WhyChooseUs />
+      <Video />
       <TestimonialSlider />
       <GetStarted />
       <Footer />

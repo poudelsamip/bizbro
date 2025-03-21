@@ -104,7 +104,7 @@ const Receipt = ({
       font: boldFont,
       color: rgb(0, 0, 0),
     });
-    page.drawText(`Rs. ${totalAmount}`, {
+    page.drawText(`Rs. ${totalAmount.toLocaleString("en-IN")}`, {
       x: 430,
       y,
       size: fontSize,
@@ -112,7 +112,7 @@ const Receipt = ({
       color: rgb(0, 0, 0),
     });
     y -= 20;
-    page.drawText(`In Words: ${toWords(totalAmount)} rupees only`, {
+    page.drawText(`In Words: ${toWords(totalAmount)} only`, {
       x: 50,
       y,
       size: fontSize,

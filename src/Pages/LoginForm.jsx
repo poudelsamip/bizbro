@@ -18,7 +18,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-full">
+    <div className="flex justify-center items-center h-full px-6 md:px-16 lg:px-24 py-5 md:py-10">
       <div className="absolute top-5 mx-auto border-3 border-green-900 bg-green-500 px-5 py-3">
         For Demo use this login credential
         <br />

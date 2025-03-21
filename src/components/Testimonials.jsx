@@ -9,15 +9,13 @@ const TestimonialSlider = () => {
   return (
     <div className="bg-gray-800 text-white px-6 md:px-16 lg:px-24 py-16 md:py-24">
       <h1 className="text-4xl md:text-5xl font-bold mb-1 teko-regular">
-        What our customers say
+        Hear from the business owners
       </h1>
-      <p className="text-2xl text-gray-300 teko-regular">
-        Read the testimonials of our customers.
-      </p>
-      <div className=" mx-auto p-6 relative">
+
+      <div className="mx-auto relative mt-4">
         <Swiper
           modules={[Navigation]}
-          spaceBetween={30}
+          spaceBetween={10}
           slidesPerView={1}
           breakpoints={{
             640: { slidesPerView: 2 },
@@ -29,24 +27,74 @@ const TestimonialSlider = () => {
         >
           {testimonials.map((testimonial, i) => (
             <SwiperSlide key={i}>
-              <div className="bg-slate-700 p-4 rounded text-center shadow-md text-white h-full min-h-[250px] border border-gray-400">
-                <h3 className="text-lg font-semibold">{testimonial.name}</h3>
-                <p className="text-sm text-gray-200">{testimonial.business}</p>
-                <p className="text-gray-300 italic mt-5">
+              <div className="bg-slate-700 p-4 rounded shadow-md text-white h-full md:min-h-[280px] border border-gray-400">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <img
+                    src={testimonial.image}
+                    className="h-[60px] w-[60px] object-cover rounded-full border border-gray-400"
+                  />
+
+                  <div>
+                    <h3 className="text-lg font-semibold">
+                      {testimonial.name}
+                    </h3>
+                    <p className="text-sm text-gray-200">
+                      {testimonial.business}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-gray-300 italic">
                   "{testimonial.testimonial}"
                 </p>
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
+        <div className="flex justify-around mt-1 md:mt-4">
+          <div className="flex gap-2">
+            <button className="prev-button  border border-gray-400  bg-gray-700 p-3 rounded hover:bg-gray-600 z-10 cursor-pointer">
+              <FaArrowLeft size={20} />
+            </button>
+            <button className="next-button  border border-gray-400  bg-gray-700 p-3 rounded hover:bg-gray-600 z-10 cursor-pointer">
+              <FaArrowRight size={20} />
+            </button>
+          </div>
+        </div>
 
-        <button className="prev-button absolute border border-gray-400 left-0 md:left-[-35px] top-1/2 transform -translate-y-1/2 bg-gray-700 p-3 rounded-full hover:bg-gray-600 z-10 cursor-pointer">
+        {/* <button className="prev-button absolute border border-gray-400 left-0 md:left-[-35px] top-1/2 transform -translate-y-1/2 bg-gray-700 p-3 rounded-full hover:bg-gray-600 z-10 cursor-pointer">
           <FaArrowLeft size={20} />
         </button>
-        <button className="next-button absolute  right-0 md:right-[-35px] top-1/2 transform -translate-y-1/2 bg-gray-700 p-3 rounded-full hover:bg-gray-600 z-10 cursor-pointer">
+        <button className="next-button absolute border border-gray-400 right-0 md:right-[-35px] top-1/2 transform -translate-y-1/2 bg-gray-700 p-3 rounded-full hover:bg-gray-600 z-10 cursor-pointer">
           <FaArrowRight size={20} />
-        </button>
+        </button> */}
       </div>
+
+      {/* for grid layout without using swiper */}
+
+      {/* <div className="grid md:grid-cols-4 gap-4 mt-4">
+        {testimonials.map((testimonial, i) => (
+          <div key={i}>
+            <div className="bg-slate-700 p-4 rounded shadow-md text-white h-full md:min-h-[280px] border border-gray-400">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <img
+                  src={testimonial.image}
+                  className="h-[60px] w-[60px] object-cover rounded-full border border-gray-400"
+                />
+
+                <div>
+                  <h3 className="text-lg font-semibold">{testimonial.name}</h3>
+                  <p className="text-sm text-gray-200">
+                    {testimonial.business}
+                  </p>
+                </div>
+              </div>
+              <p className="text-gray-300 italic">
+                "{testimonial.testimonial}"
+              </p>
+            </div>
+          </div>
+        ))}
+      </div> */}
     </div>
   );
 };

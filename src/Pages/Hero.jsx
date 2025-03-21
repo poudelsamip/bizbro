@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { MdSupportAgent } from "react-icons/md";
-import { IoMdCall } from "react-icons/io";
-import { MdEmail } from "react-icons/md";
-import { IoCloseSharp } from "react-icons/io5";
 import MainHero from "../components/MainHero";
 import WhyChooseUs from "../components/WhyChooseUs";
 import TestimonialSlider from "../components/Testimonials";
 import Footer from "../components/Footer";
+import GetStarted from "../components/GetStarted";
 
 const Hero = () => {
   const [support, setSupport] = useState(false);
@@ -16,6 +13,7 @@ const Hero = () => {
       <MainHero />
       <WhyChooseUs />
       <TestimonialSlider />
+      <GetStarted />
       <Footer />
       {/* <div className="absolute bottom-5 right-5 flex items-center gap-2 z-10">
         <div

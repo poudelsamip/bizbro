@@ -9,13 +9,14 @@ const MainHero = () => {
           <p className="ranchers-regular font-bold text-5xl md:text-9xl">
             BIZBRO
           </p>
-          <p className="ranchers-regular md:text-3xl">Manage. Succeed. Grow</p>
+          <p className="ranchers-regular md:text-3xl">Manage.Succeed.Grow</p>
           {/* <span className="mt-4">👊</span> */}
         </h1>
-        <p className="text-md text-gray-300 mb-6 max-w-4xl ">
-          Simplify business management with an ALL-IN-ONE platform that keeps
-          your inventory, customers, sales and transactions organized—so you can
-          focus on what really matters: growth!
+        <p className="text-md text-gray-300 font-semibold mb-6 max-w-4xl ">
+          Maximize Efficiency and Streamline Your Business Operations with
+          All-in-One Solutions for Managing Inventory, Tracking Sales,
+          Organizing Customer Information, Handling Transactions, and Generating
+          Invoices, All from a Single Powerful Platform.
         </p>
         <div className="flex justify-center gap-4">
           <a

@@ -10,6 +10,7 @@ import Transactions from "./Pages/Transactions";
 import Sales from "./Pages/Sales";
 import Hero from "./Pages/Hero";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 function App() {
   const sideBar = [
@@ -48,17 +49,24 @@ function App() {
           <Route
             path="*"
             element={
-              <div className="w-full h-screen bg-gray-800 pt-10">
-                <h1 className="text-center text-5xl text-white font-semibold uppercase">
-                  404 : Page not found
-                </h1>
-                <p className="text-white text-center text-xl mt-5">
-                  <a href="/" className="text-blue-600">
-                    Click Here
-                  </a>{" "}
-                  to goto homepage
-                </p>
-              </div>
+              <section class="bg-gray-900 text-white py-8 px-4 mx-auto h-screen w-screen lg:py-16 lg:px-6">
+                <div class="mx-auto text-center">
+                  <h1 class="text-7xl font-bold lg:text-9xl ranchers-regular">
+                    404
+                  </h1>
+                  <p class="mb-4 text-2xl font-bold ranchers-regular">
+                    Page Not Found
+                  </p>
+
+                  <a
+                    href="/"
+                    class="inline-flex items-center gap-2 border broder-gray-400 text-white bg-blue-700 hover:bg-blue-900 font-medium rounded text-sm px-3 py-2 my-4"
+                  >
+                    <IoMdArrowRoundBack size={20} />
+                    Homepage
+                  </a>
+                </div>
+              </section>
             }
           />
         </Routes>

@@ -49,7 +49,9 @@ const MainProvider = ({ children }) => {
 
       const collections = ["inventory", "customers", "sales", "transactions"];
       await Promise.all(
-        collections.map((item) => setDoc(doc(db, item, user.email), {}))
+        collections.map((item) =>
+          setDoc(doc(db, item, userData.user.email), {})
+        )
       );
 
       setUser(userData.user);

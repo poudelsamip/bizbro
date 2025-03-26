@@ -101,6 +101,36 @@ const inventorySlice = createSlice({
       .addCase(fetchInventory.rejected, (state, action) => {
         state.error = action.payload;
         state.loading = false;
+      })
+      .addCase(addProductsToInventory.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addProductsToInventory.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(addProductsToInventory.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      })
+      .addCase(addStock.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addStock.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(addStock.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      })
+      .addCase(updateStock.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateStock.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(updateStock.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
       });
   },
 });

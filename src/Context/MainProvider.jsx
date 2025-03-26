@@ -6,14 +6,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth, db } from "../Config/firebase";
-import {
-  arrayUnion,
-  collection,
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const MainContext = createContext();
@@ -132,10 +125,13 @@ const MainProvider = ({ children }) => {
     }
   };
 
+  //done
   const addProductsToInventory = (item) =>
     adderFunctionForFirebase("inventory", "allProducts", item);
+  //done
   const addCustomersToCustomers = (item) =>
     adderFunctionForFirebase("customers", "allCustomers", item);
+  //done
   const addTransactionsToTransactions = (item) =>
     adderFunctionForFirebase("transactions", "allTransactionData", item);
 

@@ -4,11 +4,13 @@ import { db } from "../Config/firebase";
 
 export const addTransactionsToTransactions = createAsyncThunk(
   "transactions/update",
-  async ({ email, item }) => {
+  async (item, { getState, dispatch }) => {
+    const { email } = getState().auth.user;
     try {
       updateDoc(doc(db, "transactions", email), {
         allTransactionData: arrayUnion(item),
       });
+      dispatch(fetchTransactions(email));
     } catch (err) {
       console.log("Error : " + err);
     }
@@ -17,7 +19,7 @@ export const addTransactionsToTransactions = createAsyncThunk(
 
 export const fetchTransactions = createAsyncThunk(
   "transactions/fetch",
-  async ({ email }, { rejectWithValue }) => {
+  async (email, { rejectWithValue }) => {
     try {
       const transactionsSnap = await getDoc(doc(db, "transactions", email));
       return transactionsSnap.exists() ? transactionsSnap.data() : [];

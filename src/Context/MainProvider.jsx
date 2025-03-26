@@ -33,6 +33,7 @@ const MainProvider = ({ children }) => {
   });
   const navigate = useNavigate();
 
+  // done
   const signUp = async (email, password, companyName, name) => {
     try {
       const userData = await createUserWithEmailAndPassword(
@@ -61,6 +62,7 @@ const MainProvider = ({ children }) => {
     }
   };
 
+  //done
   const logIn = async (email, password) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -71,6 +73,7 @@ const MainProvider = ({ children }) => {
     }
   };
 
+  //done
   const logOut = async () => {
     try {
       await signOut(auth);
@@ -80,6 +83,7 @@ const MainProvider = ({ children }) => {
     }
   };
 
+  //done
   const fetchData = async (email) => {
     const data = {
       inventory: [],
@@ -120,7 +124,7 @@ const MainProvider = ({ children }) => {
 
   const adderFunctionForFirebase = async (collection, fieldName, item) => {
     try {
-      updateDoc(doc(db, collection, user.email), {
+      await updateDoc(doc(db, collection, user.email), {
         [fieldName]: arrayUnion(item),
       });
     } catch {
@@ -166,6 +170,7 @@ const MainProvider = ({ children }) => {
     }
   };
 
+  //done
   //for receiving from customers table
   const receivePayment = async (selectedCustomer, amount) => {
     const updatedCustomers = allData.customers.map((customer) =>
@@ -182,6 +187,7 @@ const MainProvider = ({ children }) => {
     });
   };
 
+  //done
   // for product on credit
   const updateOutStandingBalance = async (customerName, amount) => {
     const updatedCustomers = allData.customers.map((customer) => {
@@ -198,6 +204,7 @@ const MainProvider = ({ children }) => {
     });
   };
 
+  //done
   const addStock = async (productName, stock) => {
     const updatedAllProducts = allData.inventory.map((product) => {
       return product.itemName === productName
@@ -210,6 +217,7 @@ const MainProvider = ({ children }) => {
     });
   };
 
+  //done
   const updateStock = async (dispatchedItems) => {
     // const updatedProducts = allData.inventory.filter((product) =>
     //   dispatchedItems.some((item) => item.itemName === product.itemName)

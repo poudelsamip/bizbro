@@ -1,14 +1,51 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../Config/firebase";
+
+export const addTransactionsToTransactions = createAsyncThunk(
+  "transactions/update",
+  async ({ email, item }) => {
+    try {
+      updateDoc(doc(db, "transactions", email), {
+        allTransactionData: arrayUnion(item),
+      });
+    } catch (err) {
+      console.log("Error : " + err);
+    }
+  }
+);
+
+export const fetchTransactions = createAsyncThunk(
+  "transactions/fetch",
+  async ({ email }, { rejectWithValue }) => {
+    try {
+      const transactionsSnap = await getDoc(doc(db, "transactions", email));
+      return transactionsSnap.exists() ? transactionsSnap.data() : [];
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
 
 const transactionsSlice = createSlice({
   name: "transactions",
   initialState: {
     transactionsData: [],
+    error: null,
   },
   reducers: {
     settransactions: (state, action) => {
       state.transactionsData = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTransactions.fulfilled, (state, action) => {
+        state.transactionsData = action.payload;
+      })
+      .addCase(fetchTransactions.rejected, (state, action) => {
+        state.error = action.payload;
+      });
   },
 });
 

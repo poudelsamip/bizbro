@@ -35,14 +35,14 @@ function App() {
         } w-full bg-gray-600 h-screen overflow-auto`}
       >
         <Routes>
-          <Route element={<ProtectedRoutes />}>
-            <Route path="/dashboard" element={<Dashboard />}></Route>
-            <Route path="/inventory" element={<Inventory />}></Route>
-            <Route path="/customers" element={<Customers />}></Route>
-            <Route path="/dispatch" element={<DispatchProduct />}></Route>
-            <Route path="/sales" element={<Sales />}></Route>
-            <Route path="/transactions" element={<Transactions />}></Route>
-          </Route>
+          {/* <Route element={<ProtectedRoutes />}> */}
+          <Route path="/dashboard" element={<Dashboard />}></Route>
+          <Route path="/inventory" element={<Inventory />}></Route>
+          <Route path="/customers" element={<Customers />}></Route>
+          <Route path="/dispatch" element={<DispatchProduct />}></Route>
+          <Route path="/sales" element={<Sales />}></Route>
+          <Route path="/transactions" element={<Transactions />}></Route>
+          {/* </Route> */}
           <Route path="/login" element={<LoginForm />}></Route>
           <Route path="/signup" element={<SignupForm />}></Route>
           <Route path="/" element={<Hero />}></Route>

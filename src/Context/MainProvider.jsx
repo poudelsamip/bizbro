@@ -40,7 +40,7 @@ const MainProvider = ({ children }) => {
         email,
         password
       );
-
+      console.log(userData);
       await setDoc(doc(db, "users", userData.user.email), {
         companyName,
         name,
@@ -49,12 +49,14 @@ const MainProvider = ({ children }) => {
 
       const collections = ["inventory", "customers", "sales", "transactions"];
       await Promise.all(
-        collections.map((item) => setDoc(doc(db, item, user.email), {}))
+        collections.map((item) => setDoc(doc(db, item, email), {}))
       );
-
+      console.log("before setuser");
       setUser(userData.user);
+      console.log("after setuser");
       await logIn(email, password);
     } catch (error) {
+      console.log(error);
       setError(error.code);
     }
   };
@@ -229,19 +231,26 @@ const MainProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    console.log("user information :");
+    console.log(user);
+
     const unSub = onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {
+        console.log(authUser);
+        console.log("user found");
         if (!user || user.email !== authUser.email) {
           setUser(authUser);
+
           await fetchData(authUser.email);
           const nameSnap = await getDoc(doc(db, "users", authUser.email));
 
-          setCurrentUserName(() =>
+          setCurrentUserName(
             nameSnap.exists() ? nameSnap.data().companyName : ""
           );
         }
       } else {
         if (!unAuthRoute.includes(location.pathname)) {
+          console.log("no user found");
           navigate("/login");
         }
         setUser(null);

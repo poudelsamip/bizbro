@@ -1,11 +1,13 @@
 import React, { useContext, useState } from "react";
 import { IoArrowBack } from "react-icons/io5";
 import { MainContext } from "../Context/MainProvider";
+import { useDispatch } from "react-redux";
+import { addProductsToInventory } from "../store/inventorySlice";
 
 const AddToInventory = ({ onClose }) => {
-  const { addProductsToInventory, fetchData, user } = useContext(MainContext);
+  // const { addProductsToInventory, fetchData, user } = useContext(MainContext);
   const [loading, setLoading] = useState(false);
-
+  const dispatch = useDispatch();
   const [item, setItem] = useState({
     id: "",
     itemName: "",
@@ -109,8 +111,9 @@ const AddToInventory = ({ onClose }) => {
                 }  text-white rounded-lg hover:bg-green-600`}
                 onClick={async () => {
                   setLoading(true);
-                  await addProductsToInventory(item);
-                  await fetchData(user.email);
+                  // await addProductsToInventory(item);
+                  await dispatch(addProductsToInventory(item)).unwrap();
+                  // await fetchData(user.email);  fetched on above function
                   setShowSummary(false);
                   setLoading(false);
                   onClose();

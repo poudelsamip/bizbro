@@ -10,7 +10,7 @@ export const addCustomerToCustomers = createAsyncThunk(
       await updateDoc(doc(db, "customers", email), {
         allCustomers: arrayUnion(item),
       });
-      //fetching right away so that state and database are in sync
+      //fetching here so that state and database are in sync
       await dispatch(fetchCustomers(email));
     } catch (err) {
       console.error("Error adding customer: ", err);

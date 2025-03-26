@@ -30,7 +30,7 @@ const DispatchProduct = () => {
   const dispatch = useDispatch();
   const [totalBillAmount, setTotalBillAmount] = useState(0);
   // const {
-  //   customersData,
+  // customersData,
   //   addSalesToSales,
   //   addTransactionsToTransactions,
   //   updateOutStandingBalance,

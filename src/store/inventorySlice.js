@@ -7,14 +7,15 @@ import { db } from "../Config/firebase";
 
 export const addProductsToInventory = createAsyncThunk(
   "inventory/update",
-  async ({ email, item }, { dispatch }) => {
+  async (item, { dispatch, getState }) => {
+    const { email } = getState().auth.user;
     try {
       await updateDoc(doc(db, "inventory", email), {
         allProducts: arrayUnion(item),
       });
 
-      // fetch the updated inventory to ensure state sync
-      await dispatch(fetchInventory({ email }));
+      //fetch the updated inventory to ensure state sync
+      await dispatch(fetchInventory(email));
     } catch (err) {
       console.error("Error adding product to inventory: ", err);
       throw err;

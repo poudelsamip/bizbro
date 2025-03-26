@@ -7,12 +7,15 @@ import { FaTruck } from "react-icons/fa";
 import { MainContext } from "../Context/MainProvider";
 import { IoIosListBox } from "react-icons/io";
 import { GiMoneyStack } from "react-icons/gi";
+import { useDispatch } from "react-redux";
+import { logOut } from "../store/authSlice";
 
 const Sidebar = () => {
-  const { logOut } = useContext(MainContext);
-
+  // const { logOut } = useContext(MainContext);
+  const dispatch = useDispatch();
   const handleLogOut = async () => {
-    await logOut();
+    // await logOut();
+    await dispatch(logOut()).unwrap();
   };
   return (
     <>

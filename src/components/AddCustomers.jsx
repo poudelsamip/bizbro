@@ -1,9 +1,11 @@
 import React, { useContext, useState } from "react";
 import { IoArrowBack, IoClose } from "react-icons/io5";
 import { MainContext } from "../Context/MainProvider";
+import { useDispatch } from "react-redux";
+import { addCustomerToCustomers } from "../store/customersSlice";
 
 const AddCustomers = ({ onClose }) => {
-  const { addCustomersToCustomers, fetchData, user } = useContext(MainContext);
+  // const { addCustomersToCustomers, fetchData, user } = useContext(MainContext);
   const [loading, setLoading] = useState(false);
   const [customer, setCustomer] = useState({
     id: "",
@@ -15,6 +17,7 @@ const AddCustomers = ({ onClose }) => {
     outstandingBalance: 0,
   });
   const [showSummary, setShowSummary] = useState(false);
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -92,13 +95,13 @@ const AddCustomers = ({ onClose }) => {
                     : "bg-green-700 cursor-pointer"
                 }  text-white rounded-lg hover:bg-green-600`}
                 onClick={async () => {
-                  // Here you would confirm and save to database
                   setLoading(true);
-                  await addCustomersToCustomers(customer);
-                  await fetchData(user.email);
+                  // await addCustomersToCustomers(customer);
+                  await dispatch(addCustomerToCustomers(customer)).unwrap();
+                  // await fetchData(user.email); // fetched on add customer function
                   setShowSummary(false);
                   setLoading(false);
-                  onClose(); // Return to customer list after successful addition
+                  onClose();
                 }}
               >
                 {loading ? "loading..." : "Confirm"}

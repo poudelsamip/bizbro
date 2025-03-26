@@ -4,14 +4,17 @@ import CustomerRow from "./CustomerRow";
 import AddCustomers from "./AddCustomers";
 import { MainContext } from "../Context/MainProvider";
 import { MdGroupAdd } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { receivePayment } from "../store/customersSlice";
+import { addTransactionsToTransactions } from "../store/transactionsSlice";
 
 const CustomersTable = () => {
   const {
     customersData,
-    receivePayment,
-    addTransactionsToTransactions,
-    fetchData,
-    user,
+    // receivePayment,
+    // addTransactionsToTransactions,
+    // fetchData,
+    // user,
   } = useContext(MainContext);
 
   const [filteredCustomers, setFilteredCustomers] = useState(customersData);
@@ -25,7 +28,7 @@ const CustomersTable = () => {
 
   const today = new Date().toISOString().split("T")[0];
   const [date, setDate] = useState(today);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     setFilteredCustomers(customersData);
   }, [customersData]);
@@ -40,37 +43,39 @@ const CustomersTable = () => {
 
   const handleReceivePayment = async () => {
     setLoading(true);
-    await Promise.all([
-      receivePayment(
-        selectedCustomer,
-        Number(selectedCustomer.outstandingBalance - inputData)
-      ),
-      addTransactionsToTransactions({
-        buyer: selectedCustomer.businessName,
-        date: new Date(date).toLocaleDateString("en-US", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }),
-        totalAmount: Number(inputData),
+    const paymentInfo = {
+      selectedCustomer,
+      amount: Number(selectedCustomer.outstandingBalance - inputData),
+    };
+    const transactionInfo = {
+      buyer: selectedCustomer.businessName,
+      date: new Date(date).toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
       }),
+      totalAmount: Number(inputData),
+    };
+    await Promise.all([
+      // receivePayment(
+      //   selectedCustomer,
+      //   Number(selectedCustomer.outstandingBalance - inputData)
+      // ),
+      dispatch(receivePayment(paymentInfo)).unwrap(),
+      // addTransactionsToTransactions({
+      //   buyer: selectedCustomer.businessName,
+      //   date: new Date(date).toLocaleDateString("en-US", {
+      //     weekday: "long",
+      //     year: "numeric",
+      //     month: "long",
+      //     day: "numeric",
+      //   }),
+      //   totalAmount: Number(inputData),
+      // }),
+      dispatch(addTransactionsToTransactions(transactionInfo)).unwrap(),
     ]);
-    // await receivePayment(
-    //   selectedCustomer,
-    //   Number(selectedCustomer.outstandingBalance - inputData)
-    // );
-    // await addTransactionsToTransactions({
-    //   buyer: selectedCustomer.businessName,
-    //   date: new Date(date).toLocaleDateString("en-US", {
-    //     weekday: "long",
-    //     year: "numeric",
-    //     month: "long",
-    //     day: "numeric",
-    //   }),
-    //   totalAmount: Number(inputData),
-    // });
-    await fetchData(user.email);
+    // await fetchData(user.email);
     setShowReceivePayment(false);
     setLoading(false);
   };
@@ -102,7 +107,6 @@ const CustomersTable = () => {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Header & Search Bar */}
       <div className="flex-none">
         <h1 className="text-4xl font-semibold text-white mb-2 drop-shadow-xl">
           CUSTOMERS 🧑‍💼

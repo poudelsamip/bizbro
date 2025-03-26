@@ -4,9 +4,16 @@ import { MdAddHomeWork } from "react-icons/md";
 import TableRow from "./TableRow";
 import AddToInventory from "./AddToInventory";
 import { MainContext } from "../Context/MainProvider";
+import { addStock } from "../store/inventorySlice";
+import { useDispatch } from "react-redux";
 
 const InventoryTable = () => {
-  const { inventoryData, addStock, fetchData, user } = useContext(MainContext);
+  const {
+    inventoryData,
+    // addStock,
+    // fetchData,
+    // user
+  } = useContext(MainContext);
 
   const [filteredProducts, setFilteredProducts] = useState(inventoryData);
   const [showAddProduct, setShowAddProduct] = useState(false);
@@ -14,7 +21,7 @@ const InventoryTable = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [loading, setLoading] = useState(false);
   const [inputData, setInputData] = useState("");
-
+  const dispatch = useDispatch();
   const [sortedByQuantity, setSortedByQuantity] = useState("default");
   const [sortedByPrice, setSortedByPrice] = useState("default");
 
@@ -32,11 +39,17 @@ const InventoryTable = () => {
 
   const handleAddStock = async () => {
     setLoading(true);
-    await addStock(
-      selectedItem.itemName,
-      Number(selectedItem.quantity) + Number(inputData)
-    );
-    await fetchData(user.email);
+    // await addStock(
+    // selectedItem.itemName,
+    // Number(selectedItem.quantity) + Number(inputData)
+    // );
+    await dispatch(
+      addStock({
+        productName: selectedItem.itemName,
+        stock: Number(selectedItem.quantity) + Number(inputData),
+      })
+    ).unwrap();
+    // await fetchData(user.email);
     setShowAddStockPopup(false);
     setInputData("");
     setLoading(false);

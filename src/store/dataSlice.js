@@ -1,16 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../Config/firebase";
-import { useDispatch } from "react-redux";
 import { setInventory } from "./inventorySlice";
-import { data } from "react-router-dom";
-import { setcustomers } from "./customersSlice";
-import { setsales } from "./sales";
-import { settransactions } from "./transactionsSlice";
+import { setCustomers } from "./customersSlice";
+import { setSales } from "./sales";
+import { setTransactions } from "./transactionsSlice";
 
 export const fetchData = createAsyncThunk(
   "data/fetchData",
-  async ({ email }, { dispatch }) => {
+  async (_, { dispatch, getState }) => {
+    const { email } = getState().auth.user;
     try {
       const collections = ["inventory", "customers", "sales", "transactions"];
       const data = {
@@ -41,9 +40,9 @@ export const fetchData = createAsyncThunk(
         : [];
 
       dispatch(setInventory(data.inventory));
-      dispatch(setcustomers(data.customers));
-      dispatch(settransactions(data.transactions));
-      dispatch(setsales(data.sales));
+      dispatch(setCustomers(data.customers));
+      dispatch(setTransactions(data.transactions));
+      dispatch(setSales(data.sales));
     } catch (error) {
       console.log("Error : " + error);
     }
@@ -51,6 +50,7 @@ export const fetchData = createAsyncThunk(
 );
 
 const dataSlice = createSlice({
+  name: "dataSlice",
   initialState: {
     inventoryData: [],
     customersData: [],

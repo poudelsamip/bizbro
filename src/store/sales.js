@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../Config/firebase";
 
-export const addSales = createAsyncThunk(
+export const addSalesToSales = createAsyncThunk(
   "sales/addSales",
   async ({ items, customer, date }, { rejectWithValue, getState }) => {
     const { email } = getState().auth.user;
@@ -54,14 +54,14 @@ const salesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(addSales.pending, (state) => {
+      .addCase(addSalesToSales.pending, (state) => {
         state.loading = true;
       })
-      .addCase(addSales.fulfilled, (state, action) => {
+      .addCase(addSalesToSales.fulfilled, (state, action) => {
         state.salesData.push(action.payload);
         state.loading = false;
       })
-      .addCase(addSales.rejected, (state, action) => {
+      .addCase(addSalesToSales.rejected, (state, action) => {
         state.error = action.payload;
         state.loading = false;
       });

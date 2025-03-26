@@ -135,7 +135,7 @@ const MainProvider = ({ children }) => {
   const addTransactionsToTransactions = (item) =>
     adderFunctionForFirebase("transactions", "allTransactionData", item);
 
-  // addSalesToSales
+  // done
   const addSalesToSales = async (item, customer, date) => {
     try {
       const transactionsRef = doc(db, "sales", user.email);
@@ -240,6 +240,7 @@ const MainProvider = ({ children }) => {
         if (!user || user.email !== authUser.email) {
           setUser(authUser);
           await fetchData(authUser.email);
+
           const nameSnap = await getDoc(doc(db, "users", authUser.email));
 
           setCurrentUserName(() =>

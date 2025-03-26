@@ -1,20 +1,32 @@
-import React, { useContext, useState } from "react";
-import { MainContext } from "../Context/MainProvider";
+import React, { useState } from "react";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { LuEye } from "react-icons/lu";
+import { useDispatch } from "react-redux";
+import { logIn } from "../store/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
-  const { logIn, error } = useContext(MainContext);
   const [loading, setLoading] = useState(false);
+  const [loginError, setLoginError] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    await logIn(email, password);
-    setLoading(false);
+    setLoginError("");
+
+    try {
+      await dispatch(logIn({ email, password })).unwrap();
+      setLoading(false);
+      navigate("/dashboard");
+    } catch (error) {
+      setLoginError(error || "Login failed. Please try again.");
+      console.error("Login error:", error);
+    }
   };
 
   return (
@@ -72,10 +84,13 @@ const LoginForm = () => {
             >
               {visible ? <FaRegEyeSlash /> : <LuEye />}
             </button>
-            {error && <p className="mt-2 text-red-400 text-xs">{error}</p>}
+            {loginError && (
+              <p className="mt-2 text-red-400 text-xs">{loginError}</p>
+            )}
           </div>
           <button
             type="submit"
+            disabled={loading}
             className={` ${
               loading
                 ? "cursor-not-allowed bg-blue-500"

@@ -36,7 +36,7 @@ const transactionsSlice = createSlice({
     error: null,
   },
   reducers: {
-    settransactions: (state, action) => {
+    setTransactions: (state, action) => {
       state.transactionsData = action.payload;
     },
   },
@@ -51,5 +51,5 @@ const transactionsSlice = createSlice({
   },
 });
 
-export const { settransactions } = transactionsSlice.actions;
+export const { setTransactions } = transactionsSlice.actions;
 export default transactionsSlice.reducer;

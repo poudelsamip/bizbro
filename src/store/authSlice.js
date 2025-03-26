@@ -27,7 +27,7 @@ export const signUp = createAsyncThunk(
           setDoc(doc(db, collection, userData.user.email), {})
         )
       );
-      return userData.user;
+      return { uid: userData.user.uid, email: userData.user.email };
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -39,9 +39,9 @@ export const logIn = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const userData = await signInWithEmailAndPassword(auth, email, password);
-      return userData.user;
+      return { uid: userData.user.uid, email: userData.user.email };
     } catch (error) {
-      rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );

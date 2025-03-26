@@ -4,13 +4,20 @@ import Receipt from "../components/Receipt";
 import { IoClose } from "react-icons/io5";
 import { MainContext } from "../Context/MainProvider";
 import { GiConfirmed } from "react-icons/gi";
+import { useDispatch, useSelector } from "react-redux";
+import { addTransactionsToTransactions } from "../store/transactionsSlice";
+import { updateOutStandingBalance } from "../store/customersSlice";
+import { fetchData } from "../store/dataSlice";
+import { addSalesToSales } from "../store/sales";
+import { updateStock } from "../store/inventorySlice";
 
 const DispatchProduct = () => {
   const [customer, setCustomer] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
-  const [products, setProducts] = useState([
-    { id: 0, price: 0, quantity: 0, totalPrice: 0, itemName: "" },
-  ]);
+  // const [products, setProducts] = useState([
+  //   { id: 0, price: 0, quantity: 0, totalPrice: 0, itemName: "" },
+  // ]);
+  const [products, setProducts] = useState([]); //empty at first
 
   const [showSummary, setShowSummary] = useState(false);
   const [showReceipt, setShowReceipt] = useState(false);
@@ -20,23 +27,24 @@ const DispatchProduct = () => {
   const [date, setDate] = useState(today);
   const [payment, setPayment] = useState();
 
+  const dispatch = useDispatch();
   const [totalBillAmount, setTotalBillAmount] = useState(0);
-  const {
-    customersData,
-    addSalesToSales,
-    addTransactionsToTransactions,
-    updateOutStandingBalance,
-    updateStock,
-    fetchData,
-    user,
-  } = useContext(MainContext);
+  // const {
+  //   customersData,
+  //   addSalesToSales,
+  //   addTransactionsToTransactions,
+  //   updateOutStandingBalance,
+  //   updateStock,
+  //   fetchData,
+  //   user,
+  // } = useContext(MainContext);
+
+  const { customersData } = useSelector((state) => state.customers);
 
   const resetForm = () => {
     setCustomer("");
     setCustomerAddress("");
-    setProducts([
-      { id: 0, price: 0, quantity: 0, totalPrice: 0, itemName: "" },
-    ]);
+    setProducts([]);
     setNextId(1);
   };
 
@@ -55,10 +63,23 @@ const DispatchProduct = () => {
     let dispatchedItems = [];
     products.map((item) => dispatchedItems.push(item));
     if (payment === "credit") {
-      await updateOutStandingBalance(customer, totalAmount);
+      // await updateOutStandingBalance(customer, totalAmount);
+      await dispatch(
+        updateOutStandingBalance({ customer, totalAmount })
+      ).unwrap();
     }
     if (payment === "cash") {
-      await addTransactionsToTransactions({
+      // await addTransactionsToTransactions({
+      //   date: new Date(date).toLocaleDateString("en-US", {
+      //     weekday: "long",
+      //     year: "numeric",
+      //     month: "long",
+      //     day: "numeric",
+      //   }),
+      //   buyer: customer,
+      //   totalAmount: totalAmount,
+      // });
+      const item = {
         date: new Date(date).toLocaleDateString("en-US", {
           weekday: "long",
           year: "numeric",
@@ -67,15 +88,19 @@ const DispatchProduct = () => {
         }),
         buyer: customer,
         totalAmount: totalAmount,
-      });
+      };
+      await dispatch(addTransactionsToTransactions(item)).unwrap();
     }
     await Promise.all([
-      addSalesToSales(products, customer, date),
-      updateStock(dispatchedItems),
+      // addSalesToSales(products, customer, date),
+      dispatch(addSalesToSales({ products, customer, date })).unwrap(),
+      // updateStock(dispatchedItems),
+      dispatch(updateStock(dispatchedItems)),
     ]);
     // await addSalesToSales(products, customer);
     // await updateStock(dispatchedItems);
-    await fetchData(user.email);
+    // await fetchData(user.email);
+    await dispatch(fetchData()).unwrap();
     setShowSummary(false);
     setLoading(false);
     setShowReceipt(true);

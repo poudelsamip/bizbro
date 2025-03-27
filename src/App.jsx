@@ -18,12 +18,14 @@ import { fetchData, setCompanyNameNull } from "./store/dataSlice";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "./Config/firebase";
 import { setUser, setUserNull } from "./store/authSlice";
+import Suppliers from "./Pages/Suppliers";
 
 function App() {
   const sideBar = [
     "/dashboard",
     "/inventory",
     "/customers",
+    "/suppliers",
     "/dispatch",
     "/sales",
     "/transactions",
@@ -75,6 +77,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/inventory" element={<Inventory />}></Route>
           <Route path="/customers" element={<Customers />}></Route>
+          <Route path="/suppliers" element={<Suppliers />}></Route>
           <Route path="/dispatch" element={<DispatchProduct />}></Route>
           <Route path="/sales" element={<Sales />}></Route>
           <Route path="/transactions" element={<Transactions />}></Route>

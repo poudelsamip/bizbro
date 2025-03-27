@@ -3,26 +3,35 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../Config/firebase";
 import { setInventory } from "./inventorySlice";
 import { setCustomers } from "./customersSlice";
-import { setSales } from "./sales";
+import { setSales } from "./salesSlice";
 import { setTransactions } from "./transactionsSlice";
+import { setSuppliers } from "./suppliersSlice";
 
 export const fetchData = createAsyncThunk(
   "data/fetchData",
   async (_, { dispatch, getState }) => {
     const { email } = getState().auth.user;
     try {
-      const collections = ["inventory", "customers", "sales", "transactions"];
+      const collections = [
+        "inventory",
+        "customers",
+        "sales",
+        "transactions",
+        "suppliers",
+      ];
       const data = {
         inventory: [],
         transactions: [],
         customers: [],
         sales: [],
+        suppliers: [],
       };
       const [
         inventorySnapshot,
         customersSnapshot,
         salesSnapshot,
         transactionsSnapshot,
+        suppliersSnapshot,
       ] = await Promise.all(
         collections.map((item) => getDoc(doc(db, item, email)))
       );
@@ -38,13 +47,17 @@ export const fetchData = createAsyncThunk(
       data.sales = salesSnapshot.exists()
         ? salesSnapshot.data().allTransactions || []
         : [];
+      data.suppliers = suppliersSnapshot.exists()
+        ? suppliersSnapshot.data().allSuppliers || []
+        : [];
 
       const nameSnap = await getDoc(doc(db, "users", email));
       const companyName = nameSnap.exists() ? nameSnap.data().companyName : "";
-
+      console.log(data.suppliers);
       dispatch(setInventory(data.inventory));
       dispatch(setCustomers(data.customers));
       dispatch(setTransactions(data.transactions));
+      dispatch(setSuppliers(data.suppliers));
       dispatch(setSales(data.sales));
 
       return companyName;

@@ -4,7 +4,8 @@ import dataReducer from "./dataSlice";
 import customerReducer from "./customersSlice";
 import transactionReducer from "./transactionsSlice";
 import inventoryReducer from "./inventorySlice";
-import salesReducer from "./sales";
+import salesReducer from "./salesSlice";
+import suppliersReducer from "./suppliersSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     transactions: transactionReducer,
     inventory: inventoryReducer,
     sales: salesReducer,
+    suppliers: suppliersReducer,
   },
 });
 

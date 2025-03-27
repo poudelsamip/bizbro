@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addTransactionsToTransactions } from "../store/transactionsSlice";
 import { updateOutStandingBalance } from "../store/customersSlice";
 import { fetchData } from "../store/dataSlice";
-import { addSalesToSales } from "../store/sales";
+import { addSalesToSales } from "../store/salesSlice";
 import { updateStock } from "../store/inventorySlice";
 
 const DispatchProduct = () => {

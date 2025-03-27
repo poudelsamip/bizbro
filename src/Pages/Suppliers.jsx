@@ -1,20 +1,22 @@
 import React, { useContext, useEffect, useState } from "react";
 import { RiExpandUpDownFill } from "react-icons/ri";
-import CustomerRow from "./CustomerRow";
-import AddCustomers from "./AddCustomers";
-import { MainContext } from "../Context/MainProvider";
+import CustomerRow from "../components/CustomerRow";
 import { MdGroupAdd } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { receivePayment } from "../store/customersSlice";
 import { addTransactionsToTransactions } from "../store/transactionsSlice";
+import { RiBankLine } from "react-icons/ri";
+import AddSupplier from "../components/AddSupplier";
+import { doPayment } from "../store/suppliersSlice";
+import SuppliersRow from "../components/SuppliersRow";
 
-const CustomersTable = () => {
-  const customersData = useSelector((state) => state.customers.customersData);
+const Suppliers = () => {
+  const suppliersData = useSelector((state) => state.suppliers.suppliersData);
 
-  const [filteredCustomers, setFilteredCustomers] = useState(customersData);
-  const [showAddCustomer, setShowAddCustomer] = useState(false);
-  const [showReceivePayment, setShowReceivePayment] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [filteredSuppliers, setFilteredSuppliers] = useState(suppliersData);
+  const [showAddSupplier, setShowAddSupplier] = useState(true);
+  const [showDoPayment, setShowDoPayment] = useState(false);
+  const [selectedSupplier, setSelectedSupplier] = useState(null);
   const [loading, setLoading] = useState(false);
   const [inputData, setInputData] = useState("");
 
@@ -24,25 +26,25 @@ const CustomersTable = () => {
   const [date, setDate] = useState(today);
   const dispatch = useDispatch();
   useEffect(() => {
-    setFilteredCustomers(customersData);
-  }, [customersData]);
+    setFilteredSuppliers(suppliersData);
+  }, [suppliersData]);
 
   const handleSearch = (e) => {
     const searchText = e.target.value.toLowerCase();
     const tempData = customersData.filter((item) =>
       item.businessName.toLowerCase().includes(searchText)
     );
-    setFilteredCustomers(tempData);
+    setFilteredSuppliers(tempData);
   };
 
-  const handleReceivePayment = async () => {
+  const handleDoPayment = async () => {
     setLoading(true);
     const paymentInfo = {
-      selectedCustomer,
-      amount: Number(selectedCustomer.outstandingBalance - inputData),
+      selectedSupplier,
+      amount: Number(selectedSupplier.credit - inputData),
     };
     const transactionInfo = {
-      buyer: selectedCustomer.businessName,
+      buyer: selectedSupplier.suppliersName,
       date: new Date(date).toLocaleDateString("en-US", {
         weekday: "long",
         year: "numeric",
@@ -50,70 +52,66 @@ const CustomersTable = () => {
         day: "numeric",
       }),
       totalAmount: Number(inputData),
-      type: "received",
+      type: "sent",
     };
     await Promise.all([
-      dispatch(receivePayment(paymentInfo)).unwrap(),
+      dispatch(doPayment(paymentInfo)).unwrap(),
       dispatch(addTransactionsToTransactions(transactionInfo)).unwrap(),
     ]);
     // await fetchData(user.email);
-    setShowReceivePayment(false);
+    setShowDoPayment(false);
     setLoading(false);
   };
 
   const sortByBalance = () => {
     if (sortedBy === "default") {
-      setFilteredCustomers(
-        [...customersData].sort(
-          (a, b) => a.outstandingBalance - b.outstandingBalance
-        )
+      setFilteredSuppliers(
+        [...suppliersData].sort((a, b) => a.credit - b.credit)
       );
       setSortedBy("low-high");
     } else if (sortedBy === "low-high") {
-      setFilteredCustomers(
-        [...customersData].sort(
-          (a, b) => b.outstandingBalance - a.outstandingBalance
-        )
+      setFilteredSuppliers(
+        [...suppliersData].sort((a, b) => b.credit - a.credit)
       );
       setSortedBy("high-low");
     } else {
-      setFilteredCustomers(customersData);
+      setFilteredSuppliers(suppliersData);
       setSortedBy("default");
     }
   };
 
-  if (showAddCustomer) {
-    return <AddCustomers onClose={() => setShowAddCustomer(false)} />;
+  if (showAddSupplier) {
+    return <AddSupplier onClose={() => setShowAddSupplier(false)} />;
   }
 
   return (
     <div className="flex flex-col h-full">
       <div className="flex-none">
         <h1 className="text-4xl font-semibold text-white mb-2 drop-shadow-xl">
-          CUSTOMERS 🧑‍💼
+          SUPPLIERS🧑‍💼
         </h1>
         <div className="flex justify-between items-center mb-1">
           <div className="max-w-md">
             <input
               type="text"
               className="block w-full px-4 py-2 text-white text-sm border border-gray-400 bg-gray-800 outline-0"
-              placeholder="Search Customer"
+              placeholder="Search Supplier"
               onChange={(e) => handleSearch(e)}
             />
           </div>
           <div>
             <button
-              onClick={() => setShowAddCustomer(true)}
+              onClick={() => setShowAddSupplier(true)}
               className="border bg-green-500 py-1 px-2 inline-flex items-center gap-2 cursor-pointer active:bg-green-600"
             >
-              Add New Customer <MdGroupAdd size={20} />
+              Add New Supplier <MdGroupAdd size={20} />
             </button>
           </div>
         </div>
       </div>
 
       {/*  Table */}
-      {customersData.length > 0 ? (
+      {suppliersData.length > 0 ? (
         <>
           <div className="flex-grow overflow-auto max-h-[80vh]">
             <table className="w-full text-sm text-left text-gray-300">
@@ -124,9 +122,6 @@ const CustomersTable = () => {
                   </th>
                   <th scope="col" className="px-3 py-3">
                     Name
-                  </th>
-                  <th scope="col" className="px-3 py-3">
-                    Address
                   </th>
                   <th scope="col" className="px-3 py-3">
                     Contact
@@ -140,7 +135,7 @@ const CustomersTable = () => {
                       title="Sort By Outstanding Balance"
                       onClick={sortByBalance}
                     >
-                      Outstanding <RiExpandUpDownFill />
+                      Credit <RiExpandUpDownFill />
                     </span>
                   </th>
                   <th scope="col" className="px-3 py-3">
@@ -149,31 +144,30 @@ const CustomersTable = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredCustomers.map((item, index) => (
-                  <CustomerRow
+                {filteredSuppliers.map((item, index) => (
+                  <SuppliersRow
                     key={index}
                     item={item}
-                    setShowReceivePayment={setShowReceivePayment}
-                    setSelectedCustomer={setSelectedCustomer}
+                    setShowDoPayment={setShowDoPayment}
+                    setSelectedSupplier={setSelectedSupplier}
                   />
                 ))}
               </tbody>
             </table>
           </div>
 
-          {showReceivePayment && (
+          {showDoPayment && (
             <div className="fixed inset-0 bg-gray-700 flex items-center justify-center z-10">
               <div className="bg-gray-800 p-6 max-w-sm w-full">
-                <h2 className="text-md text-white">Receive Payment from</h2>
+                <h2 className="text-md text-white">Payment to</h2>
                 <h2 className="text-2xl text-white font-semibold mb-4">
-                  {selectedCustomer?.businessName}
+                  {selectedSupplier?.suppliersName}
                 </h2>
                 <div>
                   <label className="text-sm text-gray-300">Date</label>
                   <input
                     type="date"
                     className="bg-gray-700 border border-gray-500 text-gray-300 text-sm w-full py-1 px-2"
-                    // defaultValue={date}
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                   />
@@ -198,7 +192,7 @@ const CustomersTable = () => {
                     className="px-4 py-2 bg-gray-700 text-white hover:bg-gray-600"
                     onClick={() => {
                       setInputData(null);
-                      setShowReceivePayment(false);
+                      setShowDoPayment(false);
                     }}
                   >
                     Cancel
@@ -209,10 +203,10 @@ const CustomersTable = () => {
                         ? "cursor-not-allowed"
                         : "cursor-pointer  hover:bg-green-600"
                     } bg-green-700 text-white`}
-                    onClick={handleReceivePayment}
+                    onClick={handleDoPayment}
                     disabled={!inputData || loading}
                   >
-                    {loading ? "loading ..." : "Recive Payment"}
+                    {loading ? "loading ..." : "Confirm Payment"}
                   </button>
                 </div>
               </div>
@@ -221,11 +215,11 @@ const CustomersTable = () => {
         </>
       ) : (
         <div className="text-gray-400 text-center mt-10">
-          Your Customers Will Be Displayed Here
+          Your Suppliers Will Be Displayed Here
         </div>
       )}
     </div>
   );
 };
 
-export default CustomersTable;
+export default Suppliers;

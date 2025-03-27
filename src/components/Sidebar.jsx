@@ -9,6 +9,7 @@ import { IoIosListBox } from "react-icons/io";
 import { GiMoneyStack } from "react-icons/gi";
 import { useDispatch } from "react-redux";
 import { logOut } from "../store/authSlice";
+import { IoBusiness } from "react-icons/io5";
 
 const Sidebar = () => {
   // const { logOut } = useContext(MainContext);
@@ -51,6 +52,15 @@ const Sidebar = () => {
               >
                 <FaUsers />
                 <span className="flex-1 ms-3 whitespace-nowrap">Customers</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/suppliers"
+                className="flex items-center p-3 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <IoBusiness />
+                <span className="flex-1 ms-3 whitespace-nowrap">Supplier</span>
               </NavLink>
             </li>
             <li>

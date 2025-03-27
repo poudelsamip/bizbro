@@ -21,7 +21,13 @@ export const signUp = createAsyncThunk(
         name,
         email,
       });
-      const collections = ["inventory", "customers", "sales", "transactions"];
+      const collections = [
+        "inventory",
+        "customers",
+        "sales",
+        "transactions",
+        "suppliers",
+      ];
       await Promise.all(
         collections.map((collection) =>
           setDoc(doc(db, collection, userData.user.email), {})

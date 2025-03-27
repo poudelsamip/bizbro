@@ -3,9 +3,12 @@ import { MainContext } from "../Context/MainProvider";
 import { RiExpandUpDownFill } from "react-icons/ri";
 import { IoReceipt } from "react-icons/io5";
 import Receipt from "../components/Receipt";
+import { useSelector } from "react-redux";
 
 const Sales = () => {
-  const { salesData, customersData } = useContext(MainContext);
+  // const { salesData, customersData } = useContext(MainContext);
+  const salesData = useSelector((state) => state.sales.salesData);
+  const customersData = useSelector((state) => state.customers.customersData);
   const [filteredData, setFilteredData] = useState(salesData);
   const dateRef = useRef();
 

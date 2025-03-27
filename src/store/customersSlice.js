@@ -3,8 +3,8 @@ import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../Config/firebase";
 
 export const addCustomerToCustomers = createAsyncThunk(
-  "customers/update",
-  async (item, { dispatch }) => {
+  "customers/addCustomer",
+  async (item, { dispatch, getState }) => {
     const { email } = getState().auth.user;
     try {
       await updateDoc(doc(db, "customers", email), {
@@ -58,7 +58,7 @@ export const updateOutStandingBalance = createAsyncThunk(
     await updateDoc(doc(db, "customers", email), {
       allCustomers: updatedCustomers,
     });
-    dispatch(fetchCustomers(email));
+    await dispatch(fetchCustomers(email));
   }
 );
 
@@ -67,7 +67,7 @@ export const fetchCustomers = createAsyncThunk(
   async (email, { rejectWithValue }) => {
     try {
       const customersSnap = await getDoc(doc(db, "customers", email));
-      return customersSnap.exists() ? customersSnap.data() : [];
+      return customersSnap.exists() ? customersSnap.data().allCustomers : [];
     } catch (err) {
       return rejectWithValue(err.message);
     }

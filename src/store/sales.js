@@ -1,10 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../Config/firebase";
 
 export const addSalesToSales = createAsyncThunk(
   "sales/addSales",
-  async ({ items, customer, date }, { rejectWithValue, getState }) => {
+  async (
+    { items, customer, date },
+    { rejectWithValue, getState, dispatch }
+  ) => {
     const { email } = getState().auth.user;
     try {
       const transactionsRef = doc(db, "sales", email);
@@ -32,10 +35,21 @@ export const addSalesToSales = createAsyncThunk(
       await updateDoc(transactionsRef, {
         allTransactions: arrayUnion(newSale),
       });
-
-      return newSale;
+      await dispatch(fetchSales(email));
     } catch (error) {
       return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchSales = createAsyncThunk(
+  "sales/fetchSales",
+  async (email, { rejectWithValue }) => {
+    try {
+      const salesSnap = await getDoc(doc(db, "sales", email));
+      return salesSnap.exists() ? salesSnap.data().allTransactions : [];
+    } catch (err) {
+      return rejectWithValue(err.message);
     }
   }
 );
@@ -53,18 +67,11 @@ const salesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(addSalesToSales.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(addSalesToSales.fulfilled, (state, action) => {
-        state.salesData.push(action.payload);
-        state.loading = false;
-      })
-      .addCase(addSalesToSales.rejected, (state, action) => {
-        state.error = action.payload;
-        state.loading = false;
-      });
+    builder.addCase(fetchSales.fulfilled, (state, action) => {
+      state.salesData = action.payload;
+      state.error = null;
+      state.loading = false;
+    });
   },
 });
 

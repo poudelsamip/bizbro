@@ -21,9 +21,13 @@ import { FaCartShopping } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 import { FaWallet } from "react-icons/fa";
 import { MainContext } from "../Context/MainProvider";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
-  const { salesData, inventoryData, customersData } = useContext(MainContext);
+  // const { salesData, inventoryData, customersData } = useContext(MainContext);
+  const salesData = useSelector((state) => state.sales.salesData);
+  const inventoryData = useSelector((state) => state.inventory.inventoryData);
+  const customersData = useSelector((state) => state.customers.customersData);
 
   //current month name
   const currentDate = new Date();

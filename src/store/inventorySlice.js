@@ -71,7 +71,7 @@ export const fetchInventory = createAsyncThunk(
   async (email, { rejectWithValue }) => {
     try {
       const inventorySnap = await getDoc(doc(db, "inventory", email));
-      return inventorySnap.exists() ? inventorySnap.data() : [];
+      return inventorySnap.exists() ? inventorySnap.data().allProducts : [];
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -100,36 +100,6 @@ const inventorySlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchInventory.rejected, (state, action) => {
-        state.error = action.payload;
-        state.loading = false;
-      })
-      .addCase(addProductsToInventory.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(addProductsToInventory.fulfilled, (state) => {
-        state.loading = false;
-      })
-      .addCase(addProductsToInventory.rejected, (state, action) => {
-        state.error = action.payload;
-        state.loading = false;
-      })
-      .addCase(addStock.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(addStock.fulfilled, (state) => {
-        state.loading = false;
-      })
-      .addCase(addStock.rejected, (state, action) => {
-        state.error = action.payload;
-        state.loading = false;
-      })
-      .addCase(updateStock.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(updateStock.fulfilled, (state) => {
-        state.loading = false;
-      })
-      .addCase(updateStock.rejected, (state, action) => {
         state.error = action.payload;
         state.loading = false;
       });

@@ -1,9 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { MainContext } from "../Context/MainProvider";
 import { RiExpandUpDownFill } from "react-icons/ri";
+import { useSelector } from "react-redux";
 
 const Transactions = () => {
-  const { transactionsData } = useContext(MainContext);
+  // const { transactionsData } = useContext(MainContext);
+  const transactionsData = useSelector(
+    (state) => state.transactions.transactionsData
+  );
   const [filteredTransactions, setFilteredTransactions] =
     useState(transactionsData);
   const [sortedByTotal, setSortedByTotal] = useState("default");

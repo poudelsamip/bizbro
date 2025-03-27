@@ -4,6 +4,7 @@ import React, { useContext } from "react";
 import { IoClose } from "react-icons/io5";
 import { MainContext } from "../Context/MainProvider";
 import { toWords } from "number-to-words";
+import { useSelector } from "react-redux";
 
 const Receipt = ({
   products,
@@ -14,7 +15,8 @@ const Receipt = ({
   totalAmount,
   date,
 }) => {
-  const { currentUserName } = useContext(MainContext);
+  // const { currentUserName } = useContext(MainContext);
+  const companyName = useSelector((state) => state.data.companyName);
 
   const generatePdf = async () => {
     const pdfDoc = await PDFDocument.create();
@@ -38,7 +40,7 @@ const Receipt = ({
       color: rgb(0, 0, 0),
     });
     y -= 40;
-    page.drawText(currentUserName, {
+    page.drawText(companyName, {
       x: 50,
       y,
       size: 18,
@@ -147,7 +149,7 @@ const Receipt = ({
               day: "numeric",
             })}
           </p>
-          <h1 className="text-2xl font-bold text-black">{currentUserName}</h1>
+          <h1 className="text-2xl font-bold text-black">{companyName}</h1>
           <h1 className="text-xl font-semibold text-black mt-4">Invoice</h1>
           <p className="text-sm font-medium text-black">
             Bill to: <span className="font-semibold">{customer}</span>

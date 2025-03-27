@@ -39,10 +39,15 @@ export const fetchData = createAsyncThunk(
         ? salesSnapshot.data().allTransactions || []
         : [];
 
+      const nameSnap = await getDoc(doc(db, "users", email));
+      const companyName = nameSnap.exists() ? nameSnap.data().companyName : "";
+
       dispatch(setInventory(data.inventory));
       dispatch(setCustomers(data.customers));
       dispatch(setTransactions(data.transactions));
       dispatch(setSales(data.sales));
+
+      return companyName;
     } catch (error) {
       console.log("Error : " + error);
     }
@@ -52,27 +57,19 @@ export const fetchData = createAsyncThunk(
 const dataSlice = createSlice({
   name: "dataSlice",
   initialState: {
-    inventoryData: [],
-    customersData: [],
-    transactionsData: [],
-    salesData: [],
-    status: "idle",
-    error: null,
+    companyName: "",
   },
-  reducers: {},
+  reducers: {
+    setCompanyNameNull: (state) => {
+      state.companyName = null;
+    },
+  },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchData.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.inventoryData = action.inventory.allProducts || [];
-        state.transactionsData = action.transactions.allTransactionData || [];
-        state.salesData = action.salesallTransactions || [];
-        state.customersData = action.customers.allCustomers || [];
-      })
-      .addCase(fetchData.rejected, (state) => {
-        state.status = "failed";
-      });
+    builder.addCase(fetchData.fulfilled, (state, action) => {
+      state.companyName = action.payload;
+    });
   },
 });
 
+export const { setCompanyNameNull } = dataSlice.actions;
 export default dataSlice.reducer;

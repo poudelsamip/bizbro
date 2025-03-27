@@ -5,15 +5,16 @@ import TableRow from "./TableRow";
 import AddToInventory from "./AddToInventory";
 import { MainContext } from "../Context/MainProvider";
 import { addStock } from "../store/inventorySlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const InventoryTable = () => {
-  const {
-    inventoryData,
-    // addStock,
-    // fetchData,
-    // user
-  } = useContext(MainContext);
+  // const {
+  //   inventoryData,
+  //   addStock,
+  //   fetchData,
+  //   user
+  // } = useContext(MainContext);
+  const inventoryData = useSelector((state) => state.inventory.inventoryData);
 
   const [filteredProducts, setFilteredProducts] = useState(inventoryData);
   const [showAddProduct, setShowAddProduct] = useState(false);

@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { MainContext } from "../Context/MainProvider";
+import { useSelector } from "react-redux";
 
 const SubForm = ({ formIndex, removeFormRow, setProducts }) => {
-  const { inventoryData } = useContext(MainContext);
+  // const { inventoryData } = useContext(MainContext);
+  const inventoryData = useSelector((state) => state.inventory.inventoryData);
 
   const [currentProduct, setCurrentProduct] = useState("");
   const [price, setPrice] = useState(0);

@@ -10,7 +10,7 @@ export const addTransactionsToTransactions = createAsyncThunk(
       updateDoc(doc(db, "transactions", email), {
         allTransactionData: arrayUnion(item),
       });
-      dispatch(fetchTransactions(email));
+      await dispatch(fetchTransactions(email));
     } catch (err) {
       console.log("Error : " + err);
     }
@@ -22,7 +22,9 @@ export const fetchTransactions = createAsyncThunk(
   async (email, { rejectWithValue }) => {
     try {
       const transactionsSnap = await getDoc(doc(db, "transactions", email));
-      return transactionsSnap.exists() ? transactionsSnap.data() : [];
+      return transactionsSnap.exists()
+        ? transactionsSnap.data().allTransactionData
+        : [];
     } catch (err) {
       return rejectWithValue(err.message);
     }

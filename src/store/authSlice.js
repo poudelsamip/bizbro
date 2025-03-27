@@ -46,8 +46,9 @@ export const logIn = createAsyncThunk(
   }
 );
 
-export const logOut = createAsyncThunk("auth/logOut", async () =>
-  signOut(auth)
+export const logOut = createAsyncThunk(
+  "auth/logOut",
+  async () => await signOut(auth)
 );
 
 const authSlice = createSlice({
@@ -57,7 +58,14 @@ const authSlice = createSlice({
     status: "idle",
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
+    setUserNull: (state) => {
+      state.user = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(signUp.pending, (state) => {
@@ -87,4 +95,5 @@ const authSlice = createSlice({
   },
 });
 
+export const { setUser, setUserNull } = authSlice.actions;
 export default authSlice.reducer;

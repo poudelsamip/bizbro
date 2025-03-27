@@ -4,18 +4,20 @@ import CustomerRow from "./CustomerRow";
 import AddCustomers from "./AddCustomers";
 import { MainContext } from "../Context/MainProvider";
 import { MdGroupAdd } from "react-icons/md";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { receivePayment } from "../store/customersSlice";
 import { addTransactionsToTransactions } from "../store/transactionsSlice";
 
 const CustomersTable = () => {
-  const {
-    customersData,
-    // receivePayment,
-    // addTransactionsToTransactions,
-    // fetchData,
-    // user,
-  } = useContext(MainContext);
+  // const {
+  //   customersData,
+  //   receivePayment,
+  //   addTransactionsToTransactions,
+  //   fetchData,
+  //   user,
+  // } = useContext(MainContext);
+
+  const customersData = useSelector((state) => state.customers.customersData);
 
   const [filteredCustomers, setFilteredCustomers] = useState(customersData);
   const [showAddCustomer, setShowAddCustomer] = useState(false);

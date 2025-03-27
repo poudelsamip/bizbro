@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./Pages/Dashboard";
 import Inventory from "./Pages/Inventory";
@@ -11,6 +11,13 @@ import Sales from "./Pages/Sales";
 import Hero from "./Pages/Hero";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchData, setCompanyNameNull } from "./store/dataSlice";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "./Config/firebase";
+import { setUser, setUserNull } from "./store/authSlice";
 
 function App() {
   const sideBar = [
@@ -21,7 +28,36 @@ function App() {
     "/sales",
     "/transactions",
   ];
+
   const location = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    const unSub = onAuthStateChanged(auth, async (authUser) => {
+      if (authUser) {
+        if (!user || user.email !== authUser.email) {
+          // setUser(authUser);
+          const { email, uid } = authUser;
+          dispatch(setUser({ email, uid }));
+          await dispatch(fetchData()).unwrap();
+          // const nameSnap = await getDoc(doc(db, "users", authUser.email));
+          // setCurrentUserName(() =>
+          //   nameSnap.exists() ? nameSnap.data().companyName : ""
+          // );
+        }
+      } else {
+        dispatch(setUserNull());
+        dispatch(setCompanyNameNull());
+        if (sideBar.includes(location.pathname)) {
+          navigate("/login");
+        }
+      }
+    });
+
+    return () => unSub();
+  }, [user]);
 
   return (
     <div className="flex">

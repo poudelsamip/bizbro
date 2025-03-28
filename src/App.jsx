@@ -33,15 +33,19 @@ function App() {
     "/purchases",
   ];
 
+  const user = useSelector((state) => state.auth.user);
+  console.log("User object: ");
+  console.log(user);
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, async (authUser) => {
+      console.log(authUser);
       if (authUser) {
-        if (!user || user.email !== authUser.email) {
+        console.log("inside if block");
+        if (!user || (user && user.email !== authUser.email)) {
           // setUser(authUser);
           const { email, uid } = authUser;
           dispatch(setUser({ email, uid }));
@@ -52,6 +56,7 @@ function App() {
           // );
         }
       } else {
+        console.log("inside else block");
         dispatch(setUserNull());
         dispatch(setCompanyNameNull());
         if (sideBar.includes(location.pathname)) {
@@ -61,7 +66,7 @@ function App() {
     });
 
     return () => unSub();
-  }, [user]);
+  }, [user, location.pathname]);
 
   return (
     <div className="flex">

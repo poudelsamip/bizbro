@@ -223,7 +223,9 @@ const AddToInventory = ({ onClose }) => {
             <select className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3">
               <option value="SElECT SUPPLIER*">SELECT SUPPLIER*</option>
               {suppliersData.map((item, index) => (
-                <option value={item.suppliersName}>{item.suppliersName}</option>
+                <option key={index} value={item.suppliersName}>
+                  {item.suppliersName}
+                </option>
               ))}
             </select>
           </div>

@@ -54,7 +54,7 @@ export const fetchData = createAsyncThunk(
       data.suppliers = suppliersSnapshot.exists()
         ? suppliersSnapshot.data().allSuppliers || []
         : [];
-      data.suppliers = purchasesSnapshot.exists()
+      data.purchases = purchasesSnapshot.exists()
         ? purchasesSnapshot.data().allPurchases || []
         : [];
 

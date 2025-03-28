@@ -29,17 +29,17 @@ const Sidebar = () => {
             <li>
               <NavLink
                 to="/dashboard"
-                className="flex items-center p-3 text-white hover:bg-gray-700 group"
+                className="flex items-center m-3 px-2 p-1 text-white hover:bg-gray-700 group"
               >
                 <MdSpaceDashboard />
                 <span className="ms-3">Dashboard</span>
               </NavLink>
             </li>
-
+            <hr className="w-[90%] mx-auto text-gray-500 " />
             <li>
               <NavLink
                 to="/inventory"
-                className="flex items-center p-3 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center m-3 px-2 py-1 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <SiHomeassistantcommunitystore />
                 <span className="flex-1 ms-3 whitespace-nowrap">Inventory</span>
@@ -48,7 +48,7 @@ const Sidebar = () => {
             <li>
               <NavLink
                 to="/customers"
-                className="flex items-center p-3 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center m-3 px-2 py-1 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <FaUsers />
                 <span className="flex-1 ms-3 whitespace-nowrap">Customers</span>
@@ -57,16 +57,17 @@ const Sidebar = () => {
             <li>
               <NavLink
                 to="/suppliers"
-                className="flex items-center p-3 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center m-3 px-2 py-1 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <IoBusiness />
-                <span className="flex-1 ms-3 whitespace-nowrap">Supplier</span>
+                <span className="flex-1 ms-3 whitespace-nowrap">Suppliers</span>
               </NavLink>
             </li>
+            <hr className="w-[95%] mx-auto text-gray-500 " />
             <li>
               <NavLink
                 to="/dispatch"
-                className="flex items-center p-3 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center m-3 px-2 py-1 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <FaTruck />
                 <span className="flex-1 ms-3 whitespace-nowrap">Dispatch</span>
@@ -75,7 +76,7 @@ const Sidebar = () => {
             <li>
               <NavLink
                 to="/purchases"
-                className="flex items-center p-3 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center m-3 px-2 py-1 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <BiSolidPurchaseTag />
                 <span className="flex-1 ms-3 whitespace-nowrap">Purchases</span>
@@ -84,7 +85,7 @@ const Sidebar = () => {
             <li>
               <NavLink
                 to="/sales"
-                className="flex items-center p-3 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center m-3 px-2 py-1 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <IoIosListBox />
                 <span className="flex-1 ms-3 whitespace-nowrap">Sales</span>
@@ -93,7 +94,7 @@ const Sidebar = () => {
             <li>
               <NavLink
                 to="/transactions"
-                className="flex items-center p-3 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center m-3 px-2 py-1 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <GiMoneyStack />
                 <span className="flex-1 ms-3 whitespace-nowrap">
@@ -106,7 +107,7 @@ const Sidebar = () => {
         <div className="bg-gray-900 p-3">
           <button
             onClick={handleLogOut}
-            className="text-white w-full px-3 py-1 bg-blue-600 active:bg-blue-500 rounded cursor-pointer"
+            className="text-white w-full px-3 py-1 bg-blue-600 active:bg-blue-500 cursor-pointer"
           >
             Log Out
           </button>

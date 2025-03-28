@@ -248,9 +248,9 @@ const MainProvider = ({ children }) => {
           );
         }
       } else {
-        if (!unAuthRoute.includes(location.pathname)) {
-          navigate("/login");
-        }
+        // if (!unAuthRoute.includes(location.pathname)) {
+        //   navigate("/login");
+        // }
         setUser(null);
       }
     });

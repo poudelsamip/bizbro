@@ -107,7 +107,7 @@ const AddSupplier = ({ onClose }) => {
           className="flex items-center gap-1 px-3 py-1 bg-gray-800 text-white  hover:bg-gray-700 cursor-pointer"
           onClick={onClose}
         >
-          <IoArrowBack /> Back to Customers
+          <IoArrowBack /> Back to Suppliers
         </button>
       </div>
 

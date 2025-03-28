@@ -6,6 +6,7 @@ import { setCustomers } from "./customersSlice";
 import { setSales } from "./salesSlice";
 import { setTransactions } from "./transactionsSlice";
 import { setSuppliers } from "./suppliersSlice";
+import { setPurchase } from "./purchaseSlice";
 
 export const fetchData = createAsyncThunk(
   "data/fetchData",
@@ -18,6 +19,7 @@ export const fetchData = createAsyncThunk(
         "sales",
         "transactions",
         "suppliers",
+        "purchases",
       ];
       const data = {
         inventory: [],
@@ -25,6 +27,7 @@ export const fetchData = createAsyncThunk(
         customers: [],
         sales: [],
         suppliers: [],
+        purchases: [],
       };
       const [
         inventorySnapshot,
@@ -32,6 +35,7 @@ export const fetchData = createAsyncThunk(
         salesSnapshot,
         transactionsSnapshot,
         suppliersSnapshot,
+        purchasesSnapshot,
       ] = await Promise.all(
         collections.map((item) => getDoc(doc(db, item, email)))
       );
@@ -50,15 +54,19 @@ export const fetchData = createAsyncThunk(
       data.suppliers = suppliersSnapshot.exists()
         ? suppliersSnapshot.data().allSuppliers || []
         : [];
+      data.suppliers = purchasesSnapshot.exists()
+        ? purchasesSnapshot.data().allPurchases || []
+        : [];
 
       const nameSnap = await getDoc(doc(db, "users", email));
       const companyName = nameSnap.exists() ? nameSnap.data().companyName : "";
-      console.log(data.suppliers);
+
       dispatch(setInventory(data.inventory));
       dispatch(setCustomers(data.customers));
       dispatch(setTransactions(data.transactions));
       dispatch(setSuppliers(data.suppliers));
       dispatch(setSales(data.sales));
+      dispatch(setPurchase(data.purchases));
 
       return companyName;
     } catch (error) {

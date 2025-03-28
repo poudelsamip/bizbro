@@ -19,6 +19,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "./Config/firebase";
 import { setUser, setUserNull } from "./store/authSlice";
 import Suppliers from "./Pages/Suppliers";
+import Purchases from "./Pages/Purchases";
 
 function App() {
   const sideBar = [
@@ -29,6 +30,7 @@ function App() {
     "/dispatch",
     "/sales",
     "/transactions",
+    "/purchases",
   ];
 
   const location = useLocation();
@@ -79,6 +81,7 @@ function App() {
           <Route path="/customers" element={<Customers />}></Route>
           <Route path="/suppliers" element={<Suppliers />}></Route>
           <Route path="/dispatch" element={<DispatchProduct />}></Route>
+          <Route path="/purchases" element={<Purchases />}></Route>
           <Route path="/sales" element={<Sales />}></Route>
           <Route path="/transactions" element={<Transactions />}></Route>
           {/* </Route> */}

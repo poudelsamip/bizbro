@@ -1,5 +1,5 @@
 import React from "react";
-import { GiReceiveMoney } from "react-icons/gi";
+import { RiBankLine } from "react-icons/ri";
 
 const SuppliersRow = ({ item, setShowDoPayment, setSelectedSupplier }) => {
   return (
@@ -12,8 +12,8 @@ const SuppliersRow = ({ item, setShowDoPayment, setSelectedSupplier }) => {
       <td className="px-3 py-3">{item.email}</td>
       <td className="px-3 py-3">Rs. {item.credit.toLocaleString("en-IN")}</td>
       <td className="px-3 py-3">
-        <div title="Receive Payment" className="font-medium">
-          <GiReceiveMoney
+        <div title="Pay Supplier" className="font-medium">
+          <RiBankLine
             size={20}
             className="text-green-500"
             onClick={() => {

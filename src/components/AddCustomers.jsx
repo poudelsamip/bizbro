@@ -47,7 +47,7 @@ const AddCustomers = ({ onClose }) => {
     <div className="h-full">
       {showSummary && (
         <div className="fixed inset-0 bg-gray-700  flex items-center justify-center z-10">
-          <div className="bg-gray-800 p-6 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto relative">
+          <div className="bg-gray-800 p-6  max-w-2xl w-full max-h-[80vh] overflow-y-auto relative">
             <IoClose
               className="text-white absolute top-1 right-1 text-3xl cursor-pointer"
               onClick={() => setShowSummary(false)}
@@ -59,7 +59,7 @@ const AddCustomers = ({ onClose }) => {
               <h3 className="text-lg font-medium text-white mb-2">
                 Customer Added:
               </h3>
-              <div className="bg-gray-700 rounded-lg p-3">
+              <div className="bg-gray-700  p-3">
                 <p className="text-white">
                   <span className="font-medium">Business Name:</span>{" "}
                   {customer.businessName}
@@ -83,7 +83,7 @@ const AddCustomers = ({ onClose }) => {
             </div>
             <div className="flex justify-end gap-3">
               <button
-                className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600"
+                className="px-4 py-2 bg-gray-700 text-white  hover:bg-gray-600"
                 onClick={() => setShowSummary(false)}
               >
                 Edit
@@ -93,7 +93,7 @@ const AddCustomers = ({ onClose }) => {
                   loading
                     ? "bg-green-500 cursor-not-allowed"
                     : "bg-green-700 cursor-pointer"
-                }  text-white rounded-lg hover:bg-green-600`}
+                }  text-white  hover:bg-green-600`}
                 onClick={async () => {
                   setLoading(true);
                   // await addCustomersToCustomers(customer);
@@ -116,7 +116,7 @@ const AddCustomers = ({ onClose }) => {
           ADD CUSTOMER
         </h1>
         <button
-          className="flex items-center gap-1 px-3 py-1 bg-gray-800 text-white rounded hover:bg-gray-700 cursor-pointer"
+          className="flex items-center gap-1 px-3 py-1 bg-gray-800 text-white  hover:bg-gray-700 cursor-pointer"
           onClick={onClose}
         >
           <IoArrowBack /> Back to Customers
@@ -132,7 +132,7 @@ const AddCustomers = ({ onClose }) => {
               <input
                 type="text"
                 placeholder="id"
-                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
                 name="id"
                 value={customer.id}
                 onChange={handleChange}
@@ -143,7 +143,7 @@ const AddCustomers = ({ onClose }) => {
               <input
                 type="text"
                 placeholder="Business Name"
-                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
                 name="businessName"
                 value={customer.businessName}
                 onChange={handleChange}
@@ -154,7 +154,7 @@ const AddCustomers = ({ onClose }) => {
               <input
                 type="text"
                 placeholder="Owner Name"
-                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
                 name="ownerName"
                 value={customer.ownerName}
                 onChange={handleChange}
@@ -165,7 +165,7 @@ const AddCustomers = ({ onClose }) => {
               <input
                 type="text"
                 placeholder="Contact Number"
-                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
                 name="contactNumber"
                 value={customer.contactNumber}
                 onChange={handleChange}
@@ -176,7 +176,7 @@ const AddCustomers = ({ onClose }) => {
               <input
                 type="email"
                 placeholder="Email"
-                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
                 name="email"
                 value={customer.email}
                 onChange={handleChange}
@@ -187,7 +187,7 @@ const AddCustomers = ({ onClose }) => {
               <input
                 type="text"
                 placeholder="Address"
-                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
                 name="address"
                 value={customer.address}
                 onChange={handleChange}
@@ -199,7 +199,7 @@ const AddCustomers = ({ onClose }) => {
             <button
               type="button"
               onClick={handleSubmit}
-              className="text-sm px-3 py-1 bg-green-600 active:bg-green-700 cursor-pointer border border-gray-500 rounded text-white"
+              className="text-sm px-3 py-1 bg-green-600 active:bg-green-700 cursor-pointer border border-gray-500  text-white"
             >
               Add Customer
             </button>

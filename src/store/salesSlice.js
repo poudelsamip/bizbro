@@ -20,7 +20,7 @@ export const addSalesToSales = createAsyncThunk(
       });
 
       const grandTotal = items.reduce((acc, item) => acc + item.totalPrice, 0);
-
+      //changing to object cause nested array can not be stored in firebase
       const productsObject = Object.fromEntries(
         items.map((item, index) => [index, item])
       );

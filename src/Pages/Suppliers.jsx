@@ -14,7 +14,7 @@ const Suppliers = () => {
   const suppliersData = useSelector((state) => state.suppliers.suppliersData);
 
   const [filteredSuppliers, setFilteredSuppliers] = useState(suppliersData);
-  const [showAddSupplier, setShowAddSupplier] = useState(true);
+  const [showAddSupplier, setShowAddSupplier] = useState(false);
   const [showDoPayment, setShowDoPayment] = useState(false);
   const [selectedSupplier, setSelectedSupplier] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -25,19 +25,21 @@ const Suppliers = () => {
   const today = new Date().toISOString().split("T")[0];
   const [date, setDate] = useState(today);
   const dispatch = useDispatch();
+
   useEffect(() => {
     setFilteredSuppliers(suppliersData);
   }, [suppliersData]);
 
   const handleSearch = (e) => {
     const searchText = e.target.value.toLowerCase();
-    const tempData = customersData.filter((item) =>
-      item.businessName.toLowerCase().includes(searchText)
+    const tempData = suppliersData.filter((item) =>
+      item.suppliersName.toLowerCase().includes(searchText)
     );
     setFilteredSuppliers(tempData);
   };
 
   const handleDoPayment = async () => {
+    console.log("clicked on do payment");
     setLoading(true);
     const paymentInfo = {
       selectedSupplier,
@@ -54,10 +56,12 @@ const Suppliers = () => {
       totalAmount: Number(inputData),
       type: "sent",
     };
+    console.log("before promise callssss");
     await Promise.all([
-      dispatch(doPayment(paymentInfo)).unwrap(),
-      dispatch(addTransactionsToTransactions(transactionInfo)).unwrap(),
+      dispatch(doPayment(paymentInfo)),
+      dispatch(addTransactionsToTransactions(transactionInfo)),
     ]);
+    console.log("after promise calls");
     // await fetchData(user.email);
     setShowDoPayment(false);
     setLoading(false);

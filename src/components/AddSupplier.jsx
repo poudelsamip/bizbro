@@ -104,7 +104,7 @@ const AddSupplier = ({ onClose }) => {
           ADD SUPPLIER
         </h1>
         <button
-          className="flex items-center gap-1 px-3 py-1 bg-gray-800 text-white rounded hover:bg-gray-700 cursor-pointer"
+          className="flex items-center gap-1 px-3 py-1 bg-gray-800 text-white  hover:bg-gray-700 cursor-pointer"
           onClick={onClose}
         >
           <IoArrowBack /> Back to Customers
@@ -119,7 +119,7 @@ const AddSupplier = ({ onClose }) => {
               <input
                 type="text"
                 placeholder="id"
-                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
                 name="id"
                 value={supplier.id}
                 onChange={handleChange}
@@ -130,7 +130,7 @@ const AddSupplier = ({ onClose }) => {
               <input
                 type="text"
                 placeholder="Suppliers Name"
-                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
                 name="suppliersName"
                 value={supplier.suppliersName}
                 onChange={handleChange}
@@ -142,7 +142,7 @@ const AddSupplier = ({ onClose }) => {
               <input
                 type="text"
                 placeholder="Contact Number"
-                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
                 name="contactNumber"
                 value={supplier.contactNumber}
                 onChange={handleChange}
@@ -153,7 +153,7 @@ const AddSupplier = ({ onClose }) => {
               <input
                 type="email"
                 placeholder="Email"
-                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+                className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
                 name="email"
                 value={supplier.email}
                 onChange={handleChange}
@@ -165,7 +165,7 @@ const AddSupplier = ({ onClose }) => {
             <button
               type="button"
               onClick={handleSubmit}
-              className="text-sm px-3 py-1 bg-green-600 active:bg-green-700 cursor-pointer border border-gray-500 rounded text-white"
+              className="text-sm px-3 py-1 bg-green-600 active:bg-green-700 cursor-pointer border border-gray-500  text-white"
             >
               Add Supplier
             </button>

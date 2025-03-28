@@ -24,7 +24,8 @@ export const doPayment = createAsyncThunk(
   "suppliers/doPayment",
   async ({ selectedSupplier, amount }, { getState, dispatch }) => {
     const state = getState();
-    const email = state.auth.user;
+    const { email } = state.auth.user;
+
     const currentSuppliers = state.suppliers.suppliersData;
     const updatedSuppliers = currentSuppliers.map((supplier) =>
       supplier.suppliersName === selectedSupplier.suppliersName
@@ -37,7 +38,7 @@ export const doPayment = createAsyncThunk(
     await updateDoc(doc(db, "suppliers", email), {
       allSuppliers: updatedSuppliers,
     });
-    await dispatch(fetchCustomers(email));
+    await dispatch(fetchSuppliers(email));
   }
 );
 
@@ -47,14 +48,14 @@ export const updateCredit = createAsyncThunk(
   async ({ suppliersName, amount }, { getState, dispatch }) => {
     const { email } = getState().auth.user;
     const currentSuppliersData = getState().suppliers.suppliersData;
-    const updatedSuppliers = currentSuppliersData.map((supplier) => {
-      return supplier.suppliersName === suppliersName
+    const updatedSuppliers = currentSuppliersData.map((supplier) =>
+      supplier.suppliersName === suppliersName
         ? {
             ...supplier,
             credit: amount,
           }
-        : supplier;
-    });
+        : supplier
+    );
     await updateDoc(doc(db, "suppliers", email), {
       allSuppliers: updatedSuppliers,
     });

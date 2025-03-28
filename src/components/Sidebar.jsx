@@ -4,7 +4,7 @@ import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { FaUsers } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { FaTruck } from "react-icons/fa";
-import { MainContext } from "../Context/MainProvider";
+import { BiSolidPurchaseTag } from "react-icons/bi";
 import { IoIosListBox } from "react-icons/io";
 import { GiMoneyStack } from "react-icons/gi";
 import { useDispatch } from "react-redux";
@@ -70,6 +70,15 @@ const Sidebar = () => {
               >
                 <FaTruck />
                 <span className="flex-1 ms-3 whitespace-nowrap">Dispatch</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/purchases"
+                className="flex items-center p-3 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <BiSolidPurchaseTag />
+                <span className="flex-1 ms-3 whitespace-nowrap">Purchases</span>
               </NavLink>
             </li>
             <li>

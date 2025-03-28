@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { IoArrowBack } from "react-icons/io5";
-import { MainContext } from "../Context/MainProvider";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addProductsToInventory } from "../store/inventorySlice";
 
 const AddToInventory = ({ onClose }) => {
@@ -17,7 +16,7 @@ const AddToInventory = ({ onClose }) => {
     supplier: "",
     category: "",
   });
-
+  const suppliersData = useSelector((state) => state.suppliers.suppliersData);
   const [showSummary, setShowSummary] = useState(false);
 
   const handleChange = (e) => {
@@ -51,7 +50,7 @@ const AddToInventory = ({ onClose }) => {
     <div className="h-full">
       {showSummary && (
         <div className="fixed inset-0 bg-gray-600 flex items-center justify-center z-10">
-          <div className="bg-gray-800 p-6 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+          <div className="bg-gray-800 p-6  max-w-2xl w-full max-h-[80vh] overflow-y-auto">
             <h2 className="text-2xl font-semibold text-white mb-4">
               Inventory Addition Summary
             </h2>
@@ -59,7 +58,7 @@ const AddToInventory = ({ onClose }) => {
               <h3 className="text-lg font-medium text-white mb-2">
                 Item Added:
               </h3>
-              <div className="bg-gray-700 rounded-lg p-3">
+              <div className="bg-gray-700  p-3">
                 <p className="text-white">
                   <span className="font-medium">Item:</span> {item.itemName}
                 </p>
@@ -90,7 +89,7 @@ const AddToInventory = ({ onClose }) => {
                 </div>
               </div>
             </div>
-            <div className="bg-gray-700 p-3 rounded-lg mb-4">
+            <div className="bg-gray-700 p-3  mb-4">
               <p className="text-white text-xl font-medium">
                 Total Investment: Rs.{" "}
                 {calculateTotalCost().toLocaleString("en-IN")}
@@ -98,7 +97,7 @@ const AddToInventory = ({ onClose }) => {
             </div>
             <div className="flex justify-end gap-3">
               <button
-                className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600"
+                className="px-4 py-2 bg-gray-700 text-white  hover:bg-gray-600"
                 onClick={() => setShowSummary(false)}
               >
                 Edit
@@ -108,7 +107,7 @@ const AddToInventory = ({ onClose }) => {
                   loading
                     ? "bg-green-500 cursor-not-allowed"
                     : "bg-green-700 cursor-pointer"
-                }  text-white rounded-lg hover:bg-green-600`}
+                }  text-white  hover:bg-green-600`}
                 onClick={async () => {
                   setLoading(true);
                   // await addProductsToInventory(item);
@@ -131,7 +130,7 @@ const AddToInventory = ({ onClose }) => {
           ADD TO INVENTORY
         </h1>
         <button
-          className="flex items-center gap-1 px-3 py-1 bg-gray-800 text-white rounded hover:bg-gray-700 cursor-pointer"
+          className="flex items-center gap-1 px-3 py-1 bg-gray-800 text-white  hover:bg-gray-700 cursor-pointer"
           onClick={onClose}
         >
           <IoArrowBack /> Back to Inventory
@@ -145,7 +144,7 @@ const AddToInventory = ({ onClose }) => {
             <input
               type="text"
               name="id"
-              className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+              className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
               value={item.id}
               onChange={handleChange}
               placeholder="Enter Product ID"
@@ -157,7 +156,7 @@ const AddToInventory = ({ onClose }) => {
             <input
               type="text"
               name="itemName"
-              className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+              className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
               value={item.itemName}
               onChange={handleChange}
               placeholder="Enter Item Name"
@@ -168,7 +167,7 @@ const AddToInventory = ({ onClose }) => {
             <input
               type="text"
               name="category"
-              className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+              className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
               value={item.category}
               onChange={handleChange}
               placeholder="Enter Category"
@@ -180,7 +179,7 @@ const AddToInventory = ({ onClose }) => {
             <input
               type="number"
               name="costPrice"
-              className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+              className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
               value={item.costPrice || ""}
               placeholder="Cost price"
               min={1}
@@ -192,7 +191,7 @@ const AddToInventory = ({ onClose }) => {
             <input
               type="number"
               name="sellingPrice"
-              className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+              className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
               value={item.sellingPrice || ""}
               min={1}
               placeholder="Selling Price"
@@ -204,7 +203,7 @@ const AddToInventory = ({ onClose }) => {
             <input
               type="number"
               name="quantity"
-              className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+              className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
               value={item.quantity || ""}
               min={1}
               onChange={handleChange}
@@ -213,20 +212,26 @@ const AddToInventory = ({ onClose }) => {
 
           <div>
             <label className="text-xs text-gray-300">Supplier</label>
-            <input
+            {/* <input
               type="text"
               name="supplier"
-              className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm rounded-lg w-full py-2 px-3"
+              className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
               value={item.supplier}
               onChange={handleChange}
               placeholder="Enter Supplier Name"
-            />
+            /> */}
+            <select className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3">
+              <option value="SElECT SUPPLIER*">SELECT SUPPLIER*</option>
+              {suppliersData.map((item, index) => (
+                <option value={item.suppliersName}>{item.suppliersName}</option>
+              ))}
+            </select>
           </div>
 
           <button
             type="button"
             onClick={handleSubmit}
-            className="max-w-[300px] mt-5 text-sm px-4 py-2 bg-green-600 active:bg-green-700 cursor-pointer border border-gray-500 rounded text-white w-full"
+            className="max-w-[300px] mt-5 text-sm px-4 py-2 bg-green-600 active:bg-green-700 cursor-pointer border border-gray-500 text-white w-full"
           >
             Add to Inventory
           </button>

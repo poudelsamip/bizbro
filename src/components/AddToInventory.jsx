@@ -2,6 +2,8 @@ import React, { useContext, useState } from "react";
 import { IoArrowBack } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { addProductsToInventory } from "../store/inventorySlice";
+import { addTransactionsToTransactions } from "../store/transactionsSlice";
+import { updateSupplierCredit } from "../store/suppliersSlice";
 
 const AddToInventory = ({ onClose }) => {
   // const { addProductsToInventory, fetchData, user } = useContext(MainContext);
@@ -15,6 +17,7 @@ const AddToInventory = ({ onClose }) => {
     quantity: 1,
     supplier: "",
     category: "",
+    paymentMethod: "cash" // default to cash
   });
   const suppliersData = useSelector((state) => state.suppliers.suppliersData);
   const [showSummary, setShowSummary] = useState(false);
@@ -35,7 +38,8 @@ const AddToInventory = ({ onClose }) => {
       item.sellingPrice > 0 &&
       item.quantity > 0 &&
       item.supplier &&
-      item.category;
+      item.category &&
+      item.paymentMethod;
 
     if (isValid) {
       setShowSummary(true);
@@ -45,6 +49,47 @@ const AddToInventory = ({ onClose }) => {
   };
 
   const calculateTotalCost = () => item.costPrice * item.quantity;
+
+  const handleConfirm = async () => {
+    setLoading(true);
+    try {
+      // Add to inventory
+      await dispatch(addProductsToInventory(item)).unwrap();
+
+      const totalAmount = calculateTotalCost();
+      const date = new Date().toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+
+      if (item.paymentMethod === "cash") {
+        // Add to transactions if cash payment
+        await dispatch(addTransactionsToTransactions({
+          type: "expense",
+          amount: totalAmount,
+          date: date,
+          description: `Purchased ${item.quantity} units of ${item.itemName} from ${item.supplier}`,
+          buyer: item.supplier
+        })).unwrap();
+      } else {
+        // Add to supplier's credit if credit payment
+        await dispatch(updateSupplierCredit({
+          supplierName: item.supplier,
+          amount: totalAmount
+        })).unwrap();
+      }
+
+      setShowSummary(false);
+      setLoading(false);
+      onClose();
+    } catch (error) {
+      console.error("Error in handleConfirm:", error);
+      setLoading(false);
+      alert("An error occurred while processing the transaction");
+    }
+  };
 
   return (
     <div className="h-full">
@@ -86,6 +131,10 @@ const AddToInventory = ({ onClose }) => {
                     <span className="text-gray-400">Total:</span> Rs.{" "}
                     {calculateTotalCost()}
                   </p>
+                  <p className="text-gray-300">
+                    <span className="text-gray-400">Payment:</span>{" "}
+                    {item.paymentMethod === "cash" ? "Cash" : "Credit"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -108,15 +157,8 @@ const AddToInventory = ({ onClose }) => {
                     ? "bg-green-500 cursor-not-allowed"
                     : "bg-green-700 cursor-pointer"
                 }  text-white  hover:bg-green-600`}
-                onClick={async () => {
-                  setLoading(true);
-                  // await addProductsToInventory(item);
-                  await dispatch(addProductsToInventory(item)).unwrap();
-                  // await fetchData(user.email);  fetched on above function
-                  setShowSummary(false);
-                  setLoading(false);
-                  onClose();
-                }}
+                onClick={handleConfirm}
+                disabled={loading}
               >
                 {loading ? "loading..." : "Confirm"}
               </button>
@@ -212,22 +254,47 @@ const AddToInventory = ({ onClose }) => {
 
           <div>
             <label className="text-xs text-gray-300">Supplier</label>
-            {/* <input
-              type="text"
+            <select 
               name="supplier"
-              className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3"
               value={item.supplier}
               onChange={handleChange}
-              placeholder="Enter Supplier Name"
-            /> */}
-            <select className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm  w-full py-2 px-3">
-              <option value="SElECT SUPPLIER*">SELECT SUPPLIER*</option>
+              className="block max-w-[300px] bg-gray-800 border border-gray-500 text-white text-sm w-full py-2 px-3"
+            >
+              <option value="">SELECT SUPPLIER*</option>
               {suppliersData.map((item, index) => (
                 <option key={index} value={item.suppliersName}>
                   {item.suppliersName}
                 </option>
               ))}
             </select>
+          </div>
+
+          <div>
+            <label className="text-xs text-gray-300">Payment Method</label>
+            <div className="flex gap-4 mt-1">
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="cash"
+                  checked={item.paymentMethod === "cash"}
+                  onChange={handleChange}
+                  className="form-radio text-blue-600"
+                />
+                <span className="ml-2 text-white">Cash</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="credit"
+                  checked={item.paymentMethod === "credit"}
+                  onChange={handleChange}
+                  className="form-radio text-blue-600"
+                />
+                <span className="ml-2 text-white">Credit</span>
+              </label>
+            </div>
           </div>
 
           <button

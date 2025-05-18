@@ -94,7 +94,7 @@ const Purchases = () => {
       (a, b) => new Date(b.date) - new Date(a.date)
     );
     setFilteredData(sortedData);
-    setSortedByDate("newest-oldest"); // Set initial state
+    setSortedByDate("newest-oldest");
   }, [purchaseData]);
 
   return (
@@ -164,9 +164,7 @@ const Purchases = () => {
                     Date <RiExpandUpDownFill />
                   </span>
                 </th>
-                <th scope="col" className="px-3 py-3">
-                  Action
-                </th>
+                
               </tr>
             </thead>
             <tbody>
@@ -176,58 +174,39 @@ const Purchases = () => {
                   className="cursor-pointer border-b bg-gray-800 border-gray-500 hover:bg-gray-700"
                 >
                   <td className="px-3 py-3">{index + 1}</td>
-                  <td className="px-3 py-3">{item.customer}</td>
+                  <td className="px-3 py-3">{item.supplier}</td>
                   <td className="px-3 py-3">
-                    {Object.entries(item.products).map(([key, itm]) => (
+                    {Object.entries(item.products || {}).map(([key, itm]) => (
                       <p key={`itemName${key}${itm.itemName}`}>
                         {itm.itemName}
                       </p>
                     ))}
                   </td>
                   <td className="px-3 py-3">
-                    {Object.entries(item.products).map(([key, itm]) => (
+                    {Object.entries(item.products || {}).map(([key, itm]) => (
                       <p key={`itemName${key}${itm.price}`}>
-                        Rs. {itm.price.toLocaleString("en-IN")}
+                        Rs. {(itm.price || 0).toLocaleString("en-IN")}
                       </p>
                     ))}
                   </td>
                   <td className="px-3 py-3">
-                    {Object.entries(item.products).map(([key, itm]) => (
+                    {Object.entries(item.products || {}).map(([key, itm]) => (
                       <p key={`itemName${key}${itm.quantity}`}>
-                        {itm.quantity}
+                        {itm.quantity || 0}
                       </p>
                     ))}
                   </td>
                   <td className="px-3 py-3">
-                    {Object.entries(item.products).map(([key, itm]) => (
-                      <p
-                        key={`itemName${key}${itm.totalPrice.toLocaleString(
-                          "en-IN"
-                        )}`}
-                      >
-                        Rs. {itm.totalPrice}
+                    {Object.entries(item.products || {}).map(([key, itm]) => (
+                      <p key={`itemName${key}${itm.totalPrice}`}>
+                        Rs. {(itm.totalPrice || 0).toLocaleString("en-IN")}
                       </p>
                     ))}
                   </td>
                   <td className="px-3 py-3">
-                    Rs. {item.grandTotal.toLocaleString("en-IN")}
+                    Rs. {(item.grandTotal || 0).toLocaleString("en-IN")}
                   </td>
-                  <td className="px-3 py-3">
-                    {new Date(item.date).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </td>
-                  <td className="px-3 py-3">
-                    <IoReceipt
-                      title="See Invoice"
-                      onClick={() => {
-                        setSelectedItem(item);
-                        setShowReceipt(true);
-                      }}
-                    />
-                  </td>
+                  <td className="px-3 py-3">{item.date}</td>
                 </tr>
               ))}
             </tbody>

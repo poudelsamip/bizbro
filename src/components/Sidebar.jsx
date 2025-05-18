@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { MdSpaceDashboard } from "react-icons/md";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { FaUsers } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FaTruck } from "react-icons/fa";
 import { BiSolidPurchaseTag } from "react-icons/bi";
 import { IoIosListBox } from "react-icons/io";
@@ -14,10 +14,12 @@ import { IoBusiness } from "react-icons/io5";
 const Sidebar = () => {
   // const { logOut } = useContext(MainContext);
   const dispatch = useDispatch();
-  const handleLogOut = async () => {
-    // await logOut();
-    await dispatch(logOut()).unwrap();
+  const navigate = useNavigate();
+  
+  const handleLogOut = () => {
+    navigate("/login");
   };
+
   return (
     <>
       <aside className="h-screen w-[250px] flex flex-col ">

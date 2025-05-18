@@ -46,22 +46,14 @@ function App() {
       if (authUser) {
         console.log("inside if block");
         if (!user || (user && user.email !== authUser.email)) {
-          // setUser(authUser);
           const { email, uid } = authUser;
           dispatch(setUser({ email, uid }));
           await dispatch(fetchData()).unwrap();
-          // const nameSnap = await getDoc(doc(db, "users", authUser.email));
-          // setCurrentUserName(() =>
-          //   nameSnap.exists() ? nameSnap.data().companyName : ""
-          // );
         }
       } else {
         console.log("inside else block");
         dispatch(setUserNull());
         dispatch(setCompanyNameNull());
-        if (sideBar.includes(location.pathname)) {
-          navigate("/login");
-        }
       }
     });
 

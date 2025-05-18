@@ -7,7 +7,7 @@ import { MainContext } from "../Context/MainProvider";
 import { addStock } from "../store/inventorySlice";
 import { useDispatch, useSelector } from "react-redux";
 
-const InventoryTable = () => {
+const InventoryTable = ({ isPurchase }) => {
   // const {
   //   inventoryData,
   //   addStock,
@@ -167,9 +167,11 @@ const InventoryTable = () => {
                   <th scope="col" className="px-3 py-3">
                     Supplier
                   </th>
-                  <th scope="col" className="px-3 py-3">
-                    Action
-                  </th>
+                  {!isPurchase && (
+                    <th scope="col" className="px-3 py-3">
+                      Action
+                    </th>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -180,11 +182,12 @@ const InventoryTable = () => {
                       item={item}
                       setShowAddStockPopup={setShowAddStockPopup}
                       setSelectedItem={setSelectedItem}
+                      isPurchase={isPurchase}
                     />
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="8" className="text-center py-4">
+                    <td colSpan={isPurchase ? "7" : "8"} className="text-center py-4">
                       No products found.
                     </td>
                   </tr>

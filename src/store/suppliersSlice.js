@@ -63,6 +63,34 @@ export const updateCredit = createAsyncThunk(
   }
 );
 
+export const updateSupplierCredit = createAsyncThunk(
+  "suppliers/updateSupplierCredit",
+  async ({ supplierName, amount }, { getState, dispatch }) => {
+    const { email } = getState().auth.user;
+    const currentSuppliersData = getState().suppliers.suppliersData;
+    
+    const supplier = currentSuppliersData.find(s => s.suppliersName === supplierName);
+    if (!supplier) {
+      throw new Error("Supplier not found");
+    }
+
+    const updatedSuppliers = currentSuppliersData.map((s) =>
+      s.suppliersName === supplierName
+        ? {
+            ...s,
+            credit: (s.credit || 0) + amount // Add new credit to existing credit
+          }
+        : s
+    );
+
+    await updateDoc(doc(db, "suppliers", email), {
+      allSuppliers: updatedSuppliers,
+    });
+    
+    await dispatch(fetchSuppliers(email));
+  }
+);
+
 export const fetchSuppliers = createAsyncThunk(
   "suppliers/fetch",
   async (email, { rejectWithValue }) => {

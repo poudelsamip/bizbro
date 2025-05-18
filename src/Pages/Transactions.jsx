@@ -137,7 +137,7 @@ const Transactions = () => {
                 </th>
 
                 <th scope="col" className="px-3 py-3">
-                  Buyer
+                  Buyer/Supplier
                 </th>
 
                 <th scope="col" className="px-3 py-3 ">
@@ -173,9 +173,9 @@ const Transactions = () => {
                   className="cursor-pointer border-b bg-gray-800 border-gray-500 hover:bg-gray-700"
                 >
                   <td className="px-3 py-3">{index + 1}</td>
-                  <td className="px-3 py-3">{item.buyer}</td>
+                  <td className="px-3 py-3">{item.buyer || item.description || "N/A"}</td>
                   <td className="px-3 py-3">
-                    Rs. {item.totalAmount.toLocaleString("en-IN")}
+                    Rs. {(item.totalAmount || item.amount || 0).toLocaleString("en-IN")}
                   </td>
                   <td className="px-3 py-3">{item.date}</td>
                 </tr>

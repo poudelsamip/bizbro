@@ -216,6 +216,7 @@ const Dashboard = () => {
             <div className="p-2 bg-blue-900">
               <TbCurrencyRupeeNepalese className="h-5 w-5 text-blue-400" />
             </div>
+
           </div>
           <div className="text-2xl font-bold text-white">
             Rs.{totalSales.toLocaleString("en-IN")}

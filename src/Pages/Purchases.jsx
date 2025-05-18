@@ -46,16 +46,22 @@ const Purchases = () => {
   };
 
   const sortByDate = () => {
-    if (sortedByDate === "default") {
+    if (sortedByDate === "default" || sortedByDate === "newest-oldest") {
+      // Switch to oldest-to-newest
       setFilteredData(() => {
         return [...purchaseData].sort(
           (a, b) => new Date(a.date) - new Date(b.date)
         );
       });
-      setSortedByDate("before-today");
+      setSortedByDate("oldest-newest");
     } else {
-      setFilteredData(purchaseData);
-      setSortedByDate("default");
+      // Switch back to newest-to-oldest
+      setFilteredData(() => {
+        return [...purchaseData].sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+      });
+      setSortedByDate("newest-oldest");
     }
   };
 
@@ -83,7 +89,12 @@ const Purchases = () => {
   };
 
   useEffect(() => {
-    setFilteredData(purchaseData);
+    // Sort by date (newest to oldest) by default
+    const sortedData = [...purchaseData].sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    );
+    setFilteredData(sortedData);
+    setSortedByDate("newest-oldest"); // Set initial state
   }, [purchaseData]);
 
   return (

@@ -52,16 +52,22 @@ const Sales = () => {
   };
 
   const sortByDate = () => {
-    if (sortedByDate === "default") {
+    if (sortedByDate === "default" || sortedByDate === "newest-oldest") {
+      // Switch to oldest-to-newest
       setFilteredData(() => {
         return [...salesData].sort(
           (a, b) => new Date(a.date) - new Date(b.date)
         );
       });
-      setSortedByDate("before-today");
+      setSortedByDate("oldest-newest");
     } else {
-      setFilteredData(salesData);
-      setSortedByDate("default");
+      // Switch back to newest-to-oldest
+      setFilteredData(() => {
+        return [...salesData].sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+      });
+      setSortedByDate("newest-oldest");
     }
   };
 
@@ -89,7 +95,12 @@ const Sales = () => {
   };
 
   useEffect(() => {
-    setFilteredData(salesData);
+    // Sort by date (newest to oldest) by default
+    const sortedData = [...salesData].sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    );
+    setFilteredData(sortedData);
+    setSortedByDate("newest-oldest"); // Set initial state
   }, [salesData]);
 
   return (
@@ -210,11 +221,7 @@ const Sales = () => {
                   </td>
                   <td className="px-3 py-3">
                     {Object.entries(item.products).map(([key, itm]) => (
-                      <p
-                        key={`itemName${key}${itm.totalPrice.toLocaleString(
-                          "en-IN"
-                        )}`}
-                      >
+                      <p key={`itemName${key}${itm.totalPrice}`}>
                         Rs. {itm.totalPrice}
                       </p>
                     ))}

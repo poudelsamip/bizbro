@@ -72,28 +72,30 @@ const Transactions = () => {
   };
 
   const sortByDate = () => {
-    if (sortedByDate === "default") {
+    if (sortedByDate === "latest-earliest") {
       setFilteredTransactions(
         [...transactionsData].sort(
           (a, b) => new Date(a.date) - new Date(b.date)
         )
       );
       setSortedByDate("earliest-latest");
-    } else if (sortedByDate === "earliest-latest") {
+    } else {
       setFilteredTransactions(
         [...transactionsData].sort(
           (a, b) => new Date(b.date) - new Date(a.date)
         )
       );
       setSortedByDate("latest-earliest");
-    } else {
-      setFilteredTransactions(transactionsData);
-      setSortedByDate("default");
     }
   };
 
   useEffect(() => {
-    setFilteredTransactions(transactionsData);
+    // Sort by date (newest to oldest) by default
+    const sortedData = [...transactionsData].sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    );
+    setFilteredTransactions(sortedData);
+    setSortedByDate("latest-earliest"); // Set initial state to newest-to-oldest
   }, [transactionsData]);
 
   return (

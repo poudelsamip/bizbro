@@ -8,9 +8,14 @@ import { testimonials } from "../assets/assets";
 const TestimonialSlider = () => {
   return (
     <div className="bg-gray-800 text-white px-6 md:px-16 lg:px-24 py-16 md:py-24">
-      <h1 className="text-4xl md:text-5xl font-bold mb-1 teko-regular">
-        Hear from business owners
-      </h1>
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 teko-regular">
+          Hear from Business Owners
+        </h1>
+        <p className="text-xl text-gray-300 teko-regular">
+          See what our customers have to say about BizBro
+        </p>
+      </div>
 
       <div className="mx-auto relative mt-4">
         <Swiper
@@ -28,12 +33,12 @@ const TestimonialSlider = () => {
           {testimonials.map((testimonial, i) => (
             <SwiperSlide key={i}>
               <div className="bg-slate-700 p-4 rounded shadow-md text-white h-full md:min-h-[280px] border border-gray-400">
-                <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="flex items-center gap-3 mb-4">
                   <img
                     src={testimonial.image}
                     className="h-[60px] w-[60px] object-cover rounded-full border border-gray-400"
+                    alt={testimonial.name}
                   />
-
                   <div>
                     <h3 className="text-lg font-semibold">
                       {testimonial.name}
@@ -50,12 +55,12 @@ const TestimonialSlider = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-        <div className="flex justify-around mt-1 md:mt-4">
-          <div className="flex gap-2">
-            <button className="prev-button  border border-gray-400  bg-gray-700 p-3 rounded hover:bg-gray-600 z-10 cursor-pointer">
+        <div className="flex justify-center mt-8">
+          <div className="flex gap-4">
+            <button className="prev-button border border-gray-400 bg-gray-700 p-3 rounded hover:bg-gray-600 transition-colors">
               <FaArrowLeft size={20} />
             </button>
-            <button className="next-button  border border-gray-400  bg-gray-700 p-3 rounded hover:bg-gray-600 z-10 cursor-pointer">
+            <button className="next-button border border-gray-400 bg-gray-700 p-3 rounded hover:bg-gray-600 transition-colors">
               <FaArrowRight size={20} />
             </button>
           </div>

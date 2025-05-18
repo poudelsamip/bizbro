@@ -4,16 +4,13 @@ import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock } from "react-icons/fa";
 const Contact = () => {
   return (
     <div className="bg-gray-800 text-white px-6 md:px-16 lg:px-24 py-16 md:py-24 w-full">
-      <div className="mb-5">
-        <div>
-          <h1 className="text-3xl md:text-5xl font-bold teko-regular">
-            Get In Touch
-          </h1>
-          <p className="text-xl text-gray-300 teko-regular">
-            Have questions about BizBro or need assistance? Our team is here to
-            help.
-          </p>
-        </div>
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-5xl font-bold teko-regular">
+          Get In Touch
+        </h1>
+        <p className="text-xl text-gray-300 teko-regular">
+          Have questions about BizBro or need assistance? Our team is here to help.
+        </p>
       </div>
 
       <div className="bg-slate-800 p-5 border border-gray-400 rounded shadow-2xl w-full">
@@ -132,20 +129,18 @@ const Contact = () => {
                 </label>
                 <textarea
                   id="message"
-                  rows="4"
+                  rows={4}
                   className="w-full bg-gray-700 border border-gray-600 rounded py-1.5 px-2 text-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Write your message here..."
+                  placeholder="Your message..."
                 ></textarea>
               </div>
 
-              <div>
-                <button
-                  type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 cursor-pointer text-white font-medium py-1.5 px-4 rounded text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 focus:ring-offset-gray-800"
-                >
-                  Send Message
-                </button>
-              </div>
+              <button
+                type="submit"
+                className="w-full bg-blue-700 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200"
+              >
+                Send Message
+              </button>
             </form>
           </div>
         </div>

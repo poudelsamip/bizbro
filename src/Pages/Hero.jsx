@@ -1,11 +1,11 @@
 import { useState } from "react";
 import MainHero from "../components/MainHero";
-import WhyChooseUs from "../components/WhyChooseUs";
 import TestimonialSlider from "../components/Testimonials";
 import Footer from "../components/Footer";
 import GetStarted from "../components/GetStarted";
-import Video from "../components/Video";
 import Contact from "../components/Contact";
+import KeyFeatures from "../components/KeyFeatures";
+import BusinessBenefits from "../components/BusinessBenefits";
 
 const Hero = () => {
   const [support, setSupport] = useState(false);
@@ -13,11 +13,11 @@ const Hero = () => {
   return (
     <div>
       <MainHero />
-      <WhyChooseUs />
-      <Video />
+      <KeyFeatures />
+      <BusinessBenefits />
       <TestimonialSlider />
-      <Contact />
       <GetStarted />
+      <Contact />
       <Footer />
       {/* <div className="absolute bottom-5 right-5 flex items-center gap-2 z-10">
         <div
